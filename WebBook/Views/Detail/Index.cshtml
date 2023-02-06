@@ -1,0 +1,32 @@
+﻿@model IEnumerable<WebBook.Models.Status>
+@{
+    ViewData["Title"] = "detail Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<table>
+  <tr>
+    <th>Id</th>
+    <th>name</th>
+
+
+
+  </tr>
+    @{
+        var i = 0;
+    }
+    @foreach (var item in Model)
+    {
+     
+    <tr>
+    <td>@item.StatusId</td>
+    <td>@item.StatusName</td>
+
+
+
+  </tr>
+ }
+</table>
