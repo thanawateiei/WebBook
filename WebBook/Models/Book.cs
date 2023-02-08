@@ -14,8 +14,8 @@ namespace WebBook.Models
         public string? BookDetail { get; set; }
         public int? BookType1 { get; set; }
         public int? BookType2 { get; set; }
-        public string? BookType3 { get; set; }
-        public string? BookType4 { get; set; }
-        public string? BookType5 { get; set; }
+        public int? BookType3 { get; set; }
+        public int? BookType4 { get; set; }
+        public int? BookType5 { get; set; }
     }
 }
