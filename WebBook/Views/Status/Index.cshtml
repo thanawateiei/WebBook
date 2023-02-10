@@ -1,0 +1,57 @@
+﻿@model IEnumerable<WebBook.Models.Status>
+@{
+    ViewData["Title"] = "Status Page";
+}
+
+@{
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.ErrorMessage");
+        };
+    </script>
+}
+
+<h1 class="text-success">จัดการสถานะ</h1>
+
+<form asp-controller="Status" asp-action="Index">
+    <div class="row">
+        <div class="col-sm-6 col-md-8 col-lg-9">
+            <a class="btn btn-primary" asp-action="Create">
+                <i class="bi bi-plus-lg"></i>    เพิ่ม
+            </a>
+        </div>
+    </div>
+</form>
+
+<table class="table table-borderless table-hover">
+    <tr>
+        <th>ID</th>
+        <th>ชื่อสถานะ</th>
+        <th></th>
+        <th></th>
+    </tr>
+    @{
+        var i = 0;
+    }
+    @foreach (var item in Model)
+    {
+        i++;
+        <tr>
+            <th>@item.StatusId</th>
+            <td>@item.StatusName</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.StatusId">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.StatusId">
+                    <i class="bi bi-x-lg text-danger"></i>
+                </a>
+            </td>
+        </tr>
+    }
+</table>

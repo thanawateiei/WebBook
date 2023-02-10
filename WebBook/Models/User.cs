@@ -5,7 +5,7 @@ namespace WebBook.Models
 {
     public partial class User
     {
-        public string? UserId { get; set; }
+        public int UserId { get; set; }
         public string? Email { get; set; }
         public int? Password { get; set; }
         public string? Role { get; set; }

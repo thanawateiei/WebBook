@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebBook.Controllers
 {
-    public class AdminController : Controller
+    public class RequestController : Controller
     {
         private readonly webContext _db;
-        public AdminController(webContext db)
+        public RequestController(webContext db)
         { _db = db; }
+        [Route("admin/request")]
         public IActionResult Index()
         {
             var rq = from r in _db.Histories
@@ -31,6 +32,7 @@ namespace WebBook.Controllers
         }
         [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
         [ValidateAntiForgeryToken] // ป้องกันการโจมตี Cross_site Request Forgery
+        [Route("admin/request")]
         public IActionResult Index(string? stext)
         {
             if (stext == null)
@@ -61,7 +63,8 @@ namespace WebBook.Controllers
             ViewBag.stext = stext;
             return View(rq);
         }
-        public IActionResult Edit(string id)
+        [Route("admin/request/edit/{id}")]
+        public IActionResult Edit(int id)
         {
             //ตรวจสอบว่ามีการส่ง id มาหรือไม่
             if (id == null)
@@ -78,6 +81,10 @@ namespace WebBook.Controllers
             }
             //อ่านข้อมูลจากตารางลง SelectList แล้วใส่ข้อมูลลงตัว ViewData
             //และกำนหนดว่า Select ที่เลือก เป็น id ของ obj นั้นๆ
+            var userEmail = from u in _db.Users.Where(u => u.UserId == id)
+                                select u.Email;
+            ViewBag.UserEmail = userEmail;
+
             ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName", obj.StatusId);
             return View(obj);
         }
@@ -85,6 +92,7 @@ namespace WebBook.Controllers
         [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
         [ValidateAntiForgeryToken] // ป้องกันการโจมตี Cross_site Request Forgery
         //ค่าที่ส่งมาจาก Form เป็น Object ของ Model ที่ระบุ ตัว Controller ก็รับค่าเป็น Object
+        [Route("admin/request/edit/{id}")]
         public IActionResult Edit(History obj)
         {
             try
@@ -109,6 +117,55 @@ namespace WebBook.Controllers
             ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName", obj.StatusId);
             return View(obj);
 
+        }
+        [Route("admin/request/delete")]
+        public IActionResult Delete(int id)
+        {
+            //ตรวจสอบว่ามีการส่ง id มาหรือไม่
+            if (id == null)
+            {
+                ViewBag.ErrorMassage = "ต้องระบุค่า ID";
+                return RedirectToAction("Index");
+            }
+            // ทำการเขียน Query หา Record ของ Product.pdId จาก id ที่ส่งมา
+            var obj = _db.Histories.Find(id);
+            if (obj == null)
+            {
+                ViewBag.ErrorMassage = "ไม่พบข้อมูลที่ระบุ";
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.UserEmail = _db.Users.FirstOrDefault(ue => ue.UserId == obj.UserId).Email;
+            ViewBag.StatusName = _db.Statuses.FirstOrDefault(sn => sn.StatusId == obj.StatusId).StatusName;
+            return View(obj);
+        }
+
+        [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
+        [ValidateAntiForgeryToken] // ป้องกันการโจมตี Cross_site Request Forgery
+        //**** ค่าที่ส่งมาจาก Form เป็น string  ต้องรับค่าเป็น string
+        // แต่ถ้ารับค่าเป็น string จะ Error เพราะเป็นการประกาศ method ซ้ำจึงต้องตั้งชื่อใหม่ เป็น DeletePost
+        // และตัวแปรที่รับ จะต้องเหมือนกับชือที่ส่งมาจาก View ด้วย จากตัวอย่างคือ PdId
+        public IActionResult DeletePost(int RequestId)
+        {
+            try
+            {
+                // ทำการเขียน Query หา Record ของ Product.pdId จาก id ที่ส่งมา
+                var obj = _db.Histories.Find(RequestId);
+                if (obj == null)
+                {
+                    ViewBag.ErrorMassage = "ไม่พบข้อมูลที่ระบุ";
+                    return RedirectToAction("Index");
+                }
+                _db.Histories.Remove(obj); //ส่งคำสั่ง Remove ผ่าน DBContext
+                _db.SaveChanges(); // Execute คำสั่ง
+                return RedirectToAction("Index"); // ย้ายทำงาน Action Index              
+            }
+            catch (Exception ex)
+            {
+                //ถ้าไม่ Valid ก็ สร้าง Error Message ขึ้นมา แล้ว ส่ง Obj กลับไปที่ View
+                ViewBag.ErrorMessage = ex.Message;
+                return RedirectToAction("Index");
+            }
         }
     }
 }

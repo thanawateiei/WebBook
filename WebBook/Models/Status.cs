@@ -5,7 +5,7 @@ namespace WebBook.Models
 {
     public partial class Status
     {
-        public string StatusId { get; set; } = null!;
+        public int StatusId { get; set; }
         public string? StatusName { get; set; }
     }
 }
