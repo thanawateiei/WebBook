@@ -99,7 +99,7 @@ namespace WebBook.Controllers
 
         }
 
-        [Route("admin/status/delete{id}")]
+        [Route("admin/status/delete/{id}")]
         public IActionResult Delete(int id)
         {
             //ตรวจสอบว่ามีการส่ง id มาหรือไม่
@@ -119,7 +119,7 @@ namespace WebBook.Controllers
             return View(obj);
         }
 
-        [Route("admin/status/delete{id}")]
+        [Route("admin/status/delete/{id}")]
         [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
         [ValidateAntiForgeryToken] // ป้องกันการโจมตี Cross_site Request Forgery
         //**** ค่าที่ส่งมาจาก Form เป็น string  ต้องรับค่าเป็น string
