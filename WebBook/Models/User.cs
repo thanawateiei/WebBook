@@ -7,12 +7,12 @@ namespace WebBook.Models
     {
         public int UserId { get; set; }
         public string? Email { get; set; }
-        public int? Password { get; set; }
-        public string? Role { get; set; }
+        public string? Password { get; set; }
+        public int? Role { get; set; }
         public int? AgencyId { get; set; }
         public string? StudentId { get; set; }
         public string? Name { get; set; }
-        public int? Telephone { get; set; }
+        public string? Telephone { get; set; }
         public int? UserType { get; set; }
     }
 }
