@@ -5,79 +5,45 @@ using WebBook.Models;
 namespace WebBook.Controllers
 {
 
-    public class UserController : Controller
+    public class UserTypeController : Controller
     {
         private readonly webContext _db;
-        public UserController(webContext db)
+        public UserTypeController(webContext db)
         { _db = db; }
         // GET: UserController
         public ActionResult Index()
         {
-            var uu = from u in _db.Users
-                    
-                    join ur in _db.Roles on u.Role equals ur.RoleId into join_u_ur
-                    from uu_ur in join_u_ur
+            var btt = from bt in _db.UserTypes
+                      select new ViewModels.UserTypeViewModel
+                      {
+                          UserTypeId = bt.UserTypeId,
+                          Limit = bt.Limit,
+                          UserTypeName = bt.UserTypeName
+                          
+                      };
 
-                    join ua in _db.Agencies on u.AgencyId equals ua.AgencyId into join_u_ua
-                    from uu_ua in join_u_ua
 
-                    join ut in _db.UserTypes on u.UserType equals ut.UserTypeId into join_u_ut
-                    from uu_ut in join_u_ut
-
-                     select new ViewModels.UserViewModel
-                     {
-                         user_id = u.UserId,
-                         email = u.Email,
-                         password = u.Password,
-                         roleName = uu_ur.RoleName,
-                         student_id = u.StudentId,
-                         agencyName = uu_ua.AgencyName,
-                         name = u.Name,
-                         telephone = u.Telephone,
-                         user_typeName = uu_ut.UserTypeName
-                     };
-            //List <ViewModels.UserViewModel> Uview = new List<ViewModels.UserViewModel>();
-            //List<User> Uview = new List<User>();
-            //Uview.AddRange(uu);
-            if (uu == null) return NotFound();
-            return View(uu);
+            if (btt == null) return NotFound();
+            return View(btt);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index(string? stext)
         {
-            var uu = from u in _db.Users
 
-                     join ur in _db.Roles on u.Role equals ur.RoleId into join_u_ur
-                     from uu_ur in join_u_ur
+            var btt = from bt in _db.UserTypes
+                      where bt.UserTypeName.Contains(stext)
+                      select new ViewModels.UserTypeViewModel
+                      {
+                          UserTypeId = bt.UserTypeId,
+                          Limit = bt.Limit,
+                          UserTypeName = bt.UserTypeName
 
-                     join ua in _db.Agencies on u.AgencyId equals ua.AgencyId into join_u_ua
-                     from uu_ua in join_u_ua
+                      };
 
-                     join ut in _db.UserTypes on u.UserType equals ut.UserTypeId into join_u_ut
-                     from uu_ut in join_u_ut
-
-                     where u.Name.Contains(stext) ||
-                           u.StudentId.Contains(stext) ||
-                           u.Email.Contains(stext)
-
-                     select new ViewModels.UserViewModel
-                     {
-                         user_id = u.UserId,
-                         email = u.Email,
-                         password = u.Password,
-                         roleName = uu_ur.RoleName,
-                         student_id = u.StudentId,
-                         agencyName = uu_ua.AgencyName,
-                         name = u.Name,
-                         telephone = u.Telephone,
-                         user_typeName = uu_ut.UserTypeName
-                     };
-            //List <ViewModels.UserViewModel> Uview = new List<ViewModels.UserViewModel>();
-            //List<User> Uview = new List<User>();
-            //Uview.AddRange(uu);
-            if (uu == null) return NotFound();
-            return View(uu);
+            if (btt == null) return NotFound();
+            return View(btt);
+      
         }
 
         // GET: UserController/Details/5
@@ -89,28 +55,25 @@ namespace WebBook.Controllers
         // GET: UserController/Create
         public ActionResult Create()
         {
-            var idUser = from b in _db.Users
-                         select b.UserId;
-            var newidUser = idUser.Max();
-            ViewBag.newidUser = newidUser + 1;
+            var idUserType = from b in _db.UserTypes
+                         select b.UserTypeId;
+            var newidUserType = idUserType.Max();
+            ViewBag.newidUserType = newidUserType + 1;
 
-            ViewData["Ur"] = new SelectList(_db.Roles, "RoleId", "RoleName");
-            ViewData["Ua"] = new SelectList(_db.Agencies, "AgencyId", "AgencyName");
-            ViewData["Ut"] = new SelectList(_db.UserTypes, "UserTypeId", "UserTypeName");
             return View();
         }
 
         // POST: UserController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(User obj)
+        public ActionResult Create( UserType obj)
         {
             try
             {
 
                 if (ModelState.IsValid)
                 {
-                    _db.Users.Add(obj);
+                    _db.UserTypes.Add(obj);
                     _db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -132,30 +95,27 @@ namespace WebBook.Controllers
                 return RedirectToAction("Index");
 
             }
-            var obj = _db.Users.Find(id);
+            var obj = _db.UserTypes.Find(id);
             if (obj == null)
             {
                 ViewBag.ErrorMessage = "ไม่พบรายการนี้";
                 return RedirectToAction("Index");
 
             }
-            ViewData["Ur"] = new SelectList(_db.Roles, "RoleId", "RoleName");
-            ViewData["Ua"] = new SelectList(_db.Agencies, "AgencyId", "AgencyName");
-            ViewData["Ut"] = new SelectList(_db.UserTypes, "UserTypeId", "UserTypeName");
             return View(obj);
         }
 
         // POST: UserController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(User obj)
+        public ActionResult Edit(UserType obj)
         {
             try
             {
 
                 if (ModelState.IsValid)
                 {
-                    _db.Users.Update(obj);
+                    _db.UserTypes.Update(obj);
                     _db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -178,7 +138,7 @@ namespace WebBook.Controllers
                 return RedirectToAction("Index");
             }
             // ทำการเขียน Query หา Record ของ Product.pdId จาก id ที่ส่งมา
-            var obj = _db.Users.Find(id);
+            var obj = _db.UserTypes.Find(id);
             if (obj == null)
             {
                 ViewBag.ErrorMassage = "ไม่พบข้อมูลที่ระบุ";
@@ -191,18 +151,18 @@ namespace WebBook.Controllers
         // POST: UserController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeletePost(int UserId)
+        public ActionResult DeletePost(int UserTypeId)
         {
             try
             {
                 // ทำการเขียน Query หา Record ของ Product.pdId จาก id ที่ส่งมา
-                var obj = _db.Users.Find(UserId);
+                var obj = _db.UserTypes.Find(UserTypeId);
                 if (obj == null)
                 {
                     ViewBag.ErrorMassage = "ไม่พบข้อมูลที่ระบุ";
                     return RedirectToAction("Index");
                 }
-                _db.Users.Remove(obj); //ส่งคำสั่ง Remove ผ่าน DBContext
+                _db.UserTypes.Remove(obj); //ส่งคำสั่ง Remove ผ่าน DBContext
                 _db.SaveChanges(); // Execute คำสั่ง
                 return RedirectToAction("Index"); // ย้ายทำงาน Action Index              
             }

@@ -93,7 +93,7 @@ namespace WebBook.Controllers
             return View(pd);
         }
         // GET: BookController/Details/5
-       
+
 
         // GET: BookController/Create
         //[Route("Admin/Book/Create")]
@@ -110,7 +110,7 @@ namespace WebBook.Controllers
         //    ViewBag.booktype = Btview;
         //    return View();
         //}
-
+        [Route("Admin/Book/Create")]
         public ActionResult Create()
         {
             var idBook = from b in _db.Books
@@ -124,6 +124,7 @@ namespace WebBook.Controllers
         // POST: BookController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("Admin/Book/Create")]
         //Route("Admin/Book/Create/{obj?}")]
         public ActionResult Create(Book obj)
         {
@@ -147,9 +148,10 @@ namespace WebBook.Controllers
         }
 
         // GET: BookController/Edit/5
+        [Route("Admin/Book/Edit")]
         public ActionResult Edit(int id)
         {
-            if (id == null)
+            if (id == 0)
             {
                 return RedirectToAction("Index");
 
@@ -168,6 +170,7 @@ namespace WebBook.Controllers
         // POST: BookController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("Admin/Book/Edit")]
         public ActionResult Edit(Book obj)
         {
             try
