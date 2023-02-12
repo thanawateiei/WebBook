@@ -1,0 +1,71 @@
+﻿@model IEnumerable<WebBook.ViewModels.Detail>
+@{
+    ViewData["Title"] = "Admin Page";
+}
+
+@{
+    var stext = ViewBag.stext;
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.ErrorMessage");
+        };
+    </script>
+}
+
+<h1 class="text-success">รายการคำขอยืม</h1>
+
+<form asp-controller="Request" asp-action="Index">
+    <div class="row">
+        <div class="col-sm-6 col-md-8 col-lg-9">
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-3 text-end">
+            <div class="input-group">
+                <span class="input-group-text">ค้นหา</span>
+                <input type="text" name="stext" class="form-control" value="@stext"/>
+                <button type="submit" class="btn btn-secondary"><i class="bi-search"></i></button>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<table class="table table-borderless table-hover">
+    <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>ชื่อหนังสือ</th>
+        <th>วันรับหนังสือ</th>
+        <th>CallNumber</th>
+        <th>สถานะ</th>
+        <th></th>
+        <th></th>
+    </tr>
+    @{
+        var i = 0;
+    }
+    @foreach (var item in Model)
+    {
+        i++;
+        <tr>
+            <th>@item.RequestId</th>
+            <td>@item.UserEmail</td>
+            <td>@item.BookTitle</td>
+            <td>@item.ReceiveDate</td>
+            <td>@item.CallNumber</td>
+            <td>@item.Status</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.RequestId">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.RequestId">
+                    <i class="bi bi-x-lg text-danger"></i>
+                </a>
+            </td>
+        </tr>
+    }
+</table>
