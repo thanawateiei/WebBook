@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebBook.Models;
+using WebBook.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebBook.Controllers
@@ -12,8 +13,13 @@ namespace WebBook.Controllers
         [Route("admin/location")]
         public IActionResult Index()
         {
-            var locationList = from s in _db.Locations
-                             select s;
+            var locationList = from l in _db.Locations
+                             select new LocationViewModel
+                             {
+                                 LocationId = l.LocationId,
+                                 LocationName = l.LocationName,
+                                 LocationDetail = l.LocationDetail
+                             };
             if (locationList == null) return NotFound();
             return View(locationList);
         }
