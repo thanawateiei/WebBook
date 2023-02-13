@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace WebBook.ViewModels
 {
-    public class Detail
+    public class RequestViewModel
     {
             [Key]
             public int RequestId { get; set; }
