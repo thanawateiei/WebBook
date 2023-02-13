@@ -18,7 +18,7 @@ namespace WebBook.Controllers
                      from r_ue in join_r_ue.DefaultIfEmpty()
                      join s in _db.Statuses on r.StatusId equals s.StatusId into join_r_s
                      from r_s in join_r_s.DefaultIfEmpty()
-                     select new Detail
+                     select new RequestViewModel
                      {
                          RequestId = r.HistoryId,
                          UserEmail = r_ue.Email,
@@ -49,7 +49,7 @@ namespace WebBook.Controllers
                      where r_ue.Email.Contains(stext) ||
                             r.BookName.Contains(stext) ||
                             r.CallNumber.Contains(stext)
-                     select new Detail
+                     select new RequestViewModel
                      {
                          RequestId = r.HistoryId,
                          UserEmail = r_ue.Email,
@@ -67,7 +67,7 @@ namespace WebBook.Controllers
         public IActionResult Edit(int id)
         {
             //ตรวจสอบว่ามีการส่ง id มาหรือไม่
-            if (id == null)
+            if (id == 0)
             {
                 ViewBag.ErrorMassage = "ต้องระบุค่า ID";
                 return RedirectToAction("Index");
@@ -81,10 +81,9 @@ namespace WebBook.Controllers
             }
             //อ่านข้อมูลจากตารางลง SelectList แล้วใส่ข้อมูลลงตัว ViewData
             //และกำนหนดว่า Select ที่เลือก เป็น id ของ obj นั้นๆ
-            var userEmail = from u in _db.Users.Where(u => u.UserId == id)
-                                select u.Email;
-            ViewBag.UserEmail = userEmail;
-
+            
+           
+            ViewBag.UserEmail = _db.Users.FirstOrDefault(ue => ue.UserId == obj.UserId).Email;
             ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName", obj.StatusId);
             return View(obj);
         }
