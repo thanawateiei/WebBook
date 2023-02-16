@@ -4,6 +4,12 @@ using WebBook.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Session Part
+//ÃÐºØ Timeout 2 ªÑèÇâÁ§
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromHours(2));
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -29,6 +35,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
