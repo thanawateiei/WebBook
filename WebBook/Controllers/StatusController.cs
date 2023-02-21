@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebBook.Models;
+using WebBook.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebBook.Controllers
@@ -13,7 +14,11 @@ namespace WebBook.Controllers
         public IActionResult Index()
         {
             var statusList = from s in _db.Statuses
-                     select s;
+                     select new StatusViewModel
+                     {
+                         StatusId = s.StatusId,
+                         StatusName= s.StatusName
+                     };
             if (statusList == null) return NotFound();
             return View(statusList);
         }

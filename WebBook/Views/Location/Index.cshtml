@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebBook.Models.Location>
+﻿@model IEnumerable<WebBook.ViewModels.LocationViewModel>
 @{
     ViewData["Title"] = "Location Page";
 }
@@ -43,7 +43,7 @@
         <tr>
             <th>@item.LocationId</th>
             <td>@item.LocationName</td>
-            <td>@item.LocatioDetail</td>
+            <td>@item.LocationDetail</td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.LocationId">
                     <i class="bi bi-pencil-square"></i>

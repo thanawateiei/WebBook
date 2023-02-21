@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\4-2\\project\\MyProject\\WebBook\\WebBook\\WebBook.csproj": {}
+    "E:\\project\\Senior Project\\WebBook\\WebBook\\WebBook.csproj": {}
   },
   "projects": {
-    "D:\\4-2\\project\\MyProject\\WebBook\\WebBook\\WebBook.csproj": {
+    "E:\\project\\Senior Project\\WebBook\\WebBook\\WebBook.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\4-2\\project\\MyProject\\WebBook\\WebBook\\WebBook.csproj",
+        "projectUniqueName": "E:\\project\\Senior Project\\WebBook\\WebBook\\WebBook.csproj",
         "projectName": "WebBook",
-        "projectPath": "D:\\4-2\\project\\MyProject\\WebBook\\WebBook\\WebBook.csproj",
-        "packagesPath": "C:\\Users\\thana\\.nuget\\packages\\",
-        "outputPath": "D:\\4-2\\project\\MyProject\\WebBook\\WebBook\\obj\\",
+        "projectPath": "E:\\project\\Senior Project\\WebBook\\WebBook\\WebBook.csproj",
+        "packagesPath": "C:\\Users\\Pao\\.nuget\\packages\\",
+        "outputPath": "E:\\project\\Senior Project\\WebBook\\WebBook\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\thana\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Pao\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -63,7 +63,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -75,7 +76,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.308\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }

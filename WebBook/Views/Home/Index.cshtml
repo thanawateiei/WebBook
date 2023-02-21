@@ -1,13 +1,76 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Microsoft.AspNetCore.Session;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+
+@{
+    ViewData["Title"] = "Book Delivery";
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.ErrorMessage");
+        };
+    </script>
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <a>DDEW</a>
-</div>
 
-<h1>adsfasdfasdfsadfsfd</h1>
-<h1>adsfasdfasdfsadfsfd</h1>
-<h1>adsfasdfasdfsadfsfd</h1>
+
+
+<div class="container">
+    <!--ทำการตรวจสอบว่ามีการส่ง ErrorMessage มาหรือไม่
+        ถ้ามีให้แสดง Alert -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-warning">@TempData["ErrorMessage"]</div>
+    }
+
+    <!--ทำการตรวจสอบว่ามี Session CusId หรือยัง (คือ Login หรือยัง)
+        ถ้ายังให้แสดงหน้า Login ถ้ามีแล้วให้ไปหน้าที่ต้องการ
+    -->
+    @if (HttpContextAccessor.HttpContext.Session.GetString("UserId") == null)
+    {
+        <div class="text-center">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12 offset-lg-4 offset-lg-3 ">
+                    <img class="mt-5" src="./img/login.png" width="250" />
+                </div>
+            </div>
+        </div>
+        <form asp-controller="Home" asp-action="Login" method="POST">
+            <div class="text-center">
+                <div class="row m-3">
+                    <div class="col-lg-4 col-md-6 col-sm-12 offset-lg-4 offset-lg-3 ">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person-fill"></i>
+                            </span>
+                            <input type="text" name="userEmail" id="userEmail" class="form-control"
+                               placeholder="Email" required autocomplete="off" />
+                        </div>
+                        <div class="input-group mt-2">
+                            <span class="input-group-text">
+                                <i class="bi bi-key-fill"></i>
+                            </span>
+                            <input type="password" name="userPass" id="userPass" class="form-control"
+                               placeholder="password" required autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-3">
+                    <div class="col-lg-2 col-md-3 col-sm-6 offset-lg-4 offset-lg-3 ">
+                        <button type="button" class="btn btn-link"> Sign up </button>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-6 d-grid ">
+                        <button type="submit" class="btn btn-primary"> Login </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+    else
+    {
+        <dev class="alert alert-success">สวัสดีคุณ @HttpContextAccessor.HttpContext.Session.GetString("UserEmail")</dev>
+    }
+
+
+</div>

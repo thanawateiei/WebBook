@@ -174,7 +174,7 @@ namespace WebBook.Models
                     .ValueGeneratedNever()
                     .HasColumnName("location_id");
 
-                entity.Property(e => e.LocatioDetail)
+                entity.Property(e => e.LocationDetail)
                     .HasMaxLength(512)
                     .IsUnicode(false)
                     .HasColumnName("locatio_detail");
