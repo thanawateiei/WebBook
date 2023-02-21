@@ -14,7 +14,14 @@ namespace WebBook.Controllers
    
         public IActionResult Index()
         {
-           
+            if (HttpContext.Session.GetInt32("UserId") == null && HttpContext.Session.GetInt32("UserRole") != 1)
+            {
+                return RedirectToAction("Login");
+            }
+            return View();
+        }
+        public IActionResult Login()
+        {
             return View();
         }
         [HttpPost]
