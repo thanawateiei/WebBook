@@ -19,6 +19,7 @@ namespace WebBook.Models
         public virtual DbSet<Agency> Agencies { get; set; } = null!;
         public virtual DbSet<Book> Books { get; set; } = null!;
         public virtual DbSet<BookType> BookTypes { get; set; } = null!;
+        public virtual DbSet<CheckBookType> CheckBookTypes { get; set; } = null!;
         public virtual DbSet<History> Histories { get; set; } = null!;
         public virtual DbSet<Location> Locations { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
@@ -30,9 +31,7 @@ namespace WebBook.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseSqlServer("Data Source=MSI\\SQLEXPRESS01;Initial Catalog=web;Persist Security Info=True;User ID=webdev;Password=56785678");
                 optionsBuilder.UseSqlServer("Data Source=LAPTOP-8FFPN76C\\SQLEXPRESS;Initial Catalog=web;Persist Security Info=True;User ID=webdev;Password=1234");
-
             }
         }
 
@@ -82,24 +81,25 @@ namespace WebBook.Models
                     .IsUnicode(false)
                     .HasColumnName("book_name");
 
-                entity.Property(e => e.BookType1).HasColumnName("book_type_1");
+                entity.Property(e => e.BookType1).HasColumnName("bookType1");
 
-                entity.Property(e => e.BookType2).HasColumnName("book_type_2");
+                entity.Property(e => e.BookType10).HasColumnName("bookType10");
 
-                entity.Property(e => e.BookType3)
-                    .HasMaxLength(512)
-                    .IsUnicode(false)
-                    .HasColumnName("book_type_3");
+                entity.Property(e => e.BookType2).HasColumnName("bookType2");
 
-                entity.Property(e => e.BookType4)
-                    .HasMaxLength(512)
-                    .IsUnicode(false)
-                    .HasColumnName("book_type_4");
+                entity.Property(e => e.BookType3).HasColumnName("bookType3");
 
-                entity.Property(e => e.BookType5)
-                    .HasMaxLength(512)
-                    .IsUnicode(false)
-                    .HasColumnName("book_type_5");
+                entity.Property(e => e.BookType4).HasColumnName("bookType4");
+
+                entity.Property(e => e.BookType5).HasColumnName("bookType5");
+
+                entity.Property(e => e.BookType6).HasColumnName("bookType6");
+
+                entity.Property(e => e.BookType7).HasColumnName("bookType7");
+
+                entity.Property(e => e.BookType8).HasColumnName("bookType8");
+
+                entity.Property(e => e.BookType9).HasColumnName("bookType9");
 
                 entity.Property(e => e.PublicationYear).HasColumnName("publication_year");
 
@@ -121,6 +121,23 @@ namespace WebBook.Models
                     .HasMaxLength(512)
                     .IsUnicode(false)
                     .HasColumnName("bookType_name");
+            });
+
+            modelBuilder.Entity<CheckBookType>(entity =>
+            {
+                entity.HasKey(e => e.CbtId);
+
+                entity.ToTable("CheckBookType");
+
+                entity.Property(e => e.CbtId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("cbt_id");
+
+                entity.Property(e => e.BookId).HasColumnName("book_id");
+
+                entity.Property(e => e.BookTypeId).HasColumnName("bookType_id");
+
+                entity.Property(e => e.CheckBt).HasColumnName("checkBT");
             });
 
             modelBuilder.Entity<History>(entity =>
@@ -158,10 +175,7 @@ namespace WebBook.Models
                     .IsUnicode(false)
                     .HasColumnName("receive_date");
 
-                entity.Property(e => e.StatusId)
-                    .HasMaxLength(512)
-                    .IsUnicode(false)
-                    .HasColumnName("status_id");
+                entity.Property(e => e.StatusId).HasColumnName("status_id");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
             });
@@ -231,19 +245,22 @@ namespace WebBook.Models
                     .IsUnicode(false)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Password).HasColumnName("password");
-
-                entity.Property(e => e.Role)
+                entity.Property(e => e.Password)
                     .HasMaxLength(512)
                     .IsUnicode(false)
-                    .HasColumnName("role");
+                    .HasColumnName("password");
+
+                entity.Property(e => e.Role).HasColumnName("role");
 
                 entity.Property(e => e.StudentId)
                     .HasMaxLength(512)
                     .IsUnicode(false)
                     .HasColumnName("student_id");
 
-                entity.Property(e => e.Telephone).HasColumnName("telephone");
+                entity.Property(e => e.Telephone)
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
+                    .HasColumnName("telephone");
 
                 entity.Property(e => e.UserType).HasColumnName("user_type");
             });
