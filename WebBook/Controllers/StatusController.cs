@@ -103,7 +103,7 @@ namespace WebBook.Controllers
         public IActionResult Delete(int id)
         {
             //ตรวจสอบว่ามีการส่ง id มาหรือไม่
-            if (id == null)
+            if (id == 0)
             {
                 ViewBag.ErrorMassage = "ต้องระบุค่า ID";
                 return RedirectToAction("Index");
