@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Session;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+
+@{
+    ViewData["Title"] = "Book Delivery";
+}
+@if (ViewBag.ErrorMessage != null)
+{
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.ErrorMessage");
+            };
+        </script>
+}
+    <dev class="alert alert-success">สวัสดีคุณ @HttpContextAccessor.HttpContext.Session.GetString("UserEmail")</dev>
