@@ -23,23 +23,25 @@ namespace WebBook.Controllers
 		
 			if (bt == null) return NotFound();
 			return View(bt);
+
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult Index(string? stext)
 		{
-			var bt = from b in _db.BookTypes
-					 where b.BookTypeName.Contains(stext)
-					 select new ViewModels.BookTypeViewModel
-					 {
-						 BookTypeId = b.BookTypeId,
-						 BookTypeName = b.BookTypeName
-					 };
+            var bt = from b in _db.BookTypes
+                     where b.BookTypeName.Contains(stext)
+                     select new ViewModels.BookTypeViewModel
+                     {
+                         BookTypeId = b.BookTypeId,
+                         BookTypeName = b.BookTypeName
+                     };
 
-			if (bt == null) return NotFound();
-			ViewBag.stext = stext;
-			return View(bt);
+            if (bt == null) return NotFound();
+            ViewBag.stext = stext;
+            return View(bt);
+           
 		}
 
 
@@ -65,6 +67,22 @@ namespace WebBook.Controllers
 
 				if (ModelState.IsValid)
 				{
+					var idcbt = from c in _db.CheckBookTypes
+									  select c.CbtId;
+					var newidcbt = idcbt.Max() + 1;
+					var idbook = from c in _db.Books
+								select c.BookId;
+					foreach (var b in idbook)
+					{
+						CheckBookType cbt = new CheckBookType();
+						cbt.CbtId = newidcbt;
+						cbt.BookId = b;
+						cbt.BookTypeId = obj.BookTypeId;
+						cbt.CheckBt = false;
+						_db.CheckBookTypes.Add(cbt);
+						newidcbt++;
+					}
+
 					_db.BookTypes.Add(obj);
 					_db.SaveChanges();
 					return RedirectToAction("Index");
@@ -155,6 +173,15 @@ namespace WebBook.Controllers
 				{
 					ViewBag.ErrorMassage = "ไม่พบข้อมูลที่ระบุ";
 					return RedirectToAction("Index");
+				}
+				var cbtt = from c in _db.CheckBookTypes
+						   where c.BookTypeId == BookTypeId
+						   select c;
+				foreach (var b in cbtt)
+				{
+					var objj = _db.CheckBookTypes.Find(b.CbtId);
+					_db.CheckBookTypes.Remove(objj);
+
 				}
 				_db.BookTypes.Remove(obj); //ส่งคำสั่ง Remove ผ่าน DBContext
 				_db.SaveChanges(); // Execute คำสั่ง
