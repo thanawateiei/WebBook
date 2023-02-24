@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Session;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+
+@{
+    ViewData["Title"] = "Book Delivery";
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.ErrorMessage");
+        };
+    </script>
+}
+
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-warning">@TempData["ErrorMessage"]</div>
+    }
+
+  <div class="container">
+        <div class="p-2">
+            <div class="row">
+            @for(var i=1;i<20;i++){
+                <div class="col-3 my-2">
+               
+                 <div class="card">
+                            <img src="/img/imgbook/Book-7.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Some quick example text to.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                       </div>
+                 </div>
+                  </div>
+                 }
+            </div>
+        </div>
+    </div>
+    
+
+<script>
+       
+    </script>

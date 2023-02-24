@@ -1,0 +1,174 @@
+﻿@model IEnumerable<WebBook.ViewModels.BookViewModel>
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	//List<BookType> bookt = new List<BookType>();
+	ViewData["Title"] = "เพื่อหนังสือ";
+}
+
+<h1>เพิ่มรายการหนังสือ</h1>
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="control-label"></label>
+			<input id="BookId" class="form-control" readonly value="@ViewBag.newidbook">
+		</div>
+		<div class="form-group">
+			<label class="control-label">ชื่อหนังสือ</label>
+			<input id="BookName" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label class="control-label">ผู้แต่ง</label>
+			<input id="AuthorName" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label class="control-label">ปีที่ตีพิมม์</label>
+			<input id="PublicationYear" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label class="control-label">สำนักพิมม์</label>
+			<input id="Publisher" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label class="control-label">ปกหนังชื่อ</label>
+			<div class="row">
+				<div class="col-sm-12">
+					<!--ในการ Upload File ต้องระบุ enctype="multipart/form-data" -->
+					<form method="post" enctype="multipart/form-data" asp-action="ImgUpload">
+						<!--เป็นการ Post เราต้องแอบส่ง id ของfileที่จะ Upload ไปด้วย-->
+						<input name="theid" value="@ViewBag.newidbook" type="hidden" hidden class="form-control" />
+						<div class="input-group imgbook">
+							<input class="countimg" hidden value="1" />
+							<!--กำหนด type เป็น File เพื่ออ่านค่า File
+								กำหนดชนิดของ File โดยระบุที่ accept = ""
+								ถ้ารับแต่ jpeg ก็กำหนด accept="image/jpeg"
+								ถ้ารับ File รูปทุกชนิด กำหนด accept="image/* "
+								หรือระบุเฉพาะ accept="image/png, image/gif, image/jpeg"
+								หรือ accept="application/pdf,application/vnd.ms-excel"
+								หรือ accept= "application/msword, application/vnd.ms-powerpoint" >
+							-->
+							<input name="imgfiles" id="imgInp" type="file"
+								   accept="image/jpeg" required />
+							<input class="btn  btn-success text-end" type="submit" value="Upload" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label">รายละเอียด</label>
+			<textarea id="BookDetail" class="form-control"></textarea>
+		</div>
+
+		<div class="row setBT  ">
+			<div class="col-10">
+				<label class="control-label">ประเภทหนังสือ</label><br>
+				<input id="CBTid" hidden value="@ViewBag.newidcbt">
+				<input id="countbt" value="" hidden>
+			</div>
+		</div>
+
+		<div class="form-group ">
+			<input type="submit" id="submit" class="btn btn-primary" />
+		</div>
+	</div>
+</div>
+
+<hr />
+
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+<script type="text/javascript">
+		$( document ).ready(function() {
+			set();
+			 var countCBT = $("#countbt").val();
+
+			$( "#submit" ).click(function() {
+
+				var checkbook = [];
+				var Bookid=$("#BookId").val();
+					for (var i = 1; i < countCBT; i++) {
+						var setID = "#checkBTID"+(i)
+						var setBT = "#BT"+(i)
+						var setcheckbt = "#checkBT"+(i)
+						var id = $(setID).val();
+						var BT = $(setBT).val();
+						var checkbt = $(setcheckbt).prop('checked');
+						checkbook.push( {CbtId : id ,BookId:Bookid ,BookTypeId:BT,CheckBt:checkbt});
+						}
+
+				$.post("Create", {
+							BookId: $("#BookId").val(),
+							BookName:  $("#BookName").val(),
+							AuthorName:  $("#AuthorName").val(),
+							PublicationYear:  $("#PublicationYear").val(),
+							Publisher:  $("#Publisher").val(),
+							BookCover:  $("#BookCover").val(),
+							BookDetail:  $("#BookDetail").val(),
+							CheckBT: checkbook
+				},function(){ window.location.href = "/Admin/Book"; });
+
+
+							//$.ajax({
+							//	type: "post",
+							//	url: "Create",
+							//	data: JSON.stringify(obj),
+							//	contentType: "application/json",
+							//	dataType: "json"
+							//	success: function () {
+							//		alert("success");
+							//	},
+							//	failure: function (response) {
+							//		alert("failure");
+							//	}
+							//});
+
+
+			});
+
+		});// END document  ready
+
+
+		function readURL(input) {
+		if (input.files && input.files[0]) {
+			var c = $(".countimg").val();
+			 if(c==1){
+				$( ".imgbook" ).append(" <img id='blah' src='#' alt='your image'/> ");
+				var c = $(".countimg").val(5);
+			 }
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				$('#blah').attr('src', e.target.result);
+			}
+
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+
+	$("#imgInp").change(function(){
+		readURL(this);
+	});
+
+		function set(){
+		var i = 1;
+		var idcbt=$("#CBTid").val();
+			 var data = @Html.Raw(ViewBag.BTT);
+					$.each(data, function (Value)
+					{
+						$( ".setBT" ).append(" <div class='col-6'> <input  hidden id='checkBTID"+i+"' value='"+idcbt+"'  />  <input  type='checkbox' id='checkBT"+i+"'  /> <input id='BT"+i+"'  value='"+this.Value+"' hidden> <label  for='checkBT"+i+"'>"+this.Text+"</label>   </div>  ");
+						//console.log(this.Text);
+						//console.log(this.Value);
+						i++;
+						idcbt++;
+					});
+					$("#countbt").val(i);
+
+		}
+
+</script>
+@*@section Scripts {
+	@{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	}*@
