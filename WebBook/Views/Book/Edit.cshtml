@@ -1,110 +1,214 @@
-﻿@model IEnumerable<WebBook.ViewModels.BookViewModel>
+﻿@model WebBook.ViewModels.BookViewModel
+
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "แก้ไขหนังสือ";
-    var stext = ViewBag.stext;
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Edit";
 }
-<h1>แก้ไขหนังสือ</h1>
+
+<h1>Edit</h1>
+
 <hr />
 <div class="row">
-	<div class="col-md-6">
-			<div class="form-group">
-				<label  class="control-label"></label>
-				<input id="BookId" class="form-control" readonly >
-			</div>
-			<div class="form-group">
-				<label  class="control-label">ชื่อหนังสือ</label>
-				<input  id="BookName" class="form-control" />
-			</div>
-			<div class="form-group">
-				<label  class="control-label">ผู้แต่ง</label>
-				<input  id="AuthorName" class="form-control" />
-			</div>
-			<div class="form-group">
-				<label  class="control-label">ปีที่ตีพิมม์</label>
-				<input  id="PublicationYear" class="form-control" />
-			</div>
-			<div class="form-group">
-				<label  class="control-label">สำนักพิมม์</label>
-				<input  id="Publisher" class="form-control" />
-			</div>
-			<div class="form-group">
-				<label class="control-label">ปกหนังชื่อ</label>
-				<input  id="BookCover" class="form-control" />
-			</div>
-			<div class="form-group">
-				<label  class="control-label">รายละเอียด</label>
-				<textarea  id="BookDetail" class="form-control" ></textarea>
-			</div>
+	<div class="col-12">
+		<form enctype="multipart/form-data" asp-action="Edit">
 
-			<div class="row setBT  ">
-				<div class="col-10">
-					<label class="control-label">ประเภทหนังสือ</label><br>
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label asp-for="BookId" class="control-label"></label>
+						<input asp-for="BookId" class="form-control" readonly  />
+						<span asp-validation-for="BookId" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="BookName" class="control-label"></label>
+						<input asp-for="BookName" class="form-control" />
+						<span asp-validation-for="BookName" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="AuthorName" class="control-label"></label>
+						<input asp-for="AuthorName" class="form-control" />
+						<span asp-validation-for="AuthorName" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="PublicationYear" class="control-label"></label>
+						<input asp-for="PublicationYear" class="form-control" />
+						<span asp-validation-for="PublicationYear" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="Publisher" class="control-label"></label>
+						<input asp-for="Publisher" class="form-control" />
+						<span asp-validation-for="Publisher" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						@*<label asp-for="BookCover" class="control-label"></label>*@
+						<input asp-for="BookCover" hidden class="form-control" />
+						@*<span asp-validation-for="BookCover" class="text-danger"></span>*@
+					</div>
+					<div class="form-group">
+						<label asp-for="BookDetail" class="control-label"></label>
+						<textarea  asp-for="BookDetail" class="form-control" ></textarea>
+						<span asp-validation-for="BookDetail" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<input asp-for="BookType1" id="BookType1" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType2" id="BookType2" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType3" id="BookType3" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType4" id="BookType4" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType5" id="BookType5" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType6" id="BookType6" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType7" id="BookType7" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType8" id="BookType8" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType9" id="BookType9" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType10" id="BookType10" hidden class="form-control" />
+					</div>
+
+					<div class="row">
+						@{
+							var countBT = 1;
+						}
+						@foreach (var item in ViewBag.BTT)
+						{
+							
+							var setid = "val_BT" + countBT;
+							var setid2 = "checkBT" + countBT;
 					
-					<input id="countbt"  value="" hidden>
+							<div class="col-6">
+								<label for="@setid2">
+									<input type="checkbox" id="@setid2" class="checkBT" />
+									@item.Text
+								</label>
+							@*	@if(Model.BookType1)
+								{
+									
+								}*@
+								<input type="text" id="@setid" hidden value="@item.Value" />
+						
+							</div>
+							countBT ++;
+						}
+						<input type="text" id="countBT" hidden value="@countBT"/>
+
+					</div>
+				</div>
+				<div class="col-md-5">
+					<div class="form-group ">
+						<input class="countimg" hidden value="1" />
+						<label asp-for="Bookimg" class="control-label"></label>
+						<input asp-for="Bookimg" id="showimg" class="form-control" />
+						<span asp-validation-for="Bookimg" class="text-danger"></span>
+						@{
+							var imgbook = "/img/imgbook/" + @Model.BookCover;
+						}	
+						<img id='blah' class='img-fluid'src='@imgbook' alt=''/>
+					</div>
+					<div class="imgshow "></div>
 				</div>
 			</div>
-
-			<div class="form-group ">
-			<input type="submit" id="submit" class="btn btn-primary" />
-				@*<button type="button" id="submit" class="btn "><a asp-action="Index">บันทึก</a></button>*@
+			<br />
+			<div class="form-group">
+				<input type="submit" value="Edit" class="btn btn-primary" />
 			</div>
+			
+
+		</form>
 	</div>
 </div>
 
 <div>
-    <a asp-action="Index" class="Back" >Back to List</a>
+	<a asp-action="Index">Back to List</a>
 </div>
 <script type="text/javascript">
 	$( document ).ready(function() {
-		set();
-		 var countCBT = $("#countbt").val();
+				//set();
+			   $("#showimg").change(function(){
+					console.log("showimg");
+					readURL(this);
+				});
+				
+				
+				 $(".checkBT").change(function(){
+					// console.log("checkBT");
+				
+					var conVal = 1;
+					var countBT = ($("#countBT").val())-1;
+					
+					//console.log('countBT  '+countBT);
+					for(var i=1 ; i <= countBT ;i++){
+
+						var y = "#checkBT"+i;
+						var check = $(y).prop('checked');
+						if(check == true && conVal <= 10){
+							var setdata = "#BookType"+conVal;
+							var setid = "#val_BT"+i;
+							var data = $(setid).val();
+							$(setdata).val(data);
+							//console.log(setdata);
+							//console.log(data);
+							conVal++;
+						}
+						else if(check == false && conVal <= 10){
+							var setdata = "#BookType"+conVal;
+							var setid = "#val_BT"+i;
+							var data = $(setid).val();
+							$(setdata).val(0);
+							//console.log(setdata);
+							//console.log(data);
+							conVal++;
+						}
+						
+					}
+				});
+
 	
-		$( "#submit" ).click(function() {
-			
-			
-		});//click submit
 
 	});// END document  ready
 
-	
 
-	
-function set(){
-	var i = 1;
+function readURL(input) {
 
-		 var bt = @Html.Raw(ViewBag.BTT);
-		 var book = @Html.Raw(ViewBag.Book);
-		 var cbt = @Html.Raw(ViewBag.CBT);
-		 console.log(" bt");
-		 console.log(bt);
-	     console.log(" book");
-		 console.log(book);
-		 // set data book
-		 $( "#BookId" ).val(book.BookId);
-		 $( "#BookName" ).val(book.BookName);
-		 $( "#AuthorName" ).val(book.AuthorName);
-		 $( "#PublicationYear" ).val(book.PublicationYear);
-		 $( "#Publisher" ).val(book.Publisher);
-		 $( "#BookCover" ).val(book.BookCover);
-		 $( "#BookDetail" ).val(book.BookDetail);
-			
-				$.each(bt, function (Text)// set cbt
-				{  
-					var idcbt = cbt[i-1].CbtId;
-					$( ".setBT" ).append(" <div class='col-6'> <input  hidden id='checkBTID"+i+"' value='"+idcbt+"'  />  <input  type='checkbox' id='checkBT"+i+"' /> <input id='BT"+i+"'  value='"+this.Value+"' hidden> <label  for='checkBT"+i+"'>"+this.Text+"</label>   </div>  ");
-					var id="#checkBT"+i
-					if( cbt[i-1].CheckBt == true){
-						$(id).prop( "checked", cbt[i-1].CheckBt );
-					}
-					 console.log(idcbt);
-					i++;
-				});// END append
-				$("#countbt").val(i);
-				
-	}
-		
+			if (input.files && input.files[0]) {
+				var c = $(".countimg").val();
+			//alert("asdf");
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					$('#blah').attr('src', e.target.result);
+				}
+
+					reader.readAsDataURL(input.files[0]);
+				}
+			}
+
+
+
+//function setBT(){
+//			var i = 1;
+		   
+
+//}
+
 </script>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+@*@section Scripts {
+	@{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	}*@
