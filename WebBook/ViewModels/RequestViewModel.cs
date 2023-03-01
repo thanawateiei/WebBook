@@ -10,6 +10,7 @@ namespace WebBook.ViewModels
             public string? ReceiveDate { get; set; }
             public string? CallNumber { get; set; }
             public string? Status { get; set; }
+            public int? StatusID { get; set; }
 
 
     }

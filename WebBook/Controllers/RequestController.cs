@@ -25,7 +25,8 @@ namespace WebBook.Controllers
                          BookTitle = r.BookName,
                          ReceiveDate = r.ReceiveDate,
                          CallNumber = r.CallNumber,
-                         Status = r_s.StatusName
+                         Status = r_s.StatusName,
+                         StatusID = r.StatusId
                      };
             if (rq == null) return NotFound();
             return View(rq);
@@ -46,8 +47,10 @@ namespace WebBook.Controllers
                      from r_ue in join_r_ue.DefaultIfEmpty()
                      join s in _db.Statuses on r.StatusId equals s.StatusId into join_r_s
                      from r_s in join_r_s.DefaultIfEmpty()
+
                      where r_ue.Email.Contains(stext) ||
                             r.BookName.Contains(stext) ||
+                            r_s.StatusName.Contains(stext) ||
                             r.CallNumber.Contains(stext)
                      select new RequestViewModel
                      {

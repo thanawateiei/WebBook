@@ -275,7 +275,12 @@ namespace WebBook.Controllers
                         }
                         book.BookCover = UpFileName;
 
+					}
+					else
+					{
+                        book.BookCover = obj.BookCover;
                     }
+
                     _db.Books.Update(book);
                     _db.SaveChanges();
                     return RedirectToAction("Index");
@@ -284,10 +289,10 @@ namespace WebBook.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrorMessage = ex.Message;
-                return View(obj);
+                return RedirectToAction("Index");
             }
             ViewBag.ErrorMessage = "การบันทึกผิดพลาด";
-            return View(obj);
+            return RedirectToAction("Index");
         }
 
         // GET: BookController/Delete/5

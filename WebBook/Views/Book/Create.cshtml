@@ -112,18 +112,21 @@
 				</div>
 			</div>
 			<br />
-			<div class="form-group">
-				<input type="submit" value="Create" class="btn btn-primary" />
-			</div>
+				<div class="form-group">
+		<br />
+
+		<div class="d-flex justify-content-between">
+			<a type="button" class="btn btn-secondary" asp-action="Index">Back</a>
+			<input type="submit" value="Create" class="btn btn-primary  " />
+		</div>
+	</div>
 			
 
 		</form>
 	</div>
 </div>
 
-<div>
-	<a asp-action="Index">Back to List</a>
-</div>
+
 <script type="text/javascript">
 	$( document ).ready(function() {
 				//set();
@@ -134,42 +137,40 @@
 				
 				
 				 $(".checkBT").change(function(){
-					// console.log("checkBT");
-				
-					var conVal = 1;
-					var countBT = ($("#countBT").val())-1;
-					
-					//console.log('countBT  '+countBT);
+						// console.log("checkBT");
+						var conVal = 1;
+						var countBT = ($("#countBT").val())-1;
+						console.log(countBT);
+						//console.log('countBT  '+countBT);
+						for(var i=1 ; i <= countBT ;i++){
 
-					for(var i=1 ; i <= countBT ;i++){
-
-						var y = "#checkBT"+i;
-						var check = $(y).prop('checked');
-						if(check == true && conVal <= 10){
-							var setdata = "#BookType"+conVal;
-							var setid = "#val_BT"+i;
-							var data = $(setid).val();
-							$(setdata).val(data);
-							console.log(setdata);
-							console.log(data);
-							conVal++;
-
-						}
-						else if(check == false && conVal <= 10){
-							var setdata = "#BookType"+conVal;
-							var setid = "#val_BT"+i;
-							var data = $(setid).val();
-							$(setdata).val(0);
-							console.log(setdata);
-							console.log(data);
-							
-							conVal++;
-
-						}
+							var y = "#checkBT"+i;
+							var check = $(y).prop('checked');
+							if(conVal<11){
+							if(check == true ){
+								var setdata = "#BookType"+conVal;
+								var setid = "#val_BT"+i;
+								var data = $(setid).val();
+								$(setdata).val(data);
+								//console.log(setdata);
+								//console.log(data);
+								conVal++;
+							}
 						
-					}
-					
-
+							}
+							else {
+								$(this).prop('checked', false);
+								alert("เลือกได้แค่ 10 ประเภทจ้า")
+							}
+						}
+						for(var y=1 ; y <= 10 ;y++){
+							var setdata = "#BookType"+y;
+							var val = $(setdata).val();
+							if(val == 0 || val == null ){
+								$(setdata).val(0);
+							}
+						}
+				
 				});// END checkBT.change
 
 	
@@ -182,7 +183,7 @@
 			if (input.files && input.files[0]) {
 				var c = $(".countimg").val();
 				 if(c==1){
-					$( ".imgshow" ).append(" <img id='blah' class='img-fluid'src='#' alt='your image'/> ");
+					$( ".imgshow" ).append("<br> <img id='blah' class='img-fluid'src='#' alt='your image'/> ");
 					var c = $(".countimg").val(5);
 				 }
 				var reader = new FileReader();
