@@ -18,26 +18,40 @@
 
 <h1 class="text-success">รายการคำขอยืม</h1>
 
-<form asp-controller="Request" asp-action="Index">
-	<div class="row">
-		<div class="col-sm-6 col-md-8 col-lg-9">
-		</div>
-		<div class="col-sm-6 col-md-4 col-lg-3 text-end">
-			<div class="input-group">
-				<span class="input-group-text">ค้นหา</span>
-				<input type="text" name="stext" class="form-control" value="@stext" />
-				<button type="submit" class="btn btn-secondary"><i class="bi-search"></i></button>
-			</div>
-		</div>
 
-	</div>
-</form>
 <div class="container-fluid p-0">
 
 	<!-- DataTales Example -->
-	<div class="card shadow mb-4">
-		<div class="card-header py-3">
-			<h6 class="m-0 font-weight-bold text-primary">รายการคำขอยืม</h6>
+	<div class="card shadow mb-1">
+		<div class="card-header py-3 ">
+			<div class="d-flex justify-content-between">
+				<div>
+					<select class="form-control" aria-label="Default select example" id="filterStatus">
+						@if (@stext != null)
+						{
+							<option value="@stext">@stext</option>
+						}
+						<option value=" ">ทั้งหมด</option>
+						<option value="รอรับคำขอยืม">รอรับคำขอยืม</option>
+						<option value="รับคำขอยืมแล้ว">รับคำขอยืมแล้ว</option>
+						<option value="อยู่ระหว่างดำเนินการ">อยู่ระหว่างดำเนินการ</option>
+						<option value="ดำเนินการเรียนร้อย">ดำเนินการเรียนร้อย</option>
+						<option value="ไม่สามารถให้บริการได้เนื่องจากมีการยืม">ไม่สามารถให้บริการได้เนื่องจากมีการยืม</option>
+					</select>
+				</div><div>
+					<form asp-controller="Request" asp-action="Index">
+						<div class="input-group">
+
+							<input type="text" name="stext" id="search" class="form-control" value="@stext" />
+							<button type="submit" id="submit" class="btn btn-secondary">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+									<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+								</svg>
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
@@ -54,18 +68,18 @@
 							<th></th>
 						</tr>
 					</thead>
-				@*	<tfoot>
+					@*	<tfoot>
 						<tr>
-							<th>ID</th>
-							<th>Email</th>
-							<th>ชื่อหนังสือ</th>
-							<th>วันรับหนังสือ</th>
-							<th>CallNumber</th>
-							<th>สถานะ</th>
-							<th></th>
-							<th></th>
+						<th>ID</th>
+						<th>Email</th>
+						<th>ชื่อหนังสือ</th>
+						<th>วันรับหนังสือ</th>
+						<th>CallNumber</th>
+						<th>สถานะ</th>
+						<th></th>
+						<th></th>
 						</tr>
-					</tfoot>*@
+						</tfoot>*@
 					<tbody>
 						@{
 							var i = 0;
@@ -81,19 +95,35 @@
 								<td>@item.ReceiveDate</td>
 								<td>@item.CallNumber</td>
 								<td>@item.Status</td>
+								@*@if(item.StatusID == 1){
+									<td class="text-warning">@item.Status</td>
+									}else if (item.StatusID == 2)
+									{
+									<td class="text-info">@item.Status</td>
+									}else if (item.StatusID == 3)
+									{
+									<td class="text-primary">@item.Status</td>
+									}else if (item.StatusID == 4)
+									{
+									<td class="text-success">@item.Status</td>
+									}else if (item.StatusID == 5)
+									{
+									<td class="text">@item.Status</td>
+									}*@
+
 								<td>
 									<a asp-action="Edit" asp-route-id="@item.RequestId">
 										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-											<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-											<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+											<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+											<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
 										</svg>
 									</a>
 								</td>
 								<td>
 									<a asp-action="Delete" asp-route-id="@item.RequestId">
 										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-x text-danger" viewBox="0 0 16 16">
-											<path d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708z" />
-											<path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
+											<path d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708z"></path>
+											<path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"></path>
 										</svg>
 									</a>
 								</td>
@@ -107,6 +137,19 @@
 
 </div>
 <!-- /.container-fluid -->
-			</div>
+<script type="text/javascript">
+	$( document ).ready(function() {
+
+
+		$("#filterStatus").change(function() {
+			//alert("asd");
+			var val = $(this).val();
+			$( "#search" ).val(val);
+			$( "#submit" ).click();
+		});
+
+	});// END document  ready
+
+</script>
 
 

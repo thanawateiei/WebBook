@@ -97,7 +97,7 @@ namespace WebBook.Controllers
                 return RedirectToAction("Login");
             }
             //ถ้าหาข้อมูลพบ ให้เก็บค่าเข้า Session 
-            int UserId;
+            string UserId;
             string UserEmail;
             int UserRole;
             int UserType;
@@ -110,7 +110,7 @@ namespace WebBook.Controllers
                 UserType = (int)item.UserType;
 
                 //เอาค่าจากตัวแปรเข้า Session
-                HttpContext.Session.SetInt32("UserId", UserId);
+                HttpContext.Session.SetString("UserId", UserId);
                 HttpContext.Session.SetString("UserEmail", UserEmail);
                 HttpContext.Session.SetInt32("UserRole", UserRole);
                 HttpContext.Session.SetInt32("UserType", UserType);

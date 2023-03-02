@@ -5,7 +5,7 @@ namespace WebBook.ViewModels
     public class UserViewModel
     {
         [Key]
-        public int user_id { get; set; }
+        public string user_id { get; set; }
         public string? email { get; set; }
         public string? password { get; set; }
         public string? roleName { get; set; }

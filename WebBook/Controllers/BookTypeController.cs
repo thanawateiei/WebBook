@@ -67,22 +67,7 @@ namespace WebBook.Controllers
 
 				if (ModelState.IsValid)
 				{
-					var idcbt = from c in _db.CheckBookTypes
-									  select c.CbtId;
-					var newidcbt = idcbt.Max() + 1;
-					var idbook = from c in _db.Books
-								select c.BookId;
-					foreach (var b in idbook)
-					{
-						CheckBookType cbt = new CheckBookType();
-						cbt.CbtId = newidcbt;
-						cbt.BookId = b;
-						cbt.BookTypeId = obj.BookTypeId;
-						cbt.CheckBt = false;
-						_db.CheckBookTypes.Add(cbt);
-						newidcbt++;
-					}
-
+			
 					_db.BookTypes.Add(obj);
 					_db.SaveChanges();
 					return RedirectToAction("Index");
@@ -98,6 +83,7 @@ namespace WebBook.Controllers
 		}
 
 		// GET: BookTypeController/Edit/5
+		
 		public ActionResult Edit(int id)
 		{
 			if (id == 0)
@@ -174,15 +160,7 @@ namespace WebBook.Controllers
 					ViewBag.ErrorMassage = "ไม่พบข้อมูลที่ระบุ";
 					return RedirectToAction("Index");
 				}
-				var cbtt = from c in _db.CheckBookTypes
-						   where c.BookTypeId == BookTypeId
-						   select c;
-				foreach (var b in cbtt)
-				{
-					var objj = _db.CheckBookTypes.Find(b.CbtId);
-					_db.CheckBookTypes.Remove(objj);
-
-				}
+	
 				_db.BookTypes.Remove(obj); //ส่งคำสั่ง Remove ผ่าน DBContext
 				_db.SaveChanges(); // Execute คำสั่ง
 				return RedirectToAction("Index"); // ย้ายทำงาน Action Index              

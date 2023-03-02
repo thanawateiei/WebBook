@@ -43,7 +43,7 @@ namespace WebBook.Controllers
             }
 
             //ถ้าหาข้อมูลพบ ให้เก็บค่าเข้า Session 
-            int UserId;
+            string UserId;
             string UserEmail;
             int UserRole;
             foreach (var item in user)
@@ -53,7 +53,7 @@ namespace WebBook.Controllers
                 UserEmail = item.Email;
                 UserRole = (int)item.Role;
                 //เอาค่าจากตัวแปรเข้า Session
-                HttpContext.Session.SetInt32("UserId", UserId);
+                HttpContext.Session.SetString("UserId", UserId);
                 HttpContext.Session.SetString("UserEmail", UserEmail);
                 HttpContext.Session.SetInt32("UserRole", UserRole);
                 //Update  Column ของตารางที่ระบุ

@@ -17,7 +17,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label asp-for="BookId" class="control-label"></label>
-						<input asp-for="BookId" class="form-control" readonly  />
+						<input asp-for="BookId" class="form-control" readonly />
 						<span asp-validation-for="BookId" class="text-danger"></span>
 					</div>
 					<div class="form-group">
@@ -41,45 +41,53 @@
 						<span asp-validation-for="Publisher" class="text-danger"></span>
 					</div>
 					<div class="form-group">
+						<label asp-for="CallNumber" class="control-label"></label>
+						<input asp-for="CallNumber" class="form-control" />
+						<span asp-validation-for="CallNumber" class="text-danger"></span>
+					</div>
+					<div class="form-group">
 						@*<label asp-for="BookCover" class="control-label"></label>*@
 						<input asp-for="BookCover" hidden class="form-control" />
 						@*<span asp-validation-for="BookCover" class="text-danger"></span>*@
 					</div>
 					<div class="form-group">
 						<label asp-for="BookDetail" class="control-label"></label>
-						<textarea  asp-for="BookDetail" class="form-control" ></textarea>
+						<textarea asp-for="BookDetail" class="form-control"></textarea>
 						<span asp-validation-for="BookDetail" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<input asp-for="CreatedAt" type="datetime" hidden class="form-control">
 					</div>
 
 					<div class="form-group">
-						<input asp-for="BookType1" id="BookType1" hidden class="form-control" />
+						<input asp-for="BookType1" id="BookType1"  hidden class="form-control" />
 					</div>
 					<div class="form-group">
-						<input asp-for="BookType2" id="BookType2" hidden class="form-control" />
+						<input asp-for="BookType2" id="BookType2"  hidden class="form-control" />
 					</div>
 					<div class="form-group">
-						<input asp-for="BookType3" id="BookType3" hidden class="form-control" />
+						<input asp-for="BookType3" id="BookType3"  hidden class="form-control" />
 					</div>
 					<div class="form-group">
-						<input asp-for="BookType4" id="BookType4" hidden class="form-control" />
+						<input asp-for="BookType4" id="BookType4"  hidden class="form-control" />
 					</div>
 					<div class="form-group">
-						<input asp-for="BookType5" id="BookType5" hidden class="form-control" />
+						<input asp-for="BookType5" id="BookType5"  hidden class="form-control" />
 					</div>
 					<div class="form-group">
-						<input asp-for="BookType6" id="BookType6" hidden class="form-control" />
+						<input asp-for="BookType6" id="BookType6"  hidden class="form-control" />
 					</div>
 					<div class="form-group">
-						<input asp-for="BookType7" id="BookType7" hidden class="form-control" />
+						<input asp-for="BookType7" id="BookType7"  hidden class="form-control" />
 					</div>
 					<div class="form-group">
-						<input asp-for="BookType8" id="BookType8" hidden class="form-control" />
+						<input asp-for="BookType8" id="BookType8"  hidden class="form-control" />
 					</div>
 					<div class="form-group">
-						<input asp-for="BookType9" id="BookType9" hidden class="form-control" />
+						<input asp-for="BookType9" id="BookType9"  hidden class="form-control" />
 					</div>
 					<div class="form-group">
-						<input asp-for="BookType10" id="BookType10" hidden class="form-control" />
+						<input asp-for="BookType10" id="BookType10"  hidden class="form-control" />
 					</div>
 
 					<div class="row">
@@ -88,25 +96,22 @@
 						}
 						@foreach (var item in ViewBag.BTT)
 						{
-							
-							var setid = "val_BT" + countBT;
+
+							var setid = "val_BT" + countBT;//ไว้เก็บ value ของbooktype
 							var setid2 = "checkBT" + countBT;
-					
-							<div class="col-6">
-								<label for="@setid2">
-									<input type="checkbox" id="@setid2" class="checkBT" />
+
+								<div class="col-6">
+									<label for="@setid2">
+										<input type="checkbox" id="@setid2" class="checkBT" />
 									@item.Text
-								</label>
-							@*	@if(Model.BookType1)
-								{
-									
-								}*@
-								<input type="text" id="@setid" hidden value="@item.Value" />
-						
-							</div>
-							countBT ++;
+									</label>
+
+									<input type="text" id="@setid" hidden value="@item.Value" />
+
+								</div>
+							countBT++;
 						}
-						<input type="text" id="countBT" hidden value="@countBT"/>
+						<input type="text" id="countBT" hidden value="@countBT" />
 
 					</div>
 				</div>
@@ -118,93 +123,120 @@
 						<span asp-validation-for="Bookimg" class="text-danger"></span>
 						@{
 							var imgbook = "/img/imgbook/" + @Model.BookCover;
-						}	
-						<img id='blah' class='img-fluid'src='@imgbook' alt=''/>
+						}
+						<br />
+						<img id='blah' class='img-fluid' src='@imgbook' alt='' />
 					</div>
 					<div class="imgshow "></div>
 				</div>
 			</div>
 			<br />
-			<div class="form-group">
-				<input type="submit" value="Edit" class="btn btn-primary" />
-			</div>
-			
+				<div class="form-group">
+		<br />
+
+		<div class="d-flex justify-content-between">
+			<a type="button" class="btn btn-secondary" asp-action="Index">Back</a>
+			<input type="submit" value="Save" class="btn btn-primary  " />
+		</div>
+	</div>
+
 
 		</form>
 	</div>
 </div>
 
-<div>
-	<a asp-action="Index">Back to List</a>
-</div>
 <script type="text/javascript">
-	$( document ).ready(function() {
-				//set();
-			   $("#showimg").change(function(){
-					console.log("showimg");
-					readURL(this);
-				});
-				
-				
-				 $(".checkBT").change(function(){
-					// console.log("checkBT");
-				
-					var conVal = 1;
-					var countBT = ($("#countBT").val())-1;
-					
-					//console.log('countBT  '+countBT);
-					for(var i=1 ; i <= countBT ;i++){
+		$( document ).ready(function() {
+					setBT();
 
-						var y = "#checkBT"+i;
-						var check = $(y).prop('checked');
-						if(check == true && conVal <= 10){
-							var setdata = "#BookType"+conVal;
-							var setid = "#val_BT"+i;
-							var data = $(setid).val();
-							$(setdata).val(data);
-							//console.log(setdata);
-							//console.log(data);
-							conVal++;
+				   $("#showimg").change(function(){
+						console.log("showimg");
+						readURL(this);
+					});
+
+
+					$(".checkBT").change(function(){
+						// console.log("checkBT");
+						var conVal = 1;
+						var countBT = ($("#countBT").val())-1;
+						console.log(countBT);
+						//console.log('countBT  '+countBT);
+						for(var i=1 ; i <= countBT ;i++){
+
+							var y = "#checkBT"+i;
+							var check = $(y).prop('checked');
+							if(conVal<11){
+								if(check == true){
+									var setdata = "#BookType"+conVal;
+									var setid = "#val_BT"+i;
+									var data = $(setid).val();
+									$(setdata).val(data);
+									console.log(setdata);
+									console.log(data);
+									conVal++;
+								}else if(check == false){
+									var setdata = "#BookType"+i;
+									$(setdata).val(0);
+								}
+							}else {
+								$(this).prop('checked', false);
+								alert("เลือกได้แค่ 10 ประเภทจ้า")
+							}
 						}
-						else if(check == false && conVal <= 10){
-							var setdata = "#BookType"+conVal;
-							var setid = "#val_BT"+i;
-							var data = $(setid).val();
-							$(setdata).val(0);
-							//console.log(setdata);
-							//console.log(data);
-							conVal++;
+						for(var y=1 ; y <= 10 ;y++){
+							var setdata = "#BookType"+y;
+							var val = $(setdata).val();
+							console.log("BookType = "+val);
+
 						}
-						
-					}
-				});
 
-	
-
-	});// END document  ready
+					});// END checkBT.change
 
 
-function readURL(input) {
 
-			if (input.files && input.files[0]) {
-				var c = $(".countimg").val();
-			//alert("asdf");
-				var reader = new FileReader();
-				reader.onload = function (e) {
-					$('#blah').attr('src', e.target.result);
-				}
-
-					reader.readAsDataURL(input.files[0]);
+		});// END document  ready
+	function setBT() {
+		var arrayBT = [];
+			for(var i=1 ; i <= 10 ;i++){
+			var setdata = "#BookType"+i;
+			var val = $(setdata).val();
+				if(val != 0  ){
+					arrayBT.push(val);
 				}
 			}
+			console.log(arrayBT);
+
+			var countBT = ($("#countBT").val())-1;
+			for(var i=1 ; i <= countBT ;i++){
+				var y = "#checkBT"+i;
+				var setid = "#val_BT"+i;
+				var val =  $(setid).val();
+				for(var z=0 ; z < arrayBT.length ;z++){
+					if(arrayBT[z]  ==  val){
+						$(y).prop('checked', true);
+					}
+				}
+
+			}
+
+	}
+
+	function readURL(input) {
+
+				if (input.files && input.files[0]) {
+					var c = $(".countimg").val();
+				//alert("asdf");
+					var reader = new FileReader();
+					reader.onload = function (e) {
+						$('#blah').attr('src', e.target.result);
+					}
+
+						reader.readAsDataURL(input.files[0]);
+					}
+	}
 
 
 
-//function setBT(){
-//			var i = 1;
-		   
-
-//}
 
 </script>
 @*@section Scripts {
