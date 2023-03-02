@@ -95,15 +95,15 @@ namespace WebBook.Controllers
         [Route("Admin/Book/Create")]
         public ActionResult Create()
         {
-            var idBook = from b in _db.Books
-                         select b.BookId;
-            var newidbook = idBook.Max();
-            ViewBag.newidbook = newidbook + 1;
+            //var idBook = from b in _db.Books
+            //             select b.BookId;
+            //var newidbook = idBook.Max();
 
-            //var idcbt = from b in _db.CheckBookTypes
-            //             select b.CbtId;
-            //var newidcbt = idcbt.Max();
-            //ViewBag.newidcbt = newidcbt + 1;
+            Guid myuuid = Guid.NewGuid();
+            string myuuidAsString = myuuid.ToString();
+
+            ViewBag.newidbook = "BOOK-"+ myuuidAsString;
+         
 
             //ViewData["CheckBt"] = new SelectList(_db.CheckBookTypes, "BookId", "BookTypeId", "CheckBt");
             ViewData["BTT"] = new SelectList(_db.BookTypes, "BookTypeId", "BookTypeName");
@@ -132,6 +132,7 @@ namespace WebBook.Controllers
                     book.PublicationYear = obj.PublicationYear;
                     book.Publisher = obj.Publisher;
                     book.BookDetail = obj.BookDetail;
+                    book.CallNumber = obj.CallNumber;
                     book.BookType1 = obj.BookType1;
                     book.BookType2 = obj.BookType2;
                     book.BookType3 = obj.BookType3;
@@ -142,12 +143,15 @@ namespace WebBook.Controllers
                     book.BookType8 = obj.BookType8;
                     book.BookType9 = obj.BookType9;
                     book.BookType10 = obj.BookType10;
+                    book.CreatedAt = DateTime.Now;
+                    book.UpdatedAt = DateTime.Now;
+
                     if (obj.Bookimg != null)
                     {
                         var LocalfileName = Path.GetFileName(obj.Bookimg.FileName);
                         var NewFileName = obj.BookId;
                         var FileExtension = Path.GetExtension(LocalfileName);
-                        var UpFileName = "Book-" + NewFileName + FileExtension;
+                        var UpFileName =  NewFileName + FileExtension;
                         var savedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgbook");
                         var Filepath = Path.Combine(savedir, UpFileName);
 
@@ -177,9 +181,9 @@ namespace WebBook.Controllers
 
         // GET: BookController/Edit/5
         [Route("Admin/Book/Edit")]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
-            if (id == 0)
+            if (id == null)
             {
                 return RedirectToAction("Index");
 
@@ -200,6 +204,7 @@ namespace WebBook.Controllers
             book.Publisher = obj.Publisher;
             book.BookCover = obj.BookCover;
             book.BookDetail = obj.BookDetail;
+            book.CallNumber = obj.CallNumber;
             book.BookType1 = obj.BookType1;
             book.BookType2 = obj.BookType2;
             book.BookType3 = obj.BookType3;
@@ -210,8 +215,9 @@ namespace WebBook.Controllers
             book.BookType8 = obj.BookType8;
             book.BookType9 = obj.BookType9;
             book.BookType10 = obj.BookType10;
+            book.CreatedAt = obj.CreatedAt;
 
-         
+
 
 
 
@@ -237,6 +243,7 @@ namespace WebBook.Controllers
                     book.AuthorName = obj.AuthorName;
                     book.PublicationYear = obj.PublicationYear;
                     book.Publisher = obj.Publisher;
+                    book.CallNumber = obj.CallNumber;
                     book.BookDetail = obj.BookDetail;
                     book.BookType1 = obj.BookType1;
                     book.BookType2 = obj.BookType2;
@@ -248,8 +255,10 @@ namespace WebBook.Controllers
                     book.BookType8 = obj.BookType8;
                     book.BookType9 = obj.BookType9;
                     book.BookType10 = obj.BookType10;
-                    
-                    
+                    book.CreatedAt = obj.CreatedAt;
+                    book.UpdatedAt = DateTime.Now;
+
+
                     if (obj.Bookimg != null)
                     {
                         //delete
@@ -296,10 +305,10 @@ namespace WebBook.Controllers
         }
 
         // GET: BookController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
             //ตรวจสอบว่ามีการส่ง id มาหรือไม่
-            if (id == 0)
+            if (id == null)
             {
                 ViewBag.ErrorMassage = "ต้องระบุค่า ID";
                 return RedirectToAction("Index");
@@ -319,7 +328,7 @@ namespace WebBook.Controllers
         // POST: BookController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeletePost(int BookId)
+        public ActionResult DeletePost(string BookId)
         {
             try
             {
@@ -330,14 +339,13 @@ namespace WebBook.Controllers
                     ViewBag.ErrorMassage = "ไม่พบข้อมูลที่ระบุ";
                     return RedirectToAction("Index");
                 }
-                var cbtt = from c in _db.CheckBookTypes
-                          where c.BookId == BookId
-                          select c;
-                foreach (var b in cbtt)
+
+                var fileName = obj.BookCover;
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgbook");
+                var filePath = Path.Combine(imagePath, fileName);
+                if (System.IO.File.Exists(filePath))
                 {
-                    var objj = _db.CheckBookTypes.Find(b.CbtId);
-                    _db.CheckBookTypes.Remove(objj);
-                   
+                    System.IO.File.Delete(filePath);
                 }
 
                 _db.Books.Remove(obj); //ส่งคำสั่ง Remove ผ่าน DBContext
