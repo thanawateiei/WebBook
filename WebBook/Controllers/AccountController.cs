@@ -18,18 +18,17 @@ namespace WebBook.Controllers
         [Route("Account/BookReq")]
         public IActionResult BookReq()
         {
-            
-            var idHistory = from h in _db.Histories
-                             select h.HistoryId;
-            var maxHistoryId = idHistory.Max();
-            ViewBag.HistoryId = maxHistoryId + 1;
+            Guid myuuid = Guid.NewGuid();
+            string myuuidAsString = myuuid.ToString();
+            ViewBag.HistoryId = "His-" + myuuidAsString;
+            ViewData["Location"] = new SelectList(_db.Locations, "LocationId", "LocationName");
             return View();
         }
         [Route("Account/BookReq/{id}")]
-        public IActionResult BookReq(int id)
+        public IActionResult BookReq(string id)
         {
             //ตรวจสอบว่ามีการส่ง id มาหรือไม่
-            if (id == 0)
+            if (id == null)
             {
                 ViewBag.ErrorMassage = "ต้องระบุค่า ID";
                 return RedirectToAction("Index");
@@ -41,8 +40,17 @@ namespace WebBook.Controllers
                 ViewBag.ErrorMassage = "ไม่พบข้อมูลที่ระบุ";
                 return RedirectToAction("Index");
             }
-            ViewBag.BookId = bookInfo.BookId;
-            return View(bookInfo);
+            Guid myuuid = Guid.NewGuid();
+            string myuuidAsString = myuuid.ToString();
+            ViewBag.HistoryId = "His-" + myuuidAsString;
+            History his = new History();
+            his.BookName = bookInfo.BookName;
+            his.AuthorName = bookInfo.AuthorName;
+            his.PublicationYear = bookInfo.PublicationYear;
+            his.Publisher = bookInfo.Publisher;
+            his.CallNumber = bookInfo.CallNumber;
+            ViewData["Location"] = new SelectList(_db.Locations, "LocationId", "LocationName");
+            return View(his);
         }
         [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
         [ValidateAntiForgeryToken] // ป้องกันการโจมตี Cross_site Request Forgery
@@ -53,6 +61,8 @@ namespace WebBook.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    obj.CreatedAt = DateTime.Now;
+                    obj.UpdatedAt = DateTime.Now;
                     obj.StatusId = 1;
                     _db.Histories.Add(obj);
                     _db.SaveChanges();
@@ -80,6 +90,13 @@ namespace WebBook.Controllers
                        where u.Email.Equals(userEmail)
                        select u;
             var userinfo = _db.Users.SingleOrDefault(u => u.Email == userEmail);
+            if (userinfo == null)
+            {
+                //ถ้าใช้ RedirectToAction ไม่สามารถใช้ ViewBag ได้ ต้องใช้ TempData
+                TempData["ErrorMessage"] = "ไม่พบผู้ใช้";
+                //ViewBag.ErrorMessage = "ระบุผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
+                return RedirectToAction("Login");
+            }
 
             bool isValidPassword = BCrypt.Net.BCrypt.Verify(userPass, userinfo.Password);
             // var cus = _db.Customers.Find(userName);
