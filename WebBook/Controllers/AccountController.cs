@@ -52,21 +52,31 @@ namespace WebBook.Controllers
             ViewData["Location"] = new SelectList(_db.Locations, "LocationId", "LocationName");
             return View(his);
         }
-        [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
-        [ValidateAntiForgeryToken] // ป้องกันการโจมตี Cross_site Request Forgery
-        //ค่าที่ส่งมาจาก Form เป็น Object ของ Model ที่ระบุ ตัว Controller ก็รับค่าเป็น Object
-        public IActionResult BookReq(History obj)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult BookReqCreate(History obj)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    obj.CreatedAt = DateTime.Now;
-                    obj.UpdatedAt = DateTime.Now;
-                    obj.StatusId = 1;
-                    _db.Histories.Add(obj);
-                    _db.SaveChanges();
-                    return RedirectToAction("Index");
+                    var limit = from lm in _db.Histories
+                                       where lm.UserId.Equals(obj.UserId) && lm.StatusId.Equals(4)
+                                       select lm;
+                    if (limit.ToList().Count >= 10 )
+                    {
+                        ViewBag.ErrorMessage = "ไม่สามารถยืมได้เกิน Limit";
+                        return RedirectToAction("BookReq", "Account");
+                    }
+                    else
+                    {
+                        obj.CreatedAt = DateTime.Now;
+                        obj.UpdatedAt = DateTime.Now;
+                        obj.StatusId = 1;
+                        _db.Histories.Add(obj);
+                        _db.SaveChanges();
+                        return RedirectToAction("BookReq", "Account");
+                    }
                 }
             }
             catch (Exception ex)
