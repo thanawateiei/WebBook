@@ -18,6 +18,11 @@ namespace WebBook.Controllers
         [Route("Account/BookReq")]
         public IActionResult BookReq()
         {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+				TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+				return RedirectToAction("Login");
+            }
             Guid myuuid = Guid.NewGuid();
             string myuuidAsString = myuuid.ToString();
             ViewBag.HistoryId = "His-" + myuuidAsString;
@@ -27,17 +32,22 @@ namespace WebBook.Controllers
         [Route("Account/BookReq/{id}")]
         public IActionResult BookReq(string id)
         {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+				return RedirectToAction("Login");
+            }
             //ตรวจสอบว่ามีการส่ง id มาหรือไม่
             if (id == null)
             {
-                ViewBag.ErrorMassage = "ต้องระบุค่า ID";
+                TempData["Message"] = "ต้องระบุค่า ID";
                 return RedirectToAction("Index");
             }
             // ทำการเขียน Query หา Record ของ Product.pdId จาก id ที่ส่งมา
             var bookInfo = _db.Books.Find(id);
             if (bookInfo == null)
             {
-                ViewBag.ErrorMassage = "ไม่พบข้อมูลที่ระบุ";
+				TempData["Message"] = "ไม่พบข้อมูลที่ระบุ";
                 return RedirectToAction("Index");
             }
             Guid myuuid = Guid.NewGuid();
@@ -56,16 +66,21 @@ namespace WebBook.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult BookReqCreate(History obj)
         {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                return RedirectToAction("Login");
+            }
             try
             {
                 if (ModelState.IsValid)
                 {
+                    var userType = _db.UserTypes.Find(HttpContext.Session.GetInt32("UserType"));
                     var limit = from lm in _db.Histories
-                                       where lm.UserId.Equals(obj.UserId) && lm.StatusId.Equals(4)
+                                       where lm.UserId.Equals(obj.UserId) && lm.StatusId != 6
                                        select lm;
-                    if (limit.ToList().Count >= 10 )
+                    if (limit.ToList().Count >= userType.Limit)
                     {
-                        ViewBag.ErrorMessage = "ไม่สามารถยืมได้เกิน Limit";
+                        TempData["Message"] = "ไม่สามารถยืมได้เกิน Limit";
                         return RedirectToAction("BookReq", "Account");
                     }
                     else
@@ -81,10 +96,10 @@ namespace WebBook.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = ex.Message;
+                TempData["Message"] = ex.Message;
                 return View(obj);
             }
-            ViewBag.ErrorMessage = "การแก้ไขผิดพลาด";
+			TempData["Message"] = "การแก้ไขผิดพลาด";
             return View(obj);
         }
         public IActionResult Login()
@@ -146,7 +161,7 @@ namespace WebBook.Controllers
                 //และระบุค่าแต่ละ Field ของ Record นั้นๆ
                 //แล้วกำหนดให้ทำการปรับเปลี่ยน (Modified)
                 var theRecord = _db.Users.Find(UserId);
-                //theRecord.LastLogin = DateTime.Now.Date;
+                //theRecord.CreatedAt = DateTime.Now.Date;
                 //theRecord.CusAdd = "ABCD";
                 //theRecord.CusEmail = "a@b.com";
                 //_db.Entry(theRecord).State = EntityState.Modified;
@@ -158,10 +173,11 @@ namespace WebBook.Controllers
         }
         public IActionResult Register()
         {
-            var idUser = from u in _db.Users
-                             select u.UserId;
-            var maxUserId = idUser.Max();
-            ViewBag.UserId = maxUserId + 1;
+            Guid myuuid = Guid.NewGuid();
+            string myuuidAsString = myuuid.ToString();
+            ViewBag.UserId = "User-" + myuuidAsString;
+            ViewData["Agency"] = new SelectList(_db.Agencies, "AgencyId", "AgencyName");
+            ViewData["UserType"] = new SelectList(_db.UserTypes, "UserTypeId", "UserTypeName");
             return View();
         }
         [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
@@ -173,6 +189,8 @@ namespace WebBook.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    obj.CreatedAt = DateTime.Now;
+                    obj.UpdatedAt = DateTime.Now;
                     obj.Role = 3;
                     obj.Password = BCrypt.Net.BCrypt.HashPassword(obj.Password);
                     _db.Users.Add(obj); //ส่งคำสั่ง Add ผ่าน DBContext
@@ -187,14 +205,14 @@ namespace WebBook.Controllers
                 return View(obj);
             }
             //ถ้าไม่ Valid ก็ สร้าง Error Message ขึ้นมา แล้ว ส่ง Obj กลับไปที่ View
-            ViewBag.ErrorMessage = "การบันทึกผิดพลาด";
+            TempData["Message"] = "การบันทึกผิดพลาด";
             return View(obj);
         }
         public IActionResult Logout()
         {
             //ล้างทุก Session และย้ายกลับหน้า Index
             HttpContext.Session.Clear();
-            return RedirectToAction("Home","Index");
+            return RedirectToAction("Index","Home");
         }
     }
 }

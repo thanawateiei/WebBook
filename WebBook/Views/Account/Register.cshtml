@@ -20,9 +20,9 @@
     <div class="col-md-4">
         <form asp-action="Register">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" readonly value="@ViewBag.UserId" />
+                <input asp-for="UserId" class="form-control" value="@ViewBag.UserId"/>
                 <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -51,14 +51,24 @@
                 <span asp-validation-for="Telephone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="AgencyId" class="control-label"></label>
+                <select asp-for="AgencyId" class="form-select" asp-items="ViewBag.Agency"></select>
+                <span asp-validation-for="AgencyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserType" class="control-label"></label>
+                <select asp-for="UserType" class="form-select" asp-items="ViewBag.Usertype"></select>
+                <span asp-validation-for="UserType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Login">Back to Login</a>
 </div>
 
 @section Scripts {
