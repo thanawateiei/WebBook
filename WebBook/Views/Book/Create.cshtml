@@ -1,170 +1,222 @@
-﻿@model IEnumerable<WebBook.ViewModels.BookViewModel>
+﻿@model WebBook.ViewModels.BookViewModel
+
 @{
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
-	//List<BookType> bookt = new List<BookType>();
-	ViewData["Title"] = "เพื่อหนังสือ";
+	ViewData["Title"] = "Create";
 }
 
-<h1>เพิ่มรายการหนังสือ</h1>
+<h1>Create</h1>
+
+<hr />
 <div class="row">
-	<div class="col-md-6">
-		<div class="form-group">
-			<label class="control-label"></label>
-			<input id="BookId" class="form-control" readonly value="@ViewBag.newidbook">
-		</div>
-		<div class="form-group">
-			<label class="control-label">ชื่อหนังสือ</label>
-			<input id="BookName" class="form-control" />
-		</div>
-		<div class="form-group">
-			<label class="control-label">ผู้แต่ง</label>
-			<input id="AuthorName" class="form-control" />
-		</div>
-		<div class="form-group">
-			<label class="control-label">ปีที่ตีพิมม์</label>
-			<input id="PublicationYear" class="form-control" />
-		</div>
-		<div class="form-group">
-			<label class="control-label">สำนักพิมม์</label>
-			<input id="Publisher" class="form-control" />
-		</div>
-		<div class="form-group">
-			<label class="control-label">ปกหนังชื่อ</label>
+	<div class="col-12">
+		<form enctype="multipart/form-data" asp-action="Create">
+
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="row">
-				<div class="col-sm-12">
-					<!--ในการ Upload File ต้องระบุ enctype="multipart/form-data" -->
-					<form method="post" enctype="multipart/form-data" asp-action="ImgUpload">
-						<!--เป็นการ Post เราต้องแอบส่ง id ของfileที่จะ Upload ไปด้วย-->
-						<input name="theid" value="@ViewBag.newidbook" type="hidden" hidden class="form-control" />
-						<div class="input-group imgbook">
-							<input class="countimg" hidden value="1" />
-							<!--กำหนด type เป็น File เพื่ออ่านค่า File
-								กำหนดชนิดของ File โดยระบุที่ accept = ""
-								ถ้ารับแต่ jpeg ก็กำหนด accept="image/jpeg"
-								ถ้ารับ File รูปทุกชนิด กำหนด accept="image/* "
-								หรือระบุเฉพาะ accept="image/png, image/gif, image/jpeg"
-								หรือ accept="application/pdf,application/vnd.ms-excel"
-								หรือ accept= "application/msword, application/vnd.ms-powerpoint" >
-							-->
-							<input name="imgfiles" id="imgInp" type="file"
-								   accept="image/jpeg" required />
-							<input class="btn  btn-success text-end" type="submit" value="Upload" />
-						</div>
-					</form>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label asp-for="BookId" class="control-label"></label>
+						<input asp-for="BookId" class="form-control" readonly value="@ViewBag.newidbook" />
+						<span asp-validation-for="BookId" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="BookName" class="control-label"></label>
+						<input asp-for="BookName" class="form-control" />
+						<span asp-validation-for="BookName" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="AuthorName" class="control-label"></label>
+						<input asp-for="AuthorName" class="form-control" />
+						<span asp-validation-for="AuthorName" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="PublicationYear" class="control-label"></label>
+						<input asp-for="PublicationYear" class="form-control" />
+						<span asp-validation-for="PublicationYear" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="Publisher" class="control-label"></label>
+						<input asp-for="Publisher" class="form-control" />
+						<span asp-validation-for="Publisher" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="CallNumber" class="control-label"></label>
+						<input asp-for="CallNumber" class="form-control" />
+						<span asp-validation-for="CallNumber" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="BookDetail" class="control-label"></label>
+						<textarea  asp-for="BookDetail" class="form-control" ></textarea>
+						<span asp-validation-for="BookDetail" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<input asp-for="BookType1" id="BookType1" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType2" id="BookType2" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType3" id="BookType3" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType4" id="BookType4" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType5" id="BookType5" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType6" id="BookType6" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType7" id="BookType7" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType8" id="BookType8" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType9" id="BookType9" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input asp-for="BookType10" id="BookType10" hidden class="form-control" />
+					</div>
+
+					<div class="row">
+						@{
+							var countBT = 1;
+						}
+						@foreach (var item in ViewBag.BTT)
+						{
+							
+							var setid = "val_BT" + countBT;
+							var setid2 = "checkBT" + countBT;
+					
+							<div class="col-6">
+								<label for="@setid2">
+									<input type="checkbox" id="@setid2" class="checkBT" />
+									@item.Text
+								</label>
+								<input type="text" id="@setid" hidden value="@item.Value" />
+						
+							</div>
+							countBT ++;
+						}
+						<input type="text" id="countBT" hidden value="@countBT"/>
+
+					</div>
+				</div>
+				<div class="col-md-5">
+					<div class="form-group ">
+						<input class="countimg" hidden value="1" />
+						<label asp-for="Bookimg" class="control-label"></label>
+						<input asp-for="Bookimg" id="showimg" class="form-control" />
+						<span asp-validation-for="Bookimg" class="text-danger"></span>
+					</div>
+					<div class="imgshow "></div>
 				</div>
 			</div>
-		</div>
-		<div class="form-group">
-			<label class="control-label">รายละเอียด</label>
-			<textarea id="BookDetail" class="form-control"></textarea>
-		</div>
+			<br />
+				<div class="form-group">
+		<br />
 
-		<div class="row setBT  ">
-			<div class="col-10">
-				<label class="control-label">ประเภทหนังสือ</label><br>
-				<input id="CBTid" hidden value="@ViewBag.newidcbt">
-				<input id="countbt" value="" hidden>
-			</div>
+		<div class="d-flex justify-content-between">
+			<a type="button" class="btn btn-secondary" asp-action="Index">Back</a>
+			<input type="submit" value="Create" class="btn btn-primary  " />
 		</div>
+	</div>
+			
 
-		<div class="form-group ">
-			<input type="submit" id="submit" class="btn btn-primary" />
-		</div>
+		</form>
 	</div>
 </div>
 
-<hr />
 
-
-<div>
-	<a asp-action="Index">Back to List</a>
-</div>
 <script type="text/javascript">
-		$( document ).ready(function() {
-			set();
-			 var countCBT = $("#countbt").val();
+	$( document ).ready(function() {
+				//set();
+			   $("#showimg").change(function(){
+					console.log("shopimg");
+					readURL(this);
+				});
+				
+				
+				 $(".checkBT").change(function(){
+						// console.log("checkBT");
+						var conVal = 1;
+						var countBT = ($("#countBT").val())-1;
+						console.log(countBT);
+						//console.log('countBT  '+countBT);
+						for(var i=1 ; i <= countBT ;i++){
 
-			$( "#submit" ).click(function() {
-
-				var checkbook = [];
-				var Bookid=$("#BookId").val();
-					for (var i = 1; i < countCBT; i++) {
-						var setID = "#checkBTID"+(i)
-						var setBT = "#BT"+(i)
-						var setcheckbt = "#checkBT"+(i)
-						var id = $(setID).val();
-						var BT = $(setBT).val();
-						var checkbt = $(setcheckbt).prop('checked');
-						checkbook.push( {CbtId : id ,BookId:Bookid ,BookTypeId:BT,CheckBt:checkbt});
+							var y = "#checkBT"+i;
+							var check = $(y).prop('checked');
+							if(conVal<11){
+							if(check == true ){
+								var setdata = "#BookType"+conVal;
+								var setid = "#val_BT"+i;
+								var data = $(setid).val();
+								$(setdata).val(data);
+								//console.log(setdata);
+								//console.log(data);
+								conVal++;
+							}
+						
+							}
+							else {
+								$(this).prop('checked', false);
+								alert("เลือกได้แค่ 10 ประเภทจ้า")
+							}
 						}
+						for(var y=1 ; y <= 10 ;y++){
+							var setdata = "#BookType"+y;
+							var val = $(setdata).val();
+							if(val == 0 || val == null ){
+								$(setdata).val(0);
+							}
+						}
+				
+				});// END checkBT.change
 
-				$.post("Create", {
-							BookId: $("#BookId").val(),
-							BookName:  $("#BookName").val(),
-							AuthorName:  $("#AuthorName").val(),
-							PublicationYear:  $("#PublicationYear").val(),
-							Publisher:  $("#Publisher").val(),
-							BookCover:  $("#BookCover").val(),
-							BookDetail:  $("#BookDetail").val(),
-							CheckBT: checkbook
-				},function(){ window.location.href = "/Admin/Book"; });
+	
 
-
-							//$.ajax({
-							//	type: "post",
-							//	url: "Create",
-							//	data: JSON.stringify(obj),
-							//	contentType: "application/json",
-							//	dataType: "json"
-							//	success: function () {
-							//		alert("success");
-							//	},
-							//	failure: function (response) {
-							//		alert("failure");
-							//	}
-							//});
+	});// END document  ready
 
 
-			});
+			function readURL(input) {
 
-		});// END document  ready
+			if (input.files && input.files[0]) {
+				var c = $(".countimg").val();
+				 if(c==1){
+					$( ".imgshow" ).append("<br> <img id='blah' class='img-fluid'src='#' alt='your image'/> ");
+					var c = $(".countimg").val(5);
+				 }
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					$('#blah').attr('src', e.target.result);
+				}
 
-
-		function readURL(input) {
-		if (input.files && input.files[0]) {
-			var c = $(".countimg").val();
-			 if(c==1){
-				$( ".imgbook" ).append(" <img id='blah' src='#' alt='your image'/> ");
-				var c = $(".countimg").val(5);
-			 }
-			var reader = new FileReader();
-			reader.onload = function (e) {
-				$('#blah').attr('src', e.target.result);
+					reader.readAsDataURL(input.files[0]);
+				}
 			}
 
-				reader.readAsDataURL(input.files[0]);
-			}
-		}
 
-	$("#imgInp").change(function(){
-		readURL(this);
-	});
 
-		function set(){
-		var i = 1;
-		var idcbt=$("#CBTid").val();
-			 var data = @Html.Raw(ViewBag.BTT);
-					$.each(data, function (Value)
-					{
-						$( ".setBT" ).append(" <div class='col-6'> <input  hidden id='checkBTID"+i+"' value='"+idcbt+"'  />  <input  type='checkbox' id='checkBT"+i+"'  /> <input id='BT"+i+"'  value='"+this.Value+"' hidden> <label  for='checkBT"+i+"'>"+this.Text+"</label>   </div>  ");
-						//console.log(this.Text);
-						//console.log(this.Value);
-						i++;
-						idcbt++;
-					});
-					$("#countbt").val(i);
+			//function set(){
+			//var i = 1;
+			////var idcbt=$("#CBTid").val();
+			////var data = @Html.Raw(ViewBag.BTT);
+			//			//$.each(data, function (Value)
+			//			//{
+			//			//	$( ".setBT" ).append(" <div class='col-6'> <input  hidden id='checkBTID"+i+"' value='"+idcbt+"'  />  <input  type='checkbox' id='checkBT"+i+"'  /> <input id='BT"+i+"'  value='"+this.Value+"' hidden> <label  for='checkBT"+i+"'>"+this.Text+"</label>   </div>  ");
+			//			//	//console.log(this.Text);
+			//			//	//console.log(this.Value);
+			//			//	i++;
+			//			//	idcbt++;
+			//			//});
+			//			//$("#countbt").val(i);
 
-		}
+			//}
 
 </script>
 @*@section Scripts {

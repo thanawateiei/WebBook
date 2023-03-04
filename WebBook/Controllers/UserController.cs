@@ -81,7 +81,7 @@ namespace WebBook.Controllers
         }
 
         // GET: UserController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
             return View();
         }
@@ -89,10 +89,9 @@ namespace WebBook.Controllers
         // GET: UserController/Create
         public ActionResult Create()
         {
-            var idUser = from b in _db.Users
-                         select b.UserId;
-            var newidUser = idUser.Max();
-            ViewBag.newidUser = newidUser + 1;
+            Guid myuuid = Guid.NewGuid();
+            string myuuidAsString = myuuid.ToString();
+            ViewBag.newidUser = "User-"+myuuidAsString;
 
             ViewData["Ur"] = new SelectList(_db.Roles, "RoleId", "RoleName");
             ViewData["Ua"] = new SelectList(_db.Agencies, "AgencyId", "AgencyName");
@@ -110,6 +109,8 @@ namespace WebBook.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    obj.UpdatedAt = DateTime.Now;
+                    obj.CreatedAt = DateTime.Now;
                     _db.Users.Add(obj);
                     _db.SaveChanges();
                     return RedirectToAction("Index");
@@ -125,9 +126,9 @@ namespace WebBook.Controllers
         }
 
         // GET: UserController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
-            if (id == 0)
+            if (id == null)
             {
                 return RedirectToAction("Index");
 
@@ -155,6 +156,7 @@ namespace WebBook.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    obj.UpdatedAt = DateTime.Now;
                     _db.Users.Update(obj);
                     _db.SaveChanges();
                     return RedirectToAction("Index");
@@ -170,9 +172,9 @@ namespace WebBook.Controllers
         }
 
         // GET: UserController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
-            if (id == 0)
+            if (id == null)
             {
                 ViewBag.ErrorMassage = "ต้องระบุค่า ID";
                 return RedirectToAction("Index");
@@ -191,7 +193,7 @@ namespace WebBook.Controllers
         // POST: UserController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeletePost(int UserId)
+        public ActionResult DeletePost(string UserId)
         {
             try
             {

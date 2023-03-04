@@ -1,6 +1,7 @@
 ﻿@model WebBook.Models.UserType
 
 @{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Delete";
 }
 
@@ -28,6 +29,6 @@
     <form asp-action="DeletePost">
         <input type="hidden" asp-for="UserTypeId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+       	<a type="button" class="btn btn-secondary" asp-action="Index">Back</a>
     </form>
 </div>

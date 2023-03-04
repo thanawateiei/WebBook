@@ -15,6 +15,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\4-2\project\MyProject\WebBook\WebBook
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/4-2/project/MyProject/WebBook/WebBook/Views/Account/BookReq.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxCb29rUmVxLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/4-2/project/MyProject/WebBook/WebBook/Views/Account/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -79,16 +83,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va1xEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/4-2/project/MyProject/WebBook/WebBook/Views/Book/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va1xEZXRhaWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/4-2/project/MyProject/WebBook/WebBook/Views/Book/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va1xFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/4-2/project/MyProject/WebBook/WebBook/Views/Book/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va1xJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/4-2/project/MyProject/WebBook/WebBook/Views/Book/Index1.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va1xJbmRleDEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/4-2/project/MyProject/WebBook/WebBook/Views/Detail/Index.cshtml]
@@ -105,6 +109,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/4-2/project/MyProject/WebBook/WebBook/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4-2/project/MyProject/WebBook/WebBook/Views/Home/Search.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTZWFyY2guY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/4-2/project/MyProject/WebBook/WebBook/Views/Location/Create.cshtml]

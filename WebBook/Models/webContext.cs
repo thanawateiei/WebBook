@@ -19,7 +19,6 @@ namespace WebBook.Models
         public virtual DbSet<Agency> Agencies { get; set; } = null!;
         public virtual DbSet<Book> Books { get; set; } = null!;
         public virtual DbSet<BookType> BookTypes { get; set; } = null!;
-        public virtual DbSet<CheckBookType> CheckBookTypes { get; set; } = null!;
         public virtual DbSet<History> Histories { get; set; } = null!;
         public virtual DbSet<Location> Locations { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
@@ -58,7 +57,8 @@ namespace WebBook.Models
                 entity.ToTable("Book");
 
                 entity.Property(e => e.BookId)
-                    .ValueGeneratedNever()
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
                     .HasColumnName("book_id");
 
                 entity.Property(e => e.AuthorName)
@@ -101,12 +101,25 @@ namespace WebBook.Models
 
                 entity.Property(e => e.BookType9).HasColumnName("bookType9");
 
+                entity.Property(e => e.CallNumber)
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
+                    .HasColumnName("callNumber");
+
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("created_at");
+
                 entity.Property(e => e.PublicationYear).HasColumnName("publication_year");
 
                 entity.Property(e => e.Publisher)
                     .HasMaxLength(512)
                     .IsUnicode(false)
                     .HasColumnName("publisher");
+
+                entity.Property(e => e.UpdatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("updated_at");
             });
 
             modelBuilder.Entity<BookType>(entity =>
@@ -123,29 +136,13 @@ namespace WebBook.Models
                     .HasColumnName("bookType_name");
             });
 
-            modelBuilder.Entity<CheckBookType>(entity =>
-            {
-                entity.HasKey(e => e.CbtId);
-
-                entity.ToTable("CheckBookType");
-
-                entity.Property(e => e.CbtId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("cbt_id");
-
-                entity.Property(e => e.BookId).HasColumnName("book_id");
-
-                entity.Property(e => e.BookTypeId).HasColumnName("bookType_id");
-
-                entity.Property(e => e.CheckBt).HasColumnName("checkBT");
-            });
-
             modelBuilder.Entity<History>(entity =>
             {
                 entity.ToTable("History");
 
                 entity.Property(e => e.HistoryId)
-                    .ValueGeneratedNever()
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
                     .HasColumnName("history_id");
 
                 entity.Property(e => e.AuthorName)
@@ -163,6 +160,12 @@ namespace WebBook.Models
                     .IsUnicode(false)
                     .HasColumnName("callNumber");
 
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("created_at");
+
+                entity.Property(e => e.LocationId).HasColumnName("location_id");
+
                 entity.Property(e => e.PublicationYear).HasColumnName("publication_year");
 
                 entity.Property(e => e.Publisher)
@@ -171,13 +174,19 @@ namespace WebBook.Models
                     .HasColumnName("publisher");
 
                 entity.Property(e => e.ReceiveDate)
-                    .HasMaxLength(512)
-                    .IsUnicode(false)
+                    .HasColumnType("date")
                     .HasColumnName("receive_date");
 
                 entity.Property(e => e.StatusId).HasColumnName("status_id");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.UpdatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("updated_at");
+
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -191,7 +200,7 @@ namespace WebBook.Models
                 entity.Property(e => e.LocationDetail)
                     .HasMaxLength(512)
                     .IsUnicode(false)
-                    .HasColumnName("locatio_detail");
+                    .HasColumnName("location_detail");
 
                 entity.Property(e => e.LocationName)
                     .HasMaxLength(512)
@@ -230,10 +239,15 @@ namespace WebBook.Models
             modelBuilder.Entity<User>(entity =>
             {
                 entity.Property(e => e.UserId)
-                    .ValueGeneratedNever()
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
                     .HasColumnName("user_id");
 
                 entity.Property(e => e.AgencyId).HasColumnName("agency_id");
+
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("created_at");
 
                 entity.Property(e => e.Email)
                     .HasMaxLength(512)
@@ -261,6 +275,10 @@ namespace WebBook.Models
                     .HasMaxLength(512)
                     .IsUnicode(false)
                     .HasColumnName("telephone");
+
+                entity.Property(e => e.UpdatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("updated_at");
 
                 entity.Property(e => e.UserType).HasColumnName("user_type");
             });
