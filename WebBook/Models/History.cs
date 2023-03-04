@@ -5,8 +5,8 @@ namespace WebBook.Models
 {
     public partial class History
     {
-        public string HistoryId { get; set; } = null!;
-        public string UserId { get; set; } = null!;
+        public string? HistoryId { get; set; } = null!;
+        public string? UserId { get; set; } = null!;
         public DateTime? ReceiveDate { get; set; }
         public string? BookName { get; set; }
         public string? AuthorName { get; set; }

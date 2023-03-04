@@ -5,6 +5,7 @@ using WebBook.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace WebBook.Controllers
 {
@@ -25,9 +26,6 @@ namespace WebBook.Controllers
 				TempData["Message"] = "กรุณาเข้าสู่ระบบ";
 				return RedirectToAction("Login");
             }
-            Guid myuuid = Guid.NewGuid();
-            string myuuidAsString = myuuid.ToString();
-            ViewBag.HistoryId = "His-" + myuuidAsString;
             ViewData["Location"] = new SelectList(_db.Locations, "LocationId", "LocationName");
             return View();
         }
@@ -52,9 +50,6 @@ namespace WebBook.Controllers
 				TempData["Message"] = "ไม่พบข้อมูลที่ระบุ";
                 return RedirectToAction("Index");
             }
-            Guid myuuid = Guid.NewGuid();
-            string myuuidAsString = myuuid.ToString();
-            ViewBag.HistoryId = "His-" + myuuidAsString;
             History his = new History();
             his.BookName = bookInfo.BookName;
             his.AuthorName = bookInfo.AuthorName;
@@ -82,11 +77,15 @@ namespace WebBook.Controllers
                                        select lm;
                     if (limit.ToList().Count >= userType.Limit)
                     {
-                        TempData["Message"] = "ไม่สามารถยืมได้เกิน Limit";
+                        TempData["Message"] = "ไม่สามารถยืมเนื่องจากคุณยืมหนังสือเกิน "+ userType.Limit + " เล่ม";
                         return RedirectToAction("BookReq", "Account");
                     }
                     else
                     {
+                        Guid myuuid = Guid.NewGuid();
+                        string myuuidAsString = "His-"+myuuid.ToString();
+                        obj.HistoryId = myuuidAsString;
+                        obj.UserId = HttpContext.Session.GetString("UserId");
                         obj.CreatedAt = DateTime.Now;
                         obj.UpdatedAt = DateTime.Now;
                         obj.StatusId = 1;
