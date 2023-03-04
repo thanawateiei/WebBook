@@ -74,21 +74,21 @@ namespace WebBook.Controllers
         }
         // GET: BookController/Details/5
 
-        public IActionResult ImgDelete(string id)
+        public IActionResult Detail(string id)
         {
-            var fileName = id.ToString() + ".jpg";
-            //กำหนดตำแหน่งที่ตั้งของ File
-            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgbook");
-            //เชื่อต่อ ตำแหน่ง กับ ชื่อFile
-            var filePath = Path.Combine(imagePath, fileName);
-            //ทำการตรวจสอบว่ามี File อยู่หรือไม่
-            if (System.IO.File.Exists(filePath))
+            if (id == null)
             {
-                //ถ้ามีให้ลบ
-                System.IO.File.Delete(filePath);
+                return RedirectToAction("Index");
+
             }
-            //controller = "Home", action = "Index", id = ""
-            return RedirectToAction("Index");
+            var obj = _db.Books.Find(id);
+            if (obj == null)
+            {
+                ViewBag.ErrorMessage = "ไม่พบรายการนี้";
+                return RedirectToAction("Index");
+
+            }
+            return PartialView(obj);
         }
 
 

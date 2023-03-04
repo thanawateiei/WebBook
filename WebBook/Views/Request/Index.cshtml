@@ -36,11 +36,11 @@
 							<option value="@stext">@stext</option>
 						}
 						<option value=" ">ทั้งหมด</option>
-						<option value="รอรับคำขอยืม">รอรับคำขอยืม</option>
-						<option value="รับคำขอยืมแล้ว">รับคำขอยืมแล้ว</option>
-						<option value="อยู่ระหว่างดำเนินการ">อยู่ระหว่างดำเนินการ</option>
-						<option value="ดำเนินการเรียนร้อย">ดำเนินการเรียนร้อย</option>
-						<option value="ไม่สามารถให้บริการได้เนื่องจากมีการยืม">ไม่สามารถให้บริการได้เนื่องจากมีการยืม</option>
+						@foreach (var item in ViewBag.Status)
+						{
+							<option value="@item.StatusName">@item.StatusName</option>
+						}
+						
 					</select>
 				</div><div>
 					<form asp-controller="Request" asp-action="Index">
@@ -92,6 +92,7 @@
 						@foreach (var item in Model)
 						{
 							i++;
+						
 							<tr>
 								
 								<td>@item.UserEmail</td>

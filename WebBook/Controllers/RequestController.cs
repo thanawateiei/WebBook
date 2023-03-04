@@ -23,12 +23,17 @@ namespace WebBook.Controllers
                          RequestId = r.HistoryId,
                          UserEmail = r_ue.Email,
                          BookTitle = r.BookName,
-                         //ReceiveDate = r.ReceiveDate,
+                         ReceiveDate = r.ReceiveDate,
                          CallNumber = r.CallNumber,
                          Status = r_s.StatusName,
                          StatusID = r.StatusId
                      };
+
+            var bt = from b in _db.Statuses
+                     select b;
             if (rq == null) return NotFound();
+            ViewBag.Status = bt;
+            //ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName");
             return View(rq);
         }
         [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
@@ -64,6 +69,9 @@ namespace WebBook.Controllers
             if (rq == null) return NotFound();
 
             ViewBag.stext = stext;
+            var bt = from b in _db.Statuses
+                     select b;
+            ViewBag.Status = bt;
             return View(rq);
         }
         [Route("admin/request/edit/{id}")]

@@ -175,7 +175,7 @@ namespace WebBook.Models
                     .HasColumnName("publisher");
 
                 entity.Property(e => e.ReceiveDate)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("receive_date");
 
                 entity.Property(e => e.StatusId).HasColumnName("status_id");
