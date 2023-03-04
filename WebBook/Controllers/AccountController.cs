@@ -3,6 +3,8 @@ using System.Diagnostics;
 using WebBook.ViewModels;
 using WebBook.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace WebBook.Controllers
 {
@@ -110,6 +112,7 @@ namespace WebBook.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(string userEmail, string userPass)
         {
+            var key = "E546C8DF278CD5931069B522E695D4F2";
             //Query หาว่ามี Login Password ที่ระบุหรือไม่
             var user = from u in _db.Users
                        where u.Email.Equals(userEmail)
@@ -118,24 +121,17 @@ namespace WebBook.Controllers
             if (userinfo == null)
             {
                 //ถ้าใช้ RedirectToAction ไม่สามารถใช้ ViewBag ได้ ต้องใช้ TempData
-                TempData["ErrorMessage"] = "ไม่พบผู้ใช้";
+                TempData["Message"] = "ไม่พบผู้ใช้";
                 //ViewBag.ErrorMessage = "ระบุผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
                 return RedirectToAction("Login");
             }
-
-            bool isValidPassword = BCrypt.Net.BCrypt.Verify(userPass, userinfo.Password);
+            string decryptPassword = DecryptString(userinfo.Password,key);
+            bool isValidPassword = String.Equals(decryptPassword,userPass);
             // var cus = _db.Customers.Find(userName);
             //ถ้าข้อมูลเท่ากับ 0 ให้บอกว่าหาข้อมูลไม่พบ
-            if (user.ToList().Count == 0)
-            {
-                //ถ้าใช้ RedirectToAction ไม่สามารถใช้ ViewBag ได้ ต้องใช้ TempData
-                TempData["ErrorMessage"] = "ไม่พบผู้ใช้";
-                //ViewBag.ErrorMessage = "ระบุผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
-                return RedirectToAction("Login");
-            }
             if (!isValidPassword)
             {
-                TempData["ErrorMessage"] = "รหัสผ่านผิด";
+                TempData["Message"] = "รหัสผ่านไม่ถูกต้อง";
                 return RedirectToAction("Login");
             }
             //ถ้าหาข้อมูลพบ ให้เก็บค่าเข้า Session 
@@ -189,10 +185,11 @@ namespace WebBook.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    obj.CreatedAt = DateTime.Now;
-                    obj.UpdatedAt = DateTime.Now;
+                    var key = "E546C8DF278CD5931069B522E695D4F2";
+                    obj.CreatedAt = DateTime.Now.Date;
+                    obj.UpdatedAt = DateTime.Now.Date;
                     obj.Role = 3;
-                    obj.Password = BCrypt.Net.BCrypt.HashPassword(obj.Password);
+                    obj.Password = EncryptString(obj.Password,key);
                     _db.Users.Add(obj); //ส่งคำสั่ง Add ผ่าน DBContext
                     _db.SaveChanges(); // Execute คำสั่ง
                     return RedirectToAction("Login"); // ย้ายทำงาน Action Index
@@ -207,6 +204,68 @@ namespace WebBook.Controllers
             //ถ้าไม่ Valid ก็ สร้าง Error Message ขึ้นมา แล้ว ส่ง Obj กลับไปที่ View
             TempData["Message"] = "การบันทึกผิดพลาด";
             return View(obj);
+        }
+        public static string EncryptString(string text, string keyString)
+        {
+            var key = Encoding.UTF8.GetBytes(keyString);
+
+            using (var aesAlg = Aes.Create())
+            {
+                using (var encryptor = aesAlg.CreateEncryptor(key, aesAlg.IV))
+                {
+                    using (var msEncrypt = new MemoryStream())
+                    {
+                        using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                        using (var swEncrypt = new StreamWriter(csEncrypt))
+                        {
+                            swEncrypt.Write(text);
+                        }
+
+                        var iv = aesAlg.IV;
+
+                        var decryptedContent = msEncrypt.ToArray();
+
+                        var result = new byte[iv.Length + decryptedContent.Length];
+
+                        Buffer.BlockCopy(iv, 0, result, 0, iv.Length);
+                        Buffer.BlockCopy(decryptedContent, 0, result, iv.Length, decryptedContent.Length);
+
+                        return Convert.ToBase64String(result);
+                    }
+                }
+            }
+        }
+
+        public static string DecryptString(string cipherText, string keyString)
+        {
+            var fullCipher = Convert.FromBase64String(cipherText);
+
+            var iv = new byte[16];
+            var cipher = new byte[16];
+
+            Buffer.BlockCopy(fullCipher, 0, iv, 0, iv.Length);
+            Buffer.BlockCopy(fullCipher, iv.Length, cipher, 0, iv.Length);
+            var key = Encoding.UTF8.GetBytes(keyString);
+
+            using (var aesAlg = Aes.Create())
+            {
+                using (var decryptor = aesAlg.CreateDecryptor(key, iv))
+                {
+                    string result;
+                    using (var msDecrypt = new MemoryStream(cipher))
+                    {
+                        using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                        {
+                            using (var srDecrypt = new StreamReader(csDecrypt))
+                            {
+                                result = srDecrypt.ReadToEnd();
+                            }
+                        }
+                    }
+
+                    return result;
+                }
+            }
         }
         public IActionResult Logout()
         {
