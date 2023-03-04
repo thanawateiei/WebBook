@@ -72,28 +72,33 @@ namespace WebBook.Controllers
             if (bb == null) return NotFound();
             return View(bb);
         }
+        // GET: BookController/Details/5
 
-        public ActionResult Detail(string id)
+        public IActionResult ImgDelete(string id)
         {
-            if (id == null)
+            var fileName = id.ToString() + ".jpg";
+            //กำหนดตำแหน่งที่ตั้งของ File
+            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgbook");
+            //เชื่อต่อ ตำแหน่ง กับ ชื่อFile
+            var filePath = Path.Combine(imagePath, fileName);
+            //ทำการตรวจสอบว่ามี File อยู่หรือไม่
+            if (System.IO.File.Exists(filePath))
             {
-                return RedirectToAction("Index");
-
+                //ถ้ามีให้ลบ
+                System.IO.File.Delete(filePath);
             }
-            var obj = _db.Books.Find(id);
-            if (obj == null)
-            {
-                ViewBag.ErrorMessage = "ไม่พบรายการนี้";
-                return RedirectToAction("Index");
-
-            }
-            return PartialView(obj);
+            //controller = "Home", action = "Index", id = ""
+            return RedirectToAction("Index");
         }
+
 
         [Route("Admin/Book/Create")]
         public ActionResult Create()
         {
-      
+            //var idBook = from b in _db.Books
+            //             select b.BookId;
+            //var newidbook = idBook.Max();
+
             Guid myuuid = Guid.NewGuid();
             string myuuidAsString = myuuid.ToString();
 
@@ -269,7 +274,7 @@ namespace WebBook.Controllers
                         var LocalfileName = Path.GetFileName(obj.Bookimg.FileName);
                         var NewFileName = obj.BookId;
                         var FileExtension = Path.GetExtension(LocalfileName);
-                        var UpFileName =  NewFileName + FileExtension;
+                        var UpFileName = "Book-" + NewFileName + FileExtension;
                         var savedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgbook");
                         var Filepath = Path.Combine(savedir, UpFileName);
                         using (FileStream fs = System.IO.File.Create(Filepath))

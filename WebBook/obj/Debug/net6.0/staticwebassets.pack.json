@@ -49,6 +49,7 @@
       "PackagePath": "staticwebassets\\img\\bg2.jpg"
     },
     {
+<<<<<<< HEAD
       "Id": "E:\\project\\Senior Project\\WebBook\\WebBook\\wwwroot\\img\\imgbook\\Book-1.jpg",
       "PackagePath": "staticwebassets\\img\\imgbook\\Book-1.jpg"
     },
@@ -87,6 +88,18 @@
     {
       "Id": "E:\\project\\Senior Project\\WebBook\\WebBook\\wwwroot\\img\\imgbook\\Book-9.png",
       "PackagePath": "staticwebassets\\img\\imgbook\\Book-9.png"
+=======
+      "Id": "E:\\project\\Senior Project\\WebBook\\WebBook\\wwwroot\\img\\imgbook\\BOOK-a01f3414-68ca-45ee-94f5-60a6fd4840c4.jpg",
+      "PackagePath": "staticwebassets\\img\\imgbook\\BOOK-a01f3414-68ca-45ee-94f5-60a6fd4840c4.jpg"
+    },
+    {
+      "Id": "E:\\project\\Senior Project\\WebBook\\WebBook\\wwwroot\\img\\imgbook\\Book-BOOK-29d2e178-0615-4ba0-8458-0cb755544eeb.jpg",
+      "PackagePath": "staticwebassets\\img\\imgbook\\Book-BOOK-29d2e178-0615-4ba0-8458-0cb755544eeb.jpg"
+    },
+    {
+      "Id": "E:\\project\\Senior Project\\WebBook\\WebBook\\wwwroot\\img\\imgbook\\Book-BOOK-878a325f-9104-4302-a2d1-0f12ba4fdba6.jpg",
+      "PackagePath": "staticwebassets\\img\\imgbook\\Book-BOOK-878a325f-9104-4302-a2d1-0f12ba4fdba6.jpg"
+>>>>>>> 0dd1bf69b6460c980aea37e5ea11d9c5c23d81b2
     },
     {
       "Id": "E:\\project\\Senior Project\\WebBook\\WebBook\\wwwroot\\img\\logo.png",

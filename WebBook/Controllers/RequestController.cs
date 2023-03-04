@@ -23,7 +23,7 @@ namespace WebBook.Controllers
                          RequestId = r.HistoryId,
                          UserEmail = r_ue.Email,
                          BookTitle = r.BookName,
-                         ReceiveDate = r.ReceiveDate.ToString(),
+                         //ReceiveDate = r.ReceiveDate,
                          CallNumber = r.CallNumber,
                          Status = r_s.StatusName,
                          StatusID = r.StatusId
