@@ -19,9 +19,9 @@
 <div class="container">
     <!--ทำการตรวจสอบว่ามีการส่ง ErrorMessage มาหรือไม่
         ถ้ามีให้แสดง Alert -->
-    @if (TempData["ErrorMessage"] != null)
+    @if (TempData["Message"] != null)
     {
-        <div class="alert alert-warning">@TempData["ErrorMessage"]</div>
+        <div class="alert alert-warning">@TempData["Message"]</div>
     }
 
 
