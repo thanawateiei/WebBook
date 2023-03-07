@@ -86,11 +86,21 @@ namespace WebBook.Controllers
                         string myuuidAsString = "His-"+myuuid.ToString();
                         obj.HistoryId = myuuidAsString;
                         obj.UserId = HttpContext.Session.GetString("UserId");
+                        obj.ReceiveDate = obj.ReceiveDate.Date;
+                        if (obj.BookLang == "EN")
+                        {
+                            obj.ReturnDate = obj.ReceiveDate.AddDays((Double)userType.Enbook).Date;
+                        }
+                        else
+                        {
+                            obj.ReturnDate = obj.ReceiveDate.AddDays((Double)userType.Thbook).Date;
+                        }
                         obj.CreatedAt = DateTime.Now;
                         obj.UpdatedAt = DateTime.Now;
                         obj.StatusId = 1;
                         _db.Histories.Add(obj);
                         _db.SaveChanges();
+                        TempData["Message"] = "สำเร็จ";
                         return RedirectToAction("BookReq", "Account");
                     }
                 }
@@ -98,7 +108,7 @@ namespace WebBook.Controllers
             catch (Exception ex)
             {
                 TempData["Message"] = ex.Message;
-                return View(obj);
+                return RedirectToAction("BookReq", "Account");
             }
 			TempData["Message"] = "การแก้ไขผิดพลาด";
             return View(obj);
