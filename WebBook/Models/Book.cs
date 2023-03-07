@@ -14,6 +14,7 @@ namespace WebBook.Models
         public string? BookCover { get; set; }
         public DateTime UpdatedAt { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string? BookLang { get; set; }
         public string? BookDetail { get; set; }
         public int? BookType1 { get; set; }
         public int? BookType2 { get; set; }

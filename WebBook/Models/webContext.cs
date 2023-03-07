@@ -21,6 +21,7 @@ namespace WebBook.Models
         public virtual DbSet<BookType> BookTypes { get; set; } = null!;
         public virtual DbSet<History> Histories { get; set; } = null!;
         public virtual DbSet<Location> Locations { get; set; } = null!;
+        public virtual DbSet<PopularBook> PopularBooks { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Status> Statuses { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
@@ -76,6 +77,11 @@ namespace WebBook.Models
                     .HasMaxLength(512)
                     .IsUnicode(false)
                     .HasColumnName("book_detail");
+
+                entity.Property(e => e.BookLang)
+                    .HasMaxLength(10)
+                    .HasColumnName("book_lang")
+                    .IsFixedLength();
 
                 entity.Property(e => e.BookName)
                     .HasMaxLength(512)
@@ -151,6 +157,11 @@ namespace WebBook.Models
                     .IsUnicode(false)
                     .HasColumnName("author_name");
 
+                entity.Property(e => e.BookLang)
+                    .HasMaxLength(10)
+                    .HasColumnName("book_lang")
+                    .IsFixedLength();
+
                 entity.Property(e => e.BookName)
                     .HasMaxLength(512)
                     .IsUnicode(false)
@@ -177,6 +188,10 @@ namespace WebBook.Models
                 entity.Property(e => e.ReceiveDate)
                     .HasColumnType("datetime")
                     .HasColumnName("receive_date");
+
+                entity.Property(e => e.ReturnDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("return_date");
 
                 entity.Property(e => e.StatusId).HasColumnName("status_id");
 
@@ -207,6 +222,30 @@ namespace WebBook.Models
                     .HasMaxLength(512)
                     .IsUnicode(false)
                     .HasColumnName("location_name");
+            });
+
+            modelBuilder.Entity<PopularBook>(entity =>
+            {
+                entity.HasKey(e => e.PopularId)
+                    .HasName("PK__PopularB__49127DF80CBF4518");
+
+                entity.ToTable("PopularBook");
+
+                entity.Property(e => e.PopularId)
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
+                    .HasColumnName("Popular_id");
+
+                entity.Property(e => e.BookId)
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
+                    .HasColumnName("book_id");
+
+                entity.Property(e => e.PopularCount).HasColumnName("Popular_count");
+
+                entity.Property(e => e.PopularDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Popular_Date");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -292,7 +331,11 @@ namespace WebBook.Models
                     .ValueGeneratedNever()
                     .HasColumnName("userType_id");
 
+                entity.Property(e => e.Enbook).HasColumnName("ENbook");
+
                 entity.Property(e => e.Limit).HasColumnName("limit");
+
+                entity.Property(e => e.Thbook).HasColumnName("THbook");
 
                 entity.Property(e => e.UserTypeName)
                     .HasMaxLength(512)

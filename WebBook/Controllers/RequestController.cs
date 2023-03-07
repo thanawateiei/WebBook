@@ -2,6 +2,7 @@
 using WebBook.Models;
 using WebBook.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Globalization;
 
 namespace WebBook.Controllers
 {
@@ -13,6 +14,9 @@ namespace WebBook.Controllers
         [Route("admin/request")]
         public IActionResult Index()
         {
+            //DateTime dt = DateTime.ParseExact(yourObject.ToString(), "MM/dd/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
+
+            //string s = dt.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
             var rq = from r in _db.Histories
                      join ue in _db.Users on r.UserId equals ue.UserId into join_r_ue
                      from r_ue in join_r_ue.DefaultIfEmpty()
@@ -23,12 +27,14 @@ namespace WebBook.Controllers
                          RequestId = r.HistoryId,
                          UserEmail = r_ue.Email,
                          BookTitle = r.BookName,
-                         ReceiveDate = r.ReceiveDate,
+                         //ReceiveDate = r.ReceiveDate,
+                         ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy"),
                          CallNumber = r.CallNumber,
                          Status = r_s.StatusName,
                          StatusID = r.StatusId
                      };
-
+ 
+            
             var bt = from b in _db.Statuses
                      select b;
             if (rq == null) return NotFound();
@@ -62,6 +68,7 @@ namespace WebBook.Controllers
                          RequestId = r.HistoryId,
                          UserEmail = r_ue.Email,
                          BookTitle = r.BookName,
+                         ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy"),
                          //ReceiveDate = r.ReceiveDate,
                          CallNumber = r.CallNumber,
                          Status = r_s.StatusName
@@ -93,8 +100,8 @@ namespace WebBook.Controllers
 
             //อ่านข้อมูลจากตารางลง SelectList แล้วใส่ข้อมูลลงตัว ViewData
             //และกำนหนดว่า Select ที่เลือก เป็น id ของ obj นั้นๆ
+
             
-           
             ViewBag.UserEmail = _db.Users.FirstOrDefault(ue => ue.UserId == obj.UserId).Email;
             ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName", obj.StatusId);
             return View(obj);

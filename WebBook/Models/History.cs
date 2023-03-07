@@ -17,5 +17,7 @@ namespace WebBook.Models
         public int? LocationId { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? CreatedAt { get; set; }
+        public DateTime? ReturnDate { get; set; }
+        public string? BookLang { get; set; }
     }
 }
