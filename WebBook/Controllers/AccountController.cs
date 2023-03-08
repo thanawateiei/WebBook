@@ -86,11 +86,21 @@ namespace WebBook.Controllers
                         string myuuidAsString = "His-"+myuuid.ToString();
                         obj.HistoryId = myuuidAsString;
                         obj.UserId = HttpContext.Session.GetString("UserId");
+                        obj.ReceiveDate = obj.ReceiveDate.Date;
+                        if (obj.BookLang == "EN")
+                        {
+                            obj.ReturnDate = obj.ReceiveDate.AddDays((Double)userType.Enbook).Date;
+                        }
+                        else
+                        {
+                            obj.ReturnDate = obj.ReceiveDate.AddDays((Double)userType.Thbook).Date;
+                        }
                         obj.CreatedAt = DateTime.Now;
                         obj.UpdatedAt = DateTime.Now;
                         obj.StatusId = 1;
                         _db.Histories.Add(obj);
                         _db.SaveChanges();
+                        TempData["Message"] = "สำเร็จ";
                         return RedirectToAction("BookReq", "Account");
                     }
                 }
@@ -98,10 +108,78 @@ namespace WebBook.Controllers
             catch (Exception ex)
             {
                 TempData["Message"] = ex.Message;
-                return View(obj);
+                return RedirectToAction("BookReq", "Account");
             }
 			TempData["Message"] = "การแก้ไขผิดพลาด";
             return View(obj);
+        }
+        public IActionResult Profile()
+        {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+                return RedirectToAction("Login");
+            }
+            var obj = _db.Users.Find(HttpContext.Session.GetString("UserId"));
+            if (obj == null)
+            {
+                TempData["Message"] = "ไม่พบข้อมูลที่ระบุ";
+                return RedirectToAction("Profile", "Account");
+            }
+            ViewBag.UserId = obj.UserId;
+            ViewBag.Agency = _db.Agencies.FirstOrDefault(ag => ag.AgencyId == obj.AgencyId).AgencyName;
+            ViewBag.UserType = _db.UserTypes.FirstOrDefault(ut => ut.UserTypeId == obj.UserType).UserTypeName;
+            return View(obj);
+        }
+        public IActionResult ProfileEdit(string id)
+        {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+                return RedirectToAction("Login");
+            }
+            if (id == null)
+            {
+                TempData["Message"] = "ต้องระบุค่า ID";
+                return RedirectToAction("Index");
+            }
+            // ทำการเขียน Query หา Record ของ Product.pdId จาก id ที่ส่งมา
+            var userinfo = _db.Users.Find(id);
+            if (User == null)
+            {
+                TempData["Message"] = "ไม่พบข้อมูลที่ระบุ";
+                return RedirectToAction("Index");
+            }
+            var key = "E546C8DF278CD5931069B522E695D4F2";
+            TempData["Pass"] = DecryptString(userinfo.Password,key);
+            ViewBag.Agency = _db.Agencies.FirstOrDefault(ag => ag.AgencyId == userinfo.AgencyId).AgencyName;
+            ViewBag.UserType = _db.UserTypes.FirstOrDefault(ut => ut.UserTypeId == userinfo.UserType).UserTypeName;
+            return View(userinfo);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ProfileEdit(User obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var key = "E546C8DF278CD5931069B522E695D4F2";
+                    obj.Password = EncryptString(obj.Password, key);
+                    obj.UpdatedAt = DateTime.Now;
+                    _db.Users.Update(obj);
+                    _db.SaveChangesAsync();
+                    return RedirectToAction("Profile","Account");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = ex.Message;
+                return View(obj);
+            }
+            TempData["Message"] = "การแก้ไขผิดพลาด";
+            return View(obj);
+
         }
         public IActionResult Login()
         {
@@ -175,9 +253,8 @@ namespace WebBook.Controllers
             ViewData["UserType"] = new SelectList(_db.UserTypes, "UserTypeId", "UserTypeName");
             return View();
         }
-        [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
-        [ValidateAntiForgeryToken] // ป้องกันการโจมตี Cross_site Request Forgery
-        //ค่าที่ส่งมาจาก Form เป็น Object ของ Model ที่ระบุ ตัว Controller ก็รับค่าเป็น Object
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Register(User obj)
         {
             try
@@ -189,9 +266,9 @@ namespace WebBook.Controllers
                     obj.UpdatedAt = DateTime.Now.Date;
                     obj.Role = 3;
                     obj.Password = EncryptString(obj.Password,key);
-                    _db.Users.Add(obj); //ส่งคำสั่ง Add ผ่าน DBContext
-                    _db.SaveChanges(); // Execute คำสั่ง
-                    return RedirectToAction("Login"); // ย้ายทำงาน Action Index
+                    _db.Users.Add(obj);
+                    _db.SaveChanges();
+                    return RedirectToAction("Login");
                 }
             }
             catch (Exception ex)

@@ -1,0 +1,127 @@
+﻿@model WebBook.Models.User
+
+@{
+    ViewData["Title"] = "ProfileEdit";
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Message"]
+    </div>
+}
+
+
+@*<h1>ProfileEdit</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ProfileEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="UpdatedAt" />
+            <input type="hidden" asp-for="CreatedAt" />
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Role" class="control-label"></label>
+                <input asp-for="Role" class="form-control" />
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AgencyId" class="control-label"></label>
+                <input asp-for="AgencyId" class="form-control" />
+                <span asp-validation-for="AgencyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudentId" class="control-label"></label>
+                <input asp-for="StudentId" class="form-control" />
+                <span asp-validation-for="StudentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Telephone" class="control-label"></label>
+                <input asp-for="Telephone" class="form-control" />
+                <span asp-validation-for="Telephone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserType" class="control-label"></label>
+                <input asp-for="UserType" class="form-control" />
+                <span asp-validation-for="UserType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedAt" class="control-label"></label>
+                <input asp-for="UpdatedAt" class="form-control" />
+                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedAt" class="control-label"></label>
+                <input asp-for="CreatedAt" class="form-control" hidden/>
+                <span asp-validation-for="CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>*@
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">name</span><span class="text-black-50">email</span><span> </span></div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">แก้ไขข้อมูลผู้ใช้</h4>
+                </div>
+
+                <div class="row mt-3">
+                    <form asp-action="ProfileEdit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="UserId" />
+                        <input type="hidden" asp-for="AgencyId" />
+                        <input type="hidden" asp-for="UserType" />
+                        <input type="hidden" asp-for="Role" />
+                        <input type="hidden" asp-for="UpdatedAt" />
+                        <input type="hidden" asp-for="CreatedAt" />
+                        <div class="col-md-6 "><label class="labels">ชื่อ</label><input type="text" class="form-control" asp-for="Name"><span asp-validation-for="Name" class="text-danger"></span></div>
+                        <div class="col-md-6"><label class="labels">นามสกุล</label><input type="text" class="form-control" asp-for="Name"><span asp-validation-for="Name" class="text-danger"></span></div>
+                        <div class="col-md-6"><label class="labels">อีเมล</label><input type="email" class="form-control" asp-for="Email"><span asp-validation-for="Email" class="text-danger"></span></div>
+                        <div class="col-md-6"><label class="labels">รหัสผ่าน</label><input type="password" class="form-control" asp-for="Password" value="@TempData["Pass"]"><span asp-validation-for="Password" class="text-danger"></span></div>
+                        <div class="col-md-6"><label class="labels">รหัสประจำตัว</label><input type="text" class="form-control" asp-for="StudentId"><span asp-validation-for="StudentId" class="text-danger"></span></div>
+                        <div class="col-md-6"><label class="labels">เบอร์โทรศัพท์</label><input type="tel" class="form-control" asp-for="Telephone"><span asp-validation-for="Telephone" class="text-danger"></span></div>
+                        <div class="col-md-6"><label class="labels">หน่วยงาน</label><input type="text" class="form-control" value="@ViewBag.Agency" disabled></div>
+                        <div class="col-md-6"><label class="labels">ประเภทผู้ใช้</label><input type="text" class="form-control" value="@ViewBag.UserType" disabled></div>
+                        <div class="form-group mt-3">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Profile">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
