@@ -1,0 +1,87 @@
+﻿@model WebBook.Models.User
+@using Microsoft.AspNetCore.Session;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+
+@{
+    ViewData["Title"] = "Profile";
+}
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Message"]
+    </div>
+}
+
+@*<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AgencyId)
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.Agency
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StudentId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StudentId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Telephone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Telephone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserType)
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.UserType
+        </dd>
+    </dl>
+</div>*@
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">@Html.DisplayFor(model => model.Name)</span><span class="text-black-50">@Html.DisplayFor(model => model.Email)</span><span> </span></div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">ข้อมูลผู้ใช้</h4>
+                    <a class="btn btn-primary" asp-action="ProfileEdit" asp-route-id="@ViewBag.UserId">
+                            <i class="bi bi-plus-lg"></i>    แก้ไข
+                        </a>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6"><label class="labels">รหัสประจำตัว</label><input type="text" class="form-control" value="@Html.DisplayFor(model => model.StudentId)" disabled></div>
+                    <div class="col-md-6"><label class="labels">รหัสผ่าน</label><input type="password" class="form-control" value="********" disabled></div>
+                    <div class="col-md-6"><label class="labels">เบอร์โทรศัพท์</label><input type="tel" class="form-control" value="@Html.DisplayFor(model => model.Telephone)" disabled></div>
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6"><label class="labels">หน่วยงาน</label><input type="text" class="form-control" value="@ViewBag.Agency" disabled></div>
+                    <div class="col-md-6"><label class="labels">ประเภทผู้ใช้</label><input type="text" class="form-control" value="@ViewBag.UserType" disabled></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
