@@ -46,3 +46,6 @@
 /WebBook/obj/WebBook.csproj.nuget.g.props
 /WebBook/obj/Debug/net6.0
 /.gitignore
+/WebBook/ViewModels/RequestViewModel.cs
+/WebBook/ViewModels/RequestViewModel .cs
+/WebBook/WebBook.csproj.user
