@@ -56,3 +56,6 @@
 /.vs/WebBook/v17/.suo
 /.vs/WebBook/DesignTimeBuild/.dtbcache.v2
 /.gitignore
+/WebBook/ViewModels/RequestViewModel.cs
+/WebBook/ViewModels/RequestViewModel .cs
+/WebBook/WebBook.csproj.user

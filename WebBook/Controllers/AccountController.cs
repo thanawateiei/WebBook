@@ -65,6 +65,7 @@ namespace WebBook.Controllers
         {
             if (HttpContext.Session.GetString("UserId") == null)
             {
+                TempData["Message"] = "กรุณาเข้าสู่ระบบ";
                 return RedirectToAction("Login");
             }
             try
@@ -160,6 +161,11 @@ namespace WebBook.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ProfileEdit(User obj)
         {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+                return RedirectToAction("Login");
+            }
             try
             {
                 if (ModelState.IsValid)
@@ -180,6 +186,36 @@ namespace WebBook.Controllers
             TempData["Message"] = "การแก้ไขผิดพลาด";
             return View(obj);
 
+        }
+        public IActionResult History()
+        {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+                return RedirectToAction("Login");
+            }
+            var htr = from h in _db.Histories
+                     join ue in _db.Users on h.UserId equals ue.UserId into join_h_ue
+                     from h_ue in join_h_ue.DefaultIfEmpty()
+                     join s in _db.Statuses on h.StatusId equals s.StatusId into join_r_s
+                     from h_s in join_r_s.DefaultIfEmpty()
+                     join ln in _db.Locations on h.LocationId equals ln.LocationId into join_h_ln
+                     from h_ln in join_h_ln.DefaultIfEmpty()
+                     where h.UserId == HttpContext.Session.GetString("UserId")
+                     select new HistoryViewModel
+                     {
+                         HistoryId = h.HistoryId,
+                         UserEmail = h_ue.Email,
+                         BookTitle = h.BookName,
+                         CallNumber = h.CallNumber,
+                         Location = h_ln.LocationName,
+                         //ReceiveDate = r.ReceiveDate,
+                         ReceiveDate = Convert.ToDateTime(h.ReceiveDate).ToString("dd/MM/yyyy"),
+                         ReturnDate = Convert.ToDateTime(h.ReturnDate).ToString("dd/MM/yyyy"),
+                         Status = h_s.StatusName
+                     };
+            if (htr == null) return NotFound();
+            return View(htr);
         }
         public IActionResult Login()
         {
@@ -202,6 +238,7 @@ namespace WebBook.Controllers
                 //ViewBag.ErrorMessage = "ระบุผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
                 return RedirectToAction("Login");
             }
+            ///try?
             string decryptPassword = DecryptString(userinfo.Password,key);
             bool isValidPassword = String.Equals(decryptPassword,userPass);
             // var cus = _db.Customers.Find(userName);
@@ -241,7 +278,6 @@ namespace WebBook.Controllers
             }
             //ทำการบันทึกทุก Record ที่สั่ง Modified ไว้
             _db.SaveChanges();
-            //ทำการย้ายไปหน้าที่ต้องการ
             return RedirectToAction("Index","Home");
         }
         public IActionResult Register()

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<WebBook.ViewModels.HistoryViewModel>
+@{
+    ViewData["Title"] = "History Page";
+}
+
+@{
+}
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Message"]
+    </div>
+}
+
+<h1 class="text-success">ประวัติคำขอยืม</h1>
+
+@*<form asp-controller="Status" asp-action="Index">
+    <div class="row">
+        <div class="col-sm-6 col-md-8 col-lg-9">
+            <a class="btn btn-primary" asp-action="Create">
+                <i class="bi bi-plus-lg"></i>    เพิ่ม
+            </a>
+        </div>
+    </div>
+</form>*@
+
+<table class="table table-borderless table-hover">
+    <tr>
+        <th>ID</th>
+        <th>อีเมล</th>
+        <th>ชื่อหนังสือ</th>
+        <th>Call Number</th>
+        <th>จุดรับหนังสือ</th>
+        <th>วันรับหนังสือ</th>
+        <th>วันคืนหนังสือ</th>
+        <th>สถานะ</th>
+    </tr>
+    @{
+        var i = 0;
+    }
+    @foreach (var item in Model)
+    {
+        i++;
+        <tr>
+            <th>@item.HistoryId</th>
+            <td>@item.UserEmail</td>
+            <td>@item.BookTitle</td>
+            <td>@item.CallNumber</td>
+            <td>@item.Location</td>
+            <td>@item.ReceiveDate</td>
+            <td>@item.ReturnDate</td>
+            <td>@item.Status</td>
+        </tr>
+    }
+</table>
