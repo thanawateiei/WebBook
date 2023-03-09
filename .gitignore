@@ -46,3 +46,13 @@
 /WebBook/obj/WebBook.csproj.nuget.g.props
 /WebBook/obj/Debug/net6.0/cdd2d111-58df-4494-ac14-24115ad45950_WebBook.pdb
 /.gitignore
+/WebBook/obj/Debug/net6.0/WebBook.assets.cache
+/WebBook/obj/Debug/net6.0/WebBook.GeneratedMSBuildEditorConfig.editorconfig
+/WebBook/obj/Debug/net6.0/WebBook.csproj.AssemblyReference.cache
+/WebBook/obj/project.assets.json
+/WebBook/obj/WebBook.csproj.nuget.g.props
+/WebBook/obj/project.nuget.cache
+/WebBook/obj/WebBook.csproj.nuget.dgspec.json
+/.vs/WebBook/v17/.suo
+/.vs/WebBook/DesignTimeBuild/.dtbcache.v2
+/.gitignore
