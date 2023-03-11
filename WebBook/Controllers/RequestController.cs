@@ -17,7 +17,7 @@ namespace WebBook.Controllers
             //DateTime dt = DateTime.ParseExact(yourObject.ToString(), "MM/dd/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
 
             //string s = dt.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
-            var rq = from r in _db.Histories
+            var rq = (from r in _db.Histories
                      join ue in _db.Users on r.UserId equals ue.UserId into join_r_ue
                      from r_ue in join_r_ue.DefaultIfEmpty()
                      join s in _db.Statuses on r.StatusId equals s.StatusId into join_r_s
@@ -31,8 +31,9 @@ namespace WebBook.Controllers
                          ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy"),
                          CallNumber = r.CallNumber,
                          Status = r_s.StatusName,
-                         StatusID = r.StatusId
-                     };
+                         StatusID = r.StatusId,
+                         CreatedAt = r.CreatedAt
+                     }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
  
             
             var bt = from b in _db.Statuses
@@ -45,7 +46,7 @@ namespace WebBook.Controllers
         [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
         [ValidateAntiForgeryToken] // ป้องกันการโจมตี Cross_site Request Forgery
         [Route("admin/request")]
-        public IActionResult Index(string? stext)
+        public IActionResult Index(string? stext ,DateTime dateStart ,DateTime dateEnd)
         {
             if (stext == null)
             {
@@ -62,7 +63,8 @@ namespace WebBook.Controllers
                      where r_ue.Email.Contains(stext) ||
                             r.BookName.Contains(stext) ||
                             r_s.StatusName.Contains(stext) ||
-                            r.CallNumber.Contains(stext)
+                            r.CallNumber.Contains(stext)   
+
                      select new RequestViewModel
                      {
                          RequestId = r.HistoryId,

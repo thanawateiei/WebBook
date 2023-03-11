@@ -15,13 +15,13 @@ namespace WebBook.Controllers
         public BookController(webContext db)
         { _db = db; }
 
-       
+     
         [Route("Admin/Book")]
         public IActionResult Index()
         {
 
-           
-            var bb = from b in _db.Books
+
+           var bb = (from b in _db.Books
                      select new ViewModels.BookViewModel
                      {
                          BookId = b.BookId,
@@ -30,22 +30,33 @@ namespace WebBook.Controllers
                          PublicationYear = b.PublicationYear,
                          Publisher = b.Publisher,
                          BookCover = b.BookCover,
-                         BookDetail = b.BookDetail
-                     };
-            //var cbt = from cbtt in _db.CheckBookTypes
-            //          join bt in _db.BookTypes on cbtt.BookTypeId equals bt.BookTypeId into join_cbtt_bt
-            //          from cbtt_bt in join_cbtt_bt.DefaultIfEmpty()
-            //          select new ViewModels.CBTViewModel
-            //          {
-            //              BookId = cbtt.BookId,
-            //              BookTypeName = cbtt_bt.BookTypeName,
-            //              CheckBt = cbtt.CheckBt
-            //          };
+                         BookDetail = b.BookDetail,
+                         BookLang = b.BookLang,
+                         CreatedAt = b.CreatedAt//ต้องมีเพาะเอาไปเรียงข้อมูล
+                     }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
 
+            List<BookViewModel> book = new List<BookViewModel>();
+            book.AddRange(bb);
+            //var ad = DateTime.Now;
             //ViewBag.CheckBT = cbt.ToList();
             //ViewData["CheckBT"] = new SelectList(_db.CheckBookTypes, "BookId", "BookTypeId", "CheckBt");
-            if (bb == null) return NotFound();
-            return View(bb);
+            //for (var i = 0; i <= book.Count(); i++)
+            //{   //var path = "wwwroot\\img\\imgbook\\" + book.BookCover;
+            //    try
+            //    {
+            //        var path = "wwwroot\\img\\imgbook\\" + book[i].BookCover;
+            //        IEnumerable<string> items = Directory.EnumerateFileSystemEntries(path);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        book[i].BookCover = "img-notFound.jpg";
+            //    }
+            //}
+            //    //var imgg = Path.Combine(path, book.BookCover);
+            //    //var exists = System.IO.File.Exists(imgg);
+            //}
+            if (book == null) return NotFound();
+            return View(book);
 
         }
 
@@ -55,20 +66,21 @@ namespace WebBook.Controllers
         {
                       
 
-            var bb = from b in _db.Books
-                     where b.BookName.Contains(stext) ||
+            var bb = (from b in _db.Books
+                    where b.BookName.Contains(stext) ||
                           b.AuthorName.Contains(stext)
-                     select new ViewModels.BookViewModel
-                     {
-                         BookId = b.BookId,
-                         BookName = b.BookName,
-                         AuthorName = b.AuthorName,
-                         PublicationYear = b.PublicationYear,
-                         Publisher = b.Publisher,
-                         BookCover = b.BookCover,
-                         BookDetail = b.BookDetail
-                     };
-            
+                      select new ViewModels.BookViewModel
+                      {
+                          BookId = b.BookId,
+                          BookName = b.BookName,
+                          AuthorName = b.AuthorName,
+                          PublicationYear = b.PublicationYear,
+                          Publisher = b.Publisher,
+                          BookCover = b.BookCover,
+                          BookDetail = b.BookDetail,
+                          BookLang = b.BookLang,
+                          CreatedAt = b.CreatedAt//ต้องมีเพาะเอาไปเรียงข้อมูล
+                      }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
             if (bb == null) return NotFound();
             return View(bb);
         }
@@ -221,7 +233,7 @@ namespace WebBook.Controllers
 
 
 
-            //ViewBag.setBT = setbt;
+            ViewBag.BLang = obj.BookLang;
             ViewData["BTT"] = new SelectList(_db.BookTypes, "BookTypeId", "BookTypeName");
             return View(book);
         }

@@ -11,6 +11,11 @@ namespace WebBook.ViewModels
             public string? CallNumber { get; set; }
             public string? Status { get; set; }
             public int? StatusID { get; set; }
+            public int? LocationId { get; set; }
+            public DateTime UpdatedAt { get; set; }
+            public DateTime CreatedAt { get; set; }
+            public DateTime ReturnDate { get; set; }
+            public string? BookLang { get; set; }
 
 
     }

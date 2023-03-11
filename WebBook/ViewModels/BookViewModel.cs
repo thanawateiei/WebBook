@@ -15,6 +15,7 @@ namespace WebBook.ViewModels
         public IFormFile? Bookimg { get; set; }
         public string? BookDetail { get; set; }
         public string? CallNumber { get; set; }
+        public string? BookLang { get; set; } 
         public DateTime UpdatedAt { get; set; }
         public DateTime CreatedAt { get; set; }
         public int? BookType1 { get; set; }

@@ -18,8 +18,10 @@ namespace WebBook.Controllers
                       {
                           UserTypeId = bt.UserTypeId,
                           Limit = bt.Limit,
-                          UserTypeName = bt.UserTypeName
-                          
+                          UserTypeName = bt.UserTypeName,
+                          Thbook = bt.Thbook,
+                          Enbook = bt.Enbook
+
                       };
 
 
@@ -37,7 +39,9 @@ namespace WebBook.Controllers
                       {
                           UserTypeId = bt.UserTypeId,
                           Limit = bt.Limit,
-                          UserTypeName = bt.UserTypeName
+                          UserTypeName = bt.UserTypeName,
+                          Thbook = bt.Thbook,
+                          Enbook = bt.Enbook
 
                       };
 

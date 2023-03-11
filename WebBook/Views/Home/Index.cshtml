@@ -131,20 +131,27 @@
 		</div>
 		<div class="swiper mySwiper">
 			<div class="swiper-wrapper">
-				@for(var i=1;i<20;i++){
-				<div class="swiper-slide">
-					<div class="card cardS">
-						<img src="img/imgbook/BOOK-878a325f-9104-4302-a2d1-0f12ba4fdba6.jpg" class="card-img-top" alt="...">
-						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
-							<p class="card-text">
-								Some quick example text 
-							</p>
-							<a href="#" class="btn btn-primary">ยืม</a>
-						</div>
-					</div>
-				</div>
-				}
+				
+					@foreach(var item in @ViewBag.BookNew)
+					{
+						
+							
+						var img = "img/imgbook/"+item.BookCover ;		
+							
+							
+							<div class="swiper-slide">
+								<div class="card cardS">
+									<img src="@img" class="card-img-top" alt="...">
+									<div class="card-body">
+										<h5 class="card-title">@item.BookName</h5>
+										@*<label class="card-text">
+											Some quick example text 
+										</label>*@
+										<a href="#" class="btn btn-primary">ยืม</a>
+									</div>
+								</div>
+							</div>
+					}
 			</div>
 			<div class="swiper-button-next shadow"></div>
 			<div class="swiper-button-prev shadow"></div>
@@ -166,21 +173,26 @@
 		</div>
 		<div class="swiper mySwiper">
 			<div class="swiper-wrapper">
-				@for(var i=1;i<6;i++){
-				<div class="swiper-slide">
-					<div class="card cardS">
-						<img src="img/imgbook/BOOK-29d2e178-0615-4ba0-8458-0cb755544eeb.jpg" class="card-img-top" alt="...">
-						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
-							<p class="card-text">
-								Some quick example text 
-							</p>
-							<a href="#" class="btn btn-primary">ยืม</a>
-						</div>
-					</div>
-				</div>
-				}
-				
+					@foreach(var item in @ViewBag.bookRecommend)
+					{
+						
+							
+						var img = "img/imgbook/"+item.BookCover ;		
+							
+							
+							<div class="swiper-slide">
+								<div class="card cardS">
+									<img src="@img" class="card-img-top" alt="...">
+									<div class="card-body">
+										<h5 class="card-title">@item.BookName</h5>
+										@*<label class="card-text">
+											Some quick example text 
+										</label>*@
+										<a href="#" class="btn btn-primary">ยืม</a>
+									</div>
+								</div>
+							</div>
+					}
 			</div>
 			<div class="swiper-button-next shadow"></div>
 			<div class="swiper-button-prev shadow"></div>

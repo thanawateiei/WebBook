@@ -31,7 +31,6 @@ namespace WebBook.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=LAPTOP-8FFPN76C\\SQLEXPRESS;Initial Catalog=web;Persist Security Info=True;User ID=webdev;Password=1234");
             }
         }
@@ -79,9 +78,9 @@ namespace WebBook.Models
                     .HasColumnName("book_detail");
 
                 entity.Property(e => e.BookLang)
-                    .HasMaxLength(10)
-                    .HasColumnName("book_lang")
-                    .IsFixedLength();
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
+                    .HasColumnName("book_lang");
 
                 entity.Property(e => e.BookName)
                     .HasMaxLength(512)
@@ -293,6 +292,16 @@ namespace WebBook.Models
                     .HasMaxLength(512)
                     .IsUnicode(false)
                     .HasColumnName("email");
+
+                entity.Property(e => e.Firstname)
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
+                    .HasColumnName("firstname");
+
+                entity.Property(e => e.Lastname)
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
+                    .HasColumnName("lastname");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(512)

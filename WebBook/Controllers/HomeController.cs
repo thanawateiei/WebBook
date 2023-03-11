@@ -14,6 +14,40 @@ namespace WebBook.Controllers
 
         public IActionResult Index()
         {
+            var booknew = (from b in _db.Books
+                           where b.BookType1 == 13 || b.BookType2 == 13 || b.BookType3 == 13 || b.BookType4 == 13 || b.BookType5 == 13 ||
+                                 b.BookType6 == 13 || b.BookType7 == 13 || b.BookType8 == 13 || b.BookType9 == 13 || b.BookType10 == 13 
+                           select new ViewModels.BookViewModel
+                          {
+                              BookId = b.BookId,
+                              BookName = b.BookName,
+                              AuthorName = b.AuthorName,
+                              PublicationYear = b.PublicationYear,
+                              Publisher = b.Publisher,
+                              BookCover = b.BookCover,
+                              BookDetail = b.BookDetail,
+                              BookLang = b.BookLang,
+                              CreatedAt = b.CreatedAt//ต้องมีเพาะเอาไปเรียงข้อมูล
+                          }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
+
+            var bookRecommend = (from b in _db.Books
+                           where b.BookType1 == 14 || b.BookType2 == 14 || b.BookType3 == 14 || b.BookType4 == 14 || b.BookType5 == 14 ||
+                                 b.BookType6 == 14 || b.BookType7 == 14 || b.BookType8 == 14 || b.BookType9 == 14 || b.BookType10 == 14
+                           select new ViewModels.BookViewModel
+                           {
+                               BookId = b.BookId,
+                               BookName = b.BookName,
+                               AuthorName = b.AuthorName,
+                               PublicationYear = b.PublicationYear,
+                               Publisher = b.Publisher,
+                               BookCover = b.BookCover,
+                               BookDetail = b.BookDetail,
+                               BookLang = b.BookLang,
+                               CreatedAt = b.CreatedAt//ต้องมีเพาะเอาไปเรียงข้อมูล
+                           }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
+
+            ViewBag.BookNew = booknew;
+            ViewBag.BookRecommend = bookRecommend;
             return View();
         }
         public IActionResult Privacy()

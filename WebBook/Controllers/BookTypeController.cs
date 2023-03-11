@@ -19,8 +19,8 @@ namespace WebBook.Controllers
 						 BookTypeId = b.BookTypeId,
 						 BookTypeName = b.BookTypeName
 					 };
-		
-		
+
+			
 			if (bt == null) return NotFound();
 			return View(bt);
 

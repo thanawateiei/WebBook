@@ -49,8 +49,21 @@
 	<div class="container py-5">
 		<div class="row">
 			@foreach (var item in Model)
-			{
-				var imgbook = "/img/imgbook/" + @item.BookCover;
+			{   
+				// check file image 
+				var imgbook = "";
+				try
+                {
+                    var path = "wwwroot\\img\\imgbook\\" + item.BookCover;
+                    IEnumerable<string> items = Directory.EnumerateFileSystemEntries(path);
+					imgbook = "/img/imgbook/" + @item.BookCover;
+                }
+                catch(Exception ex)
+                {
+                    imgbook = "/img/imgbook/img-notFound.jpg";
+                }
+				// check file image END
+			    //var imgbook = "/img/imgbook/" + @item.BookCover;
 
 				<div class="col-sm-6 col-md-6 col-lg-3 mb-4 my-2 mb-lg-0">
 					<div class="card p-2">
