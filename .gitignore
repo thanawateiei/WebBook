@@ -2,7 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/WebBook/Controllers/AdminController.cs
 /.vs/WebBook/FileContentIndex
 /.vs/ProjectEvaluation/webbook.metadata.v5.2
 /.vs/ProjectEvaluation/webbook.projects.v5.2
@@ -56,7 +55,4 @@
 /.vs/WebBook/v17/.suo
 /.vs/WebBook/DesignTimeBuild/.dtbcache.v2
 /.gitignore
-/WebBook/ViewModels/RequestViewModel.cs
-/WebBook/ViewModels/RequestViewModel .cs
 /WebBook/WebBook.csproj.user
-/WebBook/appsettings.json

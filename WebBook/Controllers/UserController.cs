@@ -32,7 +32,8 @@ namespace WebBook.Controllers
                          roleName = uu_ur.RoleName,
                          student_id = u.StudentId,
                          agencyName = uu_ua.AgencyName,
-                         name = u.Name,
+                         Firstname = u.Firstname,
+                         Lastname = u.Lastname,
                          telephone = u.Telephone,
                          user_typeName = uu_ut.UserTypeName
                      };
@@ -57,7 +58,8 @@ namespace WebBook.Controllers
                      join ut in _db.UserTypes on u.UserType equals ut.UserTypeId into join_u_ut
                      from uu_ut in join_u_ut
 
-                     where u.Name.Contains(stext) ||
+                     where u.Firstname.Contains(stext) ||
+                           u.Lastname.Contains(stext) ||
                            u.StudentId.Contains(stext) ||
                            u.Email.Contains(stext)
 
@@ -69,7 +71,8 @@ namespace WebBook.Controllers
                          roleName = uu_ur.RoleName,
                          student_id = u.StudentId,
                          agencyName = uu_ua.AgencyName,
-                         name = u.Name,
+                         Firstname = u.Firstname,
+                         Lastname = u.Lastname,
                          telephone = u.Telephone,
                          user_typeName = uu_ut.UserTypeName
                      };

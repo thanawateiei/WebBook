@@ -11,7 +11,8 @@ namespace WebBook.ViewModels
         public string? roleName { get; set; }
         public string? agencyName { get; set; }
         public string? student_id { get; set; }
-        public string? name { get; set; }
+        public string? Firstname { get; set; }
+        public string? Lastname { get; set; }
         public string? telephone { get; set; }
         public string? user_typeName { get; set; }
 
