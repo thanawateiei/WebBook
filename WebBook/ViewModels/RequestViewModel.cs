@@ -19,6 +19,7 @@ namespace WebBook.ViewModels
             public DateTime CreatedAt { get; set; }
             public DateTime ReturnDate { get; set; }
             public string S_CreatedAt { get; set; }
+            public string S_ReturnDate { get; set; }
             public string? BookLang { get; set; }
 
 
