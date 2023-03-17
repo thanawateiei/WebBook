@@ -83,16 +83,15 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3 border-right">
-            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">name</span><span class="text-black-50">email</span><span> </span></div>
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"></div>
         </div>
         <div class="col-md-5 border-right">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="text-right">แก้ไขข้อมูลผู้ใช้</h4>
                 </div>
-
+                <form asp-action="ProfileEdit">
                 <div class="row mt-3">
-                    <form asp-action="ProfileEdit">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="UserId" />
                         <input type="hidden" asp-for="AgencyId" />
@@ -100,8 +99,8 @@
                         <input type="hidden" asp-for="Role" />
                         <input type="hidden" asp-for="UpdatedAt" />
                         <input type="hidden" asp-for="CreatedAt" />
-                        <div class="col-md-6 "><label class="labels">ชื่อ</label><input type="text" class="form-control" asp-for="Name"><span asp-validation-for="Name" class="text-danger"></span></div>
-                        <div class="col-md-6"><label class="labels">นามสกุล</label><input type="text" class="form-control" asp-for="Name"><span asp-validation-for="Name" class="text-danger"></span></div>
+                        <div class="col-md-6 "><label class="labels">ชื่อ</label><input type="text" class="form-control" asp-for="Firstname"><span asp-validation-for="Firstname" class="text-danger"></span></div>
+                        <div class="col-md-6"><label class="labels">นามสกุล</label><input type="text" class="form-control" asp-for="Lastname"><span asp-validation-for="Lastname" class="text-danger"></span></div>
                         <div class="col-md-6"><label class="labels">อีเมล</label><input type="email" class="form-control" asp-for="Email"><span asp-validation-for="Email" class="text-danger"></span></div>
                         <div class="col-md-6"><label class="labels">รหัสผ่าน</label><input type="password" class="form-control" asp-for="Password" value="@TempData["Pass"]"><span asp-validation-for="Password" class="text-danger"></span></div>
                         <div class="col-md-6"><label class="labels">รหัสประจำตัว</label><input type="text" class="form-control" asp-for="StudentId"><span asp-validation-for="StudentId" class="text-danger"></span></div>
@@ -111,15 +110,15 @@
                         <div class="form-group mt-3">
                             <input type="submit" value="Save" class="btn btn-primary" />
                         </div>
-                    </form>
                 </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
 <div>
-    <a asp-action="Profile">Back to List</a>
+    <a class="btn btn-secondary" asp-action="Profile">Back</a>
 </div>
 
 @section Scripts {

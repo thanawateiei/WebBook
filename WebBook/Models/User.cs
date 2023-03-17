@@ -13,7 +13,6 @@ namespace WebBook.Models
         public int? Role { get; set; }
         public int? AgencyId { get; set; }
         public string? StudentId { get; set; }
-        public string? Name { get; set; }
         public string? Telephone { get; set; }
         public int? UserType { get; set; }
         public DateTime? UpdatedAt { get; set; }

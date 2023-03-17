@@ -63,7 +63,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3 border-right">
-            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">@Html.DisplayFor(model => model.Name)</span><span class="text-black-50">@Html.DisplayFor(model => model.Email)</span><span> </span></div>
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">@Html.DisplayFor(model => model.Firstname) @Html.DisplayFor(model => model.Lastname)</span><span class="text-black-50">@Html.DisplayFor(model => model.Email)</span><span> </span></div>
         </div>
         <div class="col-md-5 border-right">
             <div class="p-3 py-5">
@@ -74,6 +74,8 @@
                         </a>
                 </div>
                 <div class="row mt-3">
+                    <div class="col-md-6"><label class="labels">ชื่อ</label><input type="text" class="form-control" value="@Html.DisplayFor(model => model.Firstname)" disabled></div>
+                    <div class="col-md-6"><label class="labels">นามสกุล</label><input type="text" class="form-control" value="@Html.DisplayFor(model => model.Lastname)" disabled></div>
                     <div class="col-md-6"><label class="labels">รหัสประจำตัว</label><input type="text" class="form-control" value="@Html.DisplayFor(model => model.StudentId)" disabled></div>
                     <div class="col-md-6"><label class="labels">รหัสผ่าน</label><input type="password" class="form-control" value="********" disabled></div>
                     <div class="col-md-6"><label class="labels">เบอร์โทรศัพท์</label><input type="tel" class="form-control" value="@Html.DisplayFor(model => model.Telephone)" disabled></div>
