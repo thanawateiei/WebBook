@@ -20,6 +20,9 @@
 	<!-- Custom styles for this template-->
 	<link href="~/css/sb-admin-2.min.css" rel="stylesheet">
 
+	@*<!-- Custom styles for this page -->
+	<link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">*@
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 
@@ -50,13 +53,16 @@
 				</a>
 			</li>
 
-			<!-- Divider -->
-			<hr class="sidebar-divider">
+		<li class="nav-item">
+				<a class="nav-link "
+				   asp-controller="Home" asp-action="index">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+						<path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+					</svg>
+					<span>HOME</span>
+				</a>
+			</li>
 
-			<!-- Heading -->
-			<div class="sidebar-heading">
-				จัดการ
-			</div>
 			<!-- Nav Item - รายการขอยืมหนังสือ Menu                                           รายการขอยืมหนังสือ                              -->
 			<li class="nav-item">
 				<a class="nav-link "
@@ -101,6 +107,7 @@
 						<a class="collapse-item" asp-controller="User" asp-action="index">จัดการผู้ใช้</a>
 						<a class="collapse-item" asp-controller="UserType" asp-action="index">จัดการประเภทผู้ใช้</a>
 						<a class="collapse-item" asp-controller="Agency" asp-action="index">จัดการหน่วยงาน</a>
+						<a class="collapse-item" asp-controller="Location" asp-action="index">จัดการสถานที่ส่ง</a>
 					</div>
 				</div>
 			</li>
@@ -273,13 +280,13 @@
 				<div class="container-fluid">
 
 
-					<div class="container">
+					
 						<main role="main" class="pb-3">
 							<div id="con">
 								@RenderBody()
 							</div>
 						</main>
-					</div>
+				
 
 				</div>
 
@@ -328,7 +335,9 @@
 			</div>
 		</div>
 	</div>
-
+	@*<script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+	<script src="~/js/demo/datatables-demo.js"></script>*@
 	<!-- Bootstrap core JavaScript-->
 	<script src="~/vendor/jquery/jquery.min.js"></script>
 	<script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

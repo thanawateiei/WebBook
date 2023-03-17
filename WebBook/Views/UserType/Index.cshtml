@@ -46,6 +46,8 @@
 		<th>Id</th>
 		<th>ประเภท</th>
 		<th>จำนวนหนังสือที่ยืมได้</th>
+		<th>หนังสือภาษาไทย</th>
+		<th>หนังสือภาษาอังกฤษ</th>
 		<th></th>
 		<th></th>
 	</tr>
@@ -57,6 +59,8 @@
 			<td>@item.UserTypeId</td>
 			<td>@item.UserTypeName</td>
 			<td>@item.Limit</td>
+			<td>@item.Thbook วัน</td>
+			<td>@item.Enbook วัน</td>
 
 			<td>
 				<a asp-action="Edit" asp-route-id="@item.UserTypeId">

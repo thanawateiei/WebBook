@@ -79,9 +79,9 @@ namespace WebBook.Models
                     .HasColumnName("book_detail");
 
                 entity.Property(e => e.BookLang)
-                    .HasMaxLength(10)
-                    .HasColumnName("book_lang")
-                    .IsFixedLength();
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
+                    .HasColumnName("book_lang");
 
                 entity.Property(e => e.BookName)
                     .HasMaxLength(512)
@@ -293,6 +293,16 @@ namespace WebBook.Models
                     .HasMaxLength(512)
                     .IsUnicode(false)
                     .HasColumnName("email");
+
+                entity.Property(e => e.Firstname)
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
+                    .HasColumnName("firstname");
+
+                entity.Property(e => e.Lastname)
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
+                    .HasColumnName("lastname");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(512)

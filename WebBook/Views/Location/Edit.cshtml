@@ -1,15 +1,16 @@
 ﻿@model WebBook.Models.Location
 
 @{
-    ViewData["Title"] = "Edit";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Edit";
 }
 @if (ViewBag.ErrorMessage != null)
 {
-            <script type="text/javascript">
-                window.onload = function () {
-                    alert("@ViewBag.ErrorMessage");
-                };
-            </script>
+	<script type="text/javascript">
+		window.onload = function () {
+			alert("@ViewBag.ErrorMessage");
+		};
+	</script>
 }
 
 <h1>Edit</h1>
@@ -17,31 +18,32 @@
 <h4>Location</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="LocationId" readonly/>
-            <div class="form-group">
-                <label asp-for="LocationName" class="control-label"></label>
-                <input asp-for="LocationName" class="form-control" />
-                <span asp-validation-for="LocationName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LocationDetail" class="control-label"></label>
-                <input asp-for="LocationDetail" class="form-control" />
-                <span asp-validation-for="LocationDetail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="LocationId" readonly />
+			<div class="form-group">
+				<label asp-for="LocationName" class="control-label"></label>
+				<input asp-for="LocationName" class="form-control" />
+				<span asp-validation-for="LocationName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="LocationDetail" class="control-label"></label>
+				<input asp-for="LocationDetail" class="form-control" />
+				<span asp-validation-for="LocationDetail" class="text-danger"></span>
+			</div>
+			<div class="d-flex justify-content-between">
+				<a type="button" class="btn btn-secondary" asp-action="Index">Back</a>
+				<input type="submit" value="Save" class="btn btn-primary  " />
+			</div>
+		</form>
+	</div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }
