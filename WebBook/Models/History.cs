@@ -7,7 +7,7 @@ namespace WebBook.Models
     {
         public string HistoryId { get; set; } = null!;
         public string UserId { get; set; } = null!;
-        public DateTime? ReceiveDate { get; set; }
+        public DateTime ReceiveDate { get; set; }
         public string? BookName { get; set; }
         public string? AuthorName { get; set; }
         public int? PublicationYear { get; set; }

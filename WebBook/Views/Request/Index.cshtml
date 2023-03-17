@@ -2,9 +2,12 @@
 @{
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 	ViewData["Title"] = "Admin Page";
-}
-@{
+
 	var stext = ViewBag.stext;
+	var filterDate = ViewBag.filterDate;
+	var filterStatus = ViewBag.filterStatus;
+
+
 }
 @if (ViewBag.ErrorMessage != null)
 {
@@ -14,104 +17,149 @@
 		};
 	</script>
 }
+<style>
+table{
+  overflow-x: auto;
+  white-space: nowrap;
+}
 
+
+
+</style>
 <h1 class="text-success">รายการคำขอยืม</h1>
 
 
-<div class="container-fluid">
-
+<div class="container-fluid  px-0">
 	<!-- DataTales Example -->
-	<div class="card shadow mb-1">
-		<div class="card-header py-3 ">
-			<div>
-				<p class="mb-0 ml-3">  สถานะ</p>
+	<div class="card shadow w-100 mb-1">
+		<div class="card-header py-2 ">
 
-			</div>
-			
 				<form asp-controller="Request" asp-action="Index">
-					<div class="row">
-				<div class="col-3">
-					<select class="form-control" aria-label="Default select example" id="filterStatus">
-						@if (@stext != null)
-						{
-							<option value="@stext">@stext</option>
-						}
-						<option value=" ">ทั้งหมด</option>
-						@foreach (var item in ViewBag.Status)
-						{
-							<option value="@item.StatusName">@item.StatusName</option>
-						}
+					<div class="row  justify-content-between">
 
-					</select>
-				</div>
-				<div class="col-2">
-					<input type="date" name="dateStart" class="form-control">
+						<div class="col-2  pr-0">
+							@*<label class="mb-0 pl-1">สถานะ</label>*@
+							<select class="form-control" aria-label="Default select example" name="filterStatus" id="filterStatus">
+								@if (@filterStatus != null)
+								{
+									<option value="@filterStatus">@filterStatus</option>
+								}
+								<option value=" ">สถานะทั้งหมด</option>
+								@foreach (var item in ViewBag.Status)
+								{
+									<option value="@item.StatusName">@item.StatusName</option>
+								}
 
-				</div>
-				<label class="label-control pt-2">To</label>
-				<div class="col-2">
-					<input type="date" name="dateEnd" class="form-control">
-				</div>
-				<div class="col-1"></div>
-				<div class="col-3">
-					
-						<div class="input-group">
-
-							<input type="text" name="stext" id="search" class="form-control" value="@stext" />
-							<button type="submit" id="submit" class="btn btn-secondary">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-									<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-								</svg>
-							</button>
+							</select>
 						</div>
-					
-				</div>
-				</div>
-				</form>
+						<div class="col-2  pr-0">
+							@*<label class="mb-0 pl-1">วันรับ/วันขอยืม</label>*@
+							<select class="form-control" aria-label="Default select example" name="filterDate" id="filterDate">
+								@if (@filterDate == "ReceiveDate")
+								{
+									<option value="ReceiveDate">วันรับหนังสือ</option>
+									<option value=" ">วันรับ/วันขอยืม </option>
+									<option value="CreatedAt">วันขอยืมหนังสือ</option>
+								}
+								else if (@filterDate == "CreatedAt")
+								{
+									<option value="CreatedAt">วันขอยืมหนังสือ</option>
+									<option value=" ">วันรับ/วันขอยืม </option>
+									<option value="ReceiveDate">วันรับหนังสือ</option>
+								}
+								else
+								{
+									<option value=" ">วันรับ/วันขอยืม</option>
+									<option value="CreatedAt">วันขอยืมหนังสือ</option>
+									<option value="ReceiveDate">วันรับหนังสือ</option>
+								}
 
+
+							</select>
+						</div>
+						<div class="col-2  pr-1">
+							@*<label class="mb-0 pl-1">วันแรก</label>*@
+							<input type="date" name="dateStart" id="dateStart" value="@ViewBag.dateStart" class="form-control">
+						</div>
+
+						<label class="pt-2">To</label>
+
+						<div class="col-2  pl-1">
+							@*<label class="mb-0 pl-1">วันสุดท้าย</label>*@
+							<input type="date" name="dateEnd" id="dateEnd" value="@ViewBag.dateEnd" class="form-control">
+						</div>
+
+						<div class="col-3 pl-1">
+							@*<label class="mb-0 pl-1">ค้นหา</label>*@
+							<input type="text" name="stext" id="search" placeholder="ค้นหา..." class="form-control" value="@stext" />
+						</div>
+
+
+
+					</div>
+
+
+
+
+					<div class="col-12 px-0">
+						<button type="submit" id="submit" class="btn btn-secondary  my-2  w-100">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+								<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+							</svg>
+							ค้นหา
+						</button>
+					</div>
+
+
+
+				</form>
+		</div>
 			
-			<div class="card-body">
-				<div class="table-responsive">
-					<table class="table table-bordered" @* id="dataTable"*@ width="100%" cellspacing="0">
+		<div class="card-body">
+				<div class="table-responsive  ">
+					<table class="table table-bordered "  @* id="dataTable"*@  >
 						<thead>
 							<tr>
-
+								<th class="text-center">
+									<a>
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-down" viewBox="0 0 16 16">
+											<path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+										</svg>
+									</a>
+								</th>
+								@*<th >ID</th>*@
 								<th>Email</th>
 								<th>ชื่อหนังสือ</th>
-								<th>วันรับหนังสือ</th>
 								<th>CallNumber</th>
+								<th>จุดรับหนังสือ</th>
+								<th>วันแกไข้</th>
+								<th>วันรับหนังสือ</th>
+								<th>วันขอยืมหนังสือ</th>
 								<th>สถานะ</th>
+
 								<th></th>
 								<th></th>
 							</tr>
 						</thead>
-						@*	<tfoot>
-							<tr>
-							<th>ID</th>
-							<th>Email</th>
-							<th>ชื่อหนังสือ</th>
-							<th>วันรับหนังสือ</th>
-							<th>CallNumber</th>
-							<th>สถานะ</th>
-							<th></th>
-							<th></th>
-							</tr>
-							</tfoot>*@
 						<tbody>
 							@{
-								var i = 0;
+								//var i = 0;
+								var count = 0;
 							}
 
 							@foreach (var item in Model)
 							{
-								i++;
-
+								count++;
 								<tr>
-
+									<td  class="text-center">@count</td>
+									@*<td ><label class="ttd idHis">@item.RequestId</label></td>*@
 									<td>@item.UserEmail</td>
-									<td>@item.BookTitle</td>
-									<td>@item.ReceiveDate</td>
+									<td style="">@item.BookTitle</td>
 									<td>@item.CallNumber</td>
+									<td>@item.LocationName</td>
+									<td>@item.UpdatedAt</td>
+									<td>@item.S_ReceiveDate</td>
+									<td>@item.S_CreatedAt</td>
 									<td>@item.Status</td>
 									@*@if(item.StatusID == 1){
 										<td class="text-warning">@item.Status</td>
@@ -129,7 +177,7 @@
 										<td class="text">@item.Status</td>
 										}*@
 
-									<td>
+									<td class="text-center">
 										<a asp-action="Edit" asp-route-id="@item.RequestId">
 											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
 												<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
@@ -137,7 +185,7 @@
 											</svg>
 										</a>
 									</td>
-									<td>
+									<td class="text-center">
 										<a asp-action="Delete" asp-route-id="@item.RequestId">
 											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-x text-danger" viewBox="0 0 16 16">
 												<path d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708z"></path>
@@ -148,27 +196,33 @@
 								</tr>
 							}
 						</tbody>
+
 					</table>
 				</div>
-			</div>
 		</div>
-
 	</div>
+</div>
 
 
-	<script type="text/javascript">
-		$( document ).ready(function() {
+<input type="text" class="adasd" value="asdasdasd" />
 
+<script type="text/javascript">
+	$( document ).ready(function() {
+		var Hisid = $(".adasd").val();
+		console.log("Hisid");
+		console.log(Hisid);
+		var sas =Hisid.length;
+		console.log(sas);
 
-			$("#filterStatus").change(function() {
-				//alert("asd");
-				var val = $(this).val();
-				$( "#search" ).val(val);
-				$( "#submit" ).click();
-			});
+		//$("#filterStatus").change(function() {
+		//	//alert("asd");
+		//	var val = $(this).val();
+		//	$( "#search" ).val(val);
+		//	$( "#submit" ).click();
+		//});
 
-		});// END document  ready
+	});// END document  ready
 
-	</script>
+</script>
 
 

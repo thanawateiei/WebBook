@@ -3,6 +3,7 @@ using WebBook.Models;
 using WebBook.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Globalization;
+using System.Collections.Generic;
 
 namespace WebBook.Controllers
 {
@@ -18,71 +19,164 @@ namespace WebBook.Controllers
 
             //string s = dt.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
             var rq = (from r in _db.Histories
-                     join ue in _db.Users on r.UserId equals ue.UserId into join_r_ue
-                     from r_ue in join_r_ue.DefaultIfEmpty()
-                     join s in _db.Statuses on r.StatusId equals s.StatusId into join_r_s
-                     from r_s in join_r_s.DefaultIfEmpty()
-                     select new RequestViewModel
-                     {
-                         RequestId = r.HistoryId,
-                         UserEmail = r_ue.Email,
-                         BookTitle = r.BookName,
-                         //ReceiveDate = r.ReceiveDate,
-                         ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy"),
-                         CallNumber = r.CallNumber,
-                         Status = r_s.StatusName,
-                         StatusID = r.StatusId,
-                         CreatedAt = r.CreatedAt
-                     }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
- 
-            
+                      join ue in _db.Users on r.UserId equals ue.UserId into join_r_ue
+                      from r_ue in join_r_ue.DefaultIfEmpty()
+                      join s in _db.Statuses on r.StatusId equals s.StatusId into join_r_s
+                      from r_s in join_r_s.DefaultIfEmpty()
+                      join l in _db.Locations on r.LocationId equals l.LocationId into join_r_l
+                      from r_l in join_r_l.DefaultIfEmpty()
+                      select new RequestViewModel
+                      {
+                          RequestId = r.HistoryId,
+                          UserEmail = r_ue.Email,
+                          BookTitle = r.BookName,
+                          CreatedAt = r.CreatedAt,
+                          ReceiveDate = r.ReceiveDate,
+                          UpdatedAt = r.UpdatedAt,
+                          LocationName = r_l.LocationName,
+                          S_ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy"),
+                          CallNumber = r.CallNumber,
+                          Status = r_s.StatusName,
+                          S_CreatedAt = Convert.ToDateTime(r.CreatedAt).ToString("dd/MM/yyyy")
+                      }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
+
+
             var bt = from b in _db.Statuses
                      select b;
+
             if (rq == null) return NotFound();
             ViewBag.Status = bt;
+            ViewBag.filterDate = null;
             //ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName");
             return View(rq);
         }
-        [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
-        [ValidateAntiForgeryToken] // ป้องกันการโจมตี Cross_site Request Forgery
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("admin/request")]
-        public IActionResult Index(string? stext ,DateTime dateStart ,DateTime dateEnd)
+        public IActionResult Index(string stext, string filterDate, string filterStatus, DateTime dateStart, DateTime dateEnd)
         {
-            if (stext == null)
+
+            List<RequestViewModel> rqq = new List<RequestViewModel>();
+
+            var rq = (from r in _db.Histories
+                      join ue in _db.Users on r.UserId equals ue.UserId into join_r_ue
+                      from r_ue in join_r_ue.DefaultIfEmpty()
+                      join s in _db.Statuses on r.StatusId equals s.StatusId into join_r_s
+                      from r_s in join_r_s.DefaultIfEmpty()
+                      join l in _db.Locations on r.LocationId equals l.LocationId into join_r_l
+                      from r_l in join_r_l.DefaultIfEmpty()
+                      select new RequestViewModel
+                      {
+                          RequestId = r.HistoryId,
+                          UserEmail = r_ue.Email,
+                          BookTitle = r.BookName,
+                          CreatedAt = r.CreatedAt,
+                          ReceiveDate = r.ReceiveDate,
+                          UpdatedAt = r.UpdatedAt,
+                          LocationName = r_l.LocationName,
+                          S_ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy"),
+                          CallNumber = r.CallNumber,
+                          Status = r_s.StatusName,
+                          S_CreatedAt = Convert.ToDateTime(r.CreatedAt).ToString("dd/MM/yyyy")
+                      }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
+
+            rqq = rq.ToList();
+            
+
+            // Filter
+            if (stext != null)
             {
-                return RedirectToAction("Index");
+                rqq = rqq.Where(r => (r.BookTitle.Contains(stext) || r.CallNumber.Contains(stext) || r.UserEmail.Contains(stext) || r.RequestId.Contains(stext))).ToList();
             }
-            //var pd = from p in _db.Products
-            //         select p;
-            var rq = from r in _db.Histories
-                     join ue in _db.Users on r.UserId equals ue.UserId into join_r_ue
-                     from r_ue in join_r_ue.DefaultIfEmpty()
-                     join s in _db.Statuses on r.StatusId equals s.StatusId into join_r_s
-                     from r_s in join_r_s.DefaultIfEmpty()
 
-                     where r_ue.Email.Contains(stext) ||
-                            r.BookName.Contains(stext) ||
-                            r_s.StatusName.Contains(stext) ||
-                            r.CallNumber.Contains(stext)   
+            if (filterDate != null)
+            {
+                if (filterDate == "CreatedAt")
+                {// (r.CreatedAt.Date >= dateStart.Date && r.CreatedAt.Date <= dateEnd.Date)
+                    if (dateStart != DateTime.MinValue && dateEnd == DateTime.MinValue)
+                    {
+                        rqq = rqq.Where(r => (r.CreatedAt.Date >= dateStart.Date)).ToList();
+                    }
+                    else if (dateStart == DateTime.MinValue && dateEnd != DateTime.MinValue)
+                    {
+                        rqq = rqq.Where(r => (r.CreatedAt.Date <= dateEnd.Date)).ToList();
+                    }
+                    else if(dateStart != DateTime.MinValue && dateEnd != DateTime.MinValue)
+                    {
+                        rqq = rqq.Where(r => (r.CreatedAt.Date >= dateStart.Date) && (r.CreatedAt.Date <= dateEnd.Date)).ToList();
+                    }
+                }
+                else if (filterDate == "ReceiveDate")
+                {
+                    if (dateStart != DateTime.MinValue && dateEnd == DateTime.MinValue)
+                    {
+                        rqq = rqq.Where(r => (r.ReceiveDate.Date >= dateStart.Date)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
+                        //rqq.OrderByDescending(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay);
+                    }
+                    else if (dateStart == DateTime.MinValue && dateEnd != DateTime.MinValue)
+                    {
+                        rqq = rqq.Where(r => (r.ReceiveDate.Date <= dateEnd.Date)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
+                    }
+                    else if (dateStart != DateTime.MinValue && dateEnd != DateTime.MinValue)
+                    {
+                        rqq = rqq.Where(r => (r.ReceiveDate.Date >= dateStart.Date) && (r.ReceiveDate.Date <= dateEnd.Date)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
+                    }
+                }
+               
 
-                     select new RequestViewModel
-                     {
-                         RequestId = r.HistoryId,
-                         UserEmail = r_ue.Email,
-                         BookTitle = r.BookName,
-                         ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy"),
-                         //ReceiveDate = r.ReceiveDate,
-                         CallNumber = r.CallNumber,
-                         Status = r_s.StatusName
-                     };
-            if (rq == null) return NotFound();
+
+            }
+            else if(dateStart != DateTime.MinValue || dateEnd != DateTime.MinValue)
+            {
+                if (dateStart != DateTime.MinValue && dateEnd == DateTime.MinValue)
+                {
+                    rqq = rqq.Where(r => ((r.ReceiveDate.Date >= dateStart.Date) || (r.CreatedAt.Date >= dateStart.Date))).ToList();
+                }
+                else if (dateStart == DateTime.MinValue && dateEnd != DateTime.MinValue)
+                {
+                    rqq = rqq.Where(r => ((r.ReceiveDate.Date <= dateEnd.Date) || (r.CreatedAt.Date <= dateStart.Date))).ToList();
+                }
+                else
+                {
+                    rqq = rqq.Where(r => ((r.ReceiveDate.Date >= dateStart.Date) && (r.ReceiveDate.Date <= dateEnd.Date)) || ((r.CreatedAt.Date >= dateStart.Date) && (r.CreatedAt.Date <= dateEnd.Date))).ToList();
+                }
+            }
+
+            if (filterStatus != null)
+            {
+                rqq = rqq.Where(r => (r.Status.Contains(filterStatus))).OrderByDescending(c => c.UpdatedAt.Date).ThenBy(c => c.UpdatedAt.TimeOfDay).ToList();
+            }
+            // Filter End
+
+
 
             ViewBag.stext = stext;
             var bt = from b in _db.Statuses
                      select b;
             ViewBag.Status = bt;
-            return View(rq);
+            ViewBag.filterDate = filterDate;
+            ViewBag.filterStatus = filterStatus;
+            if (dateStart != DateTime.MinValue.Date)
+            {
+                ViewBag.dateStart = dateStart.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                ViewBag.dateStart = null;
+            }
+            if (dateEnd != DateTime.MinValue.Date)
+            {
+                ViewBag.dateEnd = dateEnd.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                ViewBag.dateEnd = null;
+            }
+
+            return View(rqq);
+
         }
+
         [Route("admin/request/edit/{id}")]
         public IActionResult Edit(string id)
         {
@@ -92,8 +186,8 @@ namespace WebBook.Controllers
                 ViewBag.ErrorMassage = "ต้องระบุค่า ID";
                 return RedirectToAction("Index");
             }
-            // ทำการเขียน Query หา Record ของ Product.pdId จาก id ที่ส่งมา
-            var obj = _db.Histories.Find(id);
+            var obj = _db.Histories.FirstOrDefault(ue => ue.HistoryId == id);
+            //var obj = _db.Histories.Find(id);
             if (obj == null)
             {
                 ViewBag.ErrorMassage = "ไม่พบข้อมูลที่ระบุ";
@@ -103,15 +197,14 @@ namespace WebBook.Controllers
             //อ่านข้อมูลจากตารางลง SelectList แล้วใส่ข้อมูลลงตัว ViewData
             //และกำนหนดว่า Select ที่เลือก เป็น id ของ obj นั้นๆ
 
-            
+            ViewData["Location"] = new SelectList(_db.Locations, "LocationId", "LocationName");
             ViewBag.UserEmail = _db.Users.FirstOrDefault(ue => ue.UserId == obj.UserId).Email;
             ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName", obj.StatusId);
             return View(obj);
         }
 
         [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
-        [ValidateAntiForgeryToken] // ป้องกันการโจมตี Cross_site Request Forgery
-        //ค่าที่ส่งมาจาก Form เป็น Object ของ Model ที่ระบุ ตัว Controller ก็รับค่าเป็น Object
+        [ValidateAntiForgeryToken]
         [Route("admin/request/edit/{id}")]
         public IActionResult Edit(History obj)
         {
@@ -120,21 +213,18 @@ namespace WebBook.Controllers
                 if (ModelState.IsValid)
                 {
                     obj.UpdatedAt = DateTime.Now;
-                    _db.Histories.Update(obj); //ส่งคำสั่ง Update ผ่าน DBContext
-                    _db.SaveChanges(); // Execute คำสั่ง
-                    return RedirectToAction("Index"); // ย้ายทำงาน Action Index
+                    obj.ReturnDate = DateTime.Now;
+                    _db.Histories.Update(obj);
+                    _db.SaveChanges();
+                    return RedirectToAction("Index");
                 }
             }
             catch (Exception ex)
             {
-                //ถ้าไม่ Valid ก็ สร้าง Error Message ขึ้นมา แล้ว ส่ง Obj กลับไปที่ View
                 ViewBag.ErrorMessage = ex.Message;
                 return View(obj);
             }
-            //ถ้าไม่ Valid ก็ สร้าง Error Message ขึ้นมา แล้ว ส่ง Obj กลับไปที่ View
             ViewBag.ErrorMessage = "การแก้ไขผิดพลาด";
-            //อ่านข้อมูลจากตารางลง SelectList แล้วใส่ข้อมูลลงตัว ViewData
-            //และกำนหนดว่า Select ที่เลือก เป็น id ของ obj นั้นๆ
             ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName", obj.StatusId);
             return View(obj);
 

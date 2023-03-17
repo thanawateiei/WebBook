@@ -145,6 +145,7 @@ namespace WebBook.Controllers
                     book.Publisher = obj.Publisher;
                     book.BookDetail = obj.BookDetail;
                     book.CallNumber = obj.CallNumber;
+                    book.BookLang = obj.BookLang;
                     book.BookType1 = obj.BookType1;
                     book.BookType2 = obj.BookType2;
                     book.BookType3 = obj.BookType3;
@@ -217,6 +218,7 @@ namespace WebBook.Controllers
             book.BookCover = obj.BookCover;
             book.BookDetail = obj.BookDetail;
             book.CallNumber = obj.CallNumber;
+            book.BookLang = obj.BookLang;
             book.BookType1 = obj.BookType1;
             book.BookType2 = obj.BookType2;
             book.BookType3 = obj.BookType3;
@@ -257,6 +259,7 @@ namespace WebBook.Controllers
                     book.Publisher = obj.Publisher;
                     book.CallNumber = obj.CallNumber;
                     book.BookDetail = obj.BookDetail;
+                    book.BookLang = obj.BookLang;
                     book.BookType1 = obj.BookType1;
                     book.BookType2 = obj.BookType2;
                     book.BookType3 = obj.BookType3;
