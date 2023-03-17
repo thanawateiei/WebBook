@@ -44,12 +44,12 @@
 		{
 			<div class="dropdown text-end">
 			<a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				<img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+							<img src="https://image.pngaaa.com/117/4811117-small.png" alt="mdo" width="32" height="32" class="rounded-circle">
 			  </a>
 			  <ul class="dropdown-menu dropdown-menu-right shadow animated--grow-in"aria-labelledby="dropdownUser">
-				<li><a class="dropdown-item" href="#">New project...</a></li>
-				<li><a class="dropdown-item" href="#">Settings</a></li>
-				<li><a class="dropdown-item" href="#">Profile</a></li>
+				<li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">ข้อมูลส่วนตัว</a></li>
+				<li><a class="dropdown-item" asp-controller="Account" asp-action="History">ประวัติคำขอยืม</a></li>
+				<li><a class="dropdown-item" href="#">#</a></li>
 				<li><hr class="dropdown-divider"></li>
 				<li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Sign out</a></li>
 			  </ul>
