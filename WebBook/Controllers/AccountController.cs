@@ -202,6 +202,7 @@ namespace WebBook.Controllers
                      join ln in _db.Locations on h.LocationId equals ln.LocationId into join_h_ln
                      from h_ln in join_h_ln.DefaultIfEmpty()
                      where h.UserId == HttpContext.Session.GetString("UserId")
+                     orderby h.UpdatedAt descending
                      select new HistoryViewModel
                      {
                          HistoryId = h.HistoryId,
@@ -219,7 +220,7 @@ namespace WebBook.Controllers
         }
         public IActionResult Login()
         {
-            return View();
+            return PartialView();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -236,7 +237,7 @@ namespace WebBook.Controllers
                 //ถ้าใช้ RedirectToAction ไม่สามารถใช้ ViewBag ได้ ต้องใช้ TempData
                 TempData["Message"] = "ไม่พบผู้ใช้";
                 //ViewBag.ErrorMessage = "ระบุผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
-                return RedirectToAction("Login");
+                return PartialView();
             }
             ///try?
             string decryptPassword = DecryptString(userinfo.Password,key);
@@ -246,7 +247,7 @@ namespace WebBook.Controllers
             if (!isValidPassword)
             {
                 TempData["Message"] = "รหัสผ่านไม่ถูกต้อง";
-                return RedirectToAction("Login");
+                return RedirectToAction();
             }
             //ถ้าหาข้อมูลพบ ให้เก็บค่าเข้า Session 
             string UserId;

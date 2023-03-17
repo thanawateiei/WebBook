@@ -30,13 +30,16 @@ namespace WebBook.Controllers
                           RequestId = r.HistoryId,
                           UserEmail = r_ue.Email,
                           BookTitle = r.BookName,
+                          LocationName = r_l.LocationName,
+                          CallNumber = r.CallNumber,
+                          Status = r_s.StatusName,
                           CreatedAt = r.CreatedAt,
                           ReceiveDate = r.ReceiveDate,
                           UpdatedAt = r.UpdatedAt,
-                          LocationName = r_l.LocationName,
+                          ReturnDate = r.ReturnDate,
+
                           S_ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy"),
-                          CallNumber = r.CallNumber,
-                          Status = r_s.StatusName,
+                          S_ReturnDate = Convert.ToDateTime(r.ReturnDate).ToString("dd/MM/yyyy"),
                           S_CreatedAt = Convert.ToDateTime(r.CreatedAt).ToString("dd/MM/yyyy")
                       }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
 
@@ -70,13 +73,16 @@ namespace WebBook.Controllers
                           RequestId = r.HistoryId,
                           UserEmail = r_ue.Email,
                           BookTitle = r.BookName,
+                          LocationName = r_l.LocationName,
+                          CallNumber = r.CallNumber,
+                          Status = r_s.StatusName,
                           CreatedAt = r.CreatedAt,
                           ReceiveDate = r.ReceiveDate,
                           UpdatedAt = r.UpdatedAt,
-                          LocationName = r_l.LocationName,
+                          ReturnDate = r.ReturnDate,
+
                           S_ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy"),
-                          CallNumber = r.CallNumber,
-                          Status = r_s.StatusName,
+                          S_ReturnDate = Convert.ToDateTime(r.ReturnDate).ToString("dd/MM/yyyy"),
                           S_CreatedAt = Convert.ToDateTime(r.CreatedAt).ToString("dd/MM/yyyy")
                       }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
 
@@ -144,7 +150,7 @@ namespace WebBook.Controllers
 
             if (filterStatus != null)
             {
-                rqq = rqq.Where(r => (r.Status.Contains(filterStatus))).OrderByDescending(c => c.UpdatedAt.Date).ThenBy(c => c.UpdatedAt.TimeOfDay).ToList();
+                rqq = rqq.Where(r => (r.Status.Contains(filterStatus))).OrderByDescending(c => c.UpdatedAt.Date).OrderBy(c => c.UpdatedAt.TimeOfDay).ToList();
             }
             // Filter End
 
@@ -186,8 +192,8 @@ namespace WebBook.Controllers
                 ViewBag.ErrorMassage = "ต้องระบุค่า ID";
                 return RedirectToAction("Index");
             }
-            var obj = _db.Histories.FirstOrDefault(ue => ue.HistoryId == id);
-            //var obj = _db.Histories.Find(id);
+            //var obj = _db.Histories.FirstOrDefault(ue => ue.HistoryId == id);
+            var obj = _db.Histories.Find(id);
             if (obj == null)
             {
                 ViewBag.ErrorMassage = "ไม่พบข้อมูลที่ระบุ";

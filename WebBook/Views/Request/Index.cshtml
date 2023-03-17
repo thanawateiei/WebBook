@@ -132,9 +132,9 @@ table{
 								<th>ชื่อหนังสือ</th>
 								<th>CallNumber</th>
 								<th>จุดรับหนังสือ</th>
-								<th>วันแกไข้</th>
+								<th>edit</th>
 								<th>วันรับหนังสือ</th>
-								<th>วันขอยืมหนังสือ</th>
+								<th>กำหนดคืนหนังสือ</th>
 								<th>สถานะ</th>
 
 								<th></th>
@@ -154,12 +154,12 @@ table{
 									<td  class="text-center">@count</td>
 									@*<td ><label class="ttd idHis">@item.RequestId</label></td>*@
 									<td>@item.UserEmail</td>
-									<td style="">@item.BookTitle</td>
+									<td>@item.BookTitle</td>
 									<td>@item.CallNumber</td>
 									<td>@item.LocationName</td>
 									<td>@item.UpdatedAt</td>
 									<td>@item.S_ReceiveDate</td>
-									<td>@item.S_CreatedAt</td>
+									<td>@item.S_ReturnDate</td>
 									<td>@item.Status</td>
 									@*@if(item.StatusID == 1){
 										<td class="text-warning">@item.Status</td>
