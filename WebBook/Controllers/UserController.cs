@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Security.Cryptography;
+using System.Text;
 using WebBook.Models;
 
 namespace WebBook.Controllers
@@ -13,6 +16,7 @@ namespace WebBook.Controllers
         // GET: UserController
         public ActionResult Index()
         {
+            var key = "E546C8DF278CD5931069B522E695D4F2";
             var uu = from u in _db.Users
                     
                     join ur in _db.Roles on u.Role equals ur.RoleId into join_u_ur
@@ -28,7 +32,7 @@ namespace WebBook.Controllers
                      {
                          user_id = u.UserId,
                          email = u.Email,
-                         password = u.Password,
+                         password = DecryptString(u.Password, key),
                          roleName = uu_ur.RoleName,
                          student_id = u.StudentId,
                          agencyName = uu_ua.AgencyName,
@@ -47,6 +51,7 @@ namespace WebBook.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(string? stext)
         {
+            var key = "E546C8DF278CD5931069B522E695D4F2";
             var uu = from u in _db.Users
 
                      join ur in _db.Roles on u.Role equals ur.RoleId into join_u_ur
@@ -67,7 +72,7 @@ namespace WebBook.Controllers
                      {
                          user_id = u.UserId,
                          email = u.Email,
-                         password = u.Password,
+                         password = DecryptString(u.Password,key),
                          roleName = uu_ur.RoleName,
                          student_id = u.StudentId,
                          agencyName = uu_ua.AgencyName,
@@ -143,6 +148,8 @@ namespace WebBook.Controllers
                 return RedirectToAction("Index");
 
             }
+            var key = "E546C8DF278CD5931069B522E695D4F2";
+            TempData["Pass"] = DecryptString(obj.Password, key);
             ViewData["Ur"] = new SelectList(_db.Roles, "RoleId", "RoleName");
             ViewData["Ua"] = new SelectList(_db.Agencies, "AgencyId", "AgencyName");
             ViewData["Ut"] = new SelectList(_db.UserTypes, "UserTypeId", "UserTypeName");
@@ -159,6 +166,8 @@ namespace WebBook.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    var key = "E546C8DF278CD5931069B522E695D4F2";
+                    obj.Password = EncryptString(obj.Password, key);
                     obj.UpdatedAt = DateTime.Now;
                     _db.Users.Update(obj);
                     _db.SaveChanges();
@@ -216,6 +225,68 @@ namespace WebBook.Controllers
                 //ถ้าไม่ Valid ก็ สร้าง Error Message ขึ้นมา แล้ว ส่ง Obj กลับไปที่ View
                 ViewBag.ErrorMessage = ex.Message;
                 return RedirectToAction("Index");
+            }
+        }
+        public static string EncryptString(string text, string keyString)
+        {
+            var key = Encoding.UTF8.GetBytes(keyString);
+
+            using (var aesAlg = Aes.Create())
+            {
+                using (var encryptor = aesAlg.CreateEncryptor(key, aesAlg.IV))
+                {
+                    using (var msEncrypt = new MemoryStream())
+                    {
+                        using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                        using (var swEncrypt = new StreamWriter(csEncrypt))
+                        {
+                            swEncrypt.Write(text);
+                        }
+
+                        var iv = aesAlg.IV;
+
+                        var decryptedContent = msEncrypt.ToArray();
+
+                        var result = new byte[iv.Length + decryptedContent.Length];
+
+                        Buffer.BlockCopy(iv, 0, result, 0, iv.Length);
+                        Buffer.BlockCopy(decryptedContent, 0, result, iv.Length, decryptedContent.Length);
+
+                        return Convert.ToBase64String(result);
+                    }
+                }
+            }
+        }
+
+        public static string DecryptString(string cipherText, string keyString)
+        {
+            var fullCipher = Convert.FromBase64String(cipherText);
+
+            var iv = new byte[16];
+            var cipher = new byte[16];
+
+            Buffer.BlockCopy(fullCipher, 0, iv, 0, iv.Length);
+            Buffer.BlockCopy(fullCipher, iv.Length, cipher, 0, iv.Length);
+            var key = Encoding.UTF8.GetBytes(keyString);
+
+            using (var aesAlg = Aes.Create())
+            {
+                using (var decryptor = aesAlg.CreateDecryptor(key, iv))
+                {
+                    string result;
+                    using (var msDecrypt = new MemoryStream(cipher))
+                    {
+                        using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                        {
+                            using (var srDecrypt = new StreamReader(csDecrypt))
+                            {
+                                result = srDecrypt.ReadToEnd();
+                            }
+                        }
+                    }
+
+                    return result;
+                }
             }
         }
     }
