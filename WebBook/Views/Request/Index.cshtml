@@ -18,16 +18,51 @@
 	</script>
 }
 <style>
-table{
+/*table{
   overflow-x: auto;
   white-space: nowrap;
+}*/
+.Sfail{
+	
+	width: 45px;
+	background: #FFC6D3;
+	color: #FB2576;
+	border: 2px solid #FB2576;
+	border-radius: 18px;
+	text-align: center;
 }
-
-
+.Snew{
+	width: 45px;
+	background: #F6F7C1;
+	color: #E7B10A;
+	border: 2px solid #E7B10A;
+	border-radius: 18px;
+	text-align: center;
+}
+.Ssucceed{
+	width: 75px;
+	background: #DDF7E3;
+	color: #9DC08B;
+	border: 2px solid #9DC08B;
+	border-radius: 18px;
+	text-align: center;
+}
+.Sprogress{
+	width: 95px;
+	background: #C9EEFF;
+	color: #19A7CE;
+	border: 2px solid #19A7CE;
+	border-radius: 18px;
+	text-align: center;
+}
 
 </style>
 <h1 class="text-success">รายการคำขอยืม</h1>
 
+<label class="Sfail m-2">fail</label>
+<label class="Snew m-2">new</label>
+<label class="Ssucceed m-2">succeed</label>
+<label class="Sprogress m-2">in progress</label>
 
 <div class="container-fluid  px-0">
 	<!-- DataTales Example -->
@@ -42,7 +77,7 @@ table{
 							<select class="form-control" aria-label="Default select example" name="filterStatus" id="filterStatus">
 								@if (@filterStatus != null)
 								{
-									<option value="@filterStatus">@filterStatus</option>
+									<option value="@filterStatus.StatusId">@filterStatus.StatusName</option>
 								}
 								<option value=" ">สถานะทั้งหมด</option>
 								@foreach (var item in ViewBag.Status)
@@ -86,7 +121,7 @@ table{
 
 						<div class="col-2  pl-1">
 							@*<label class="mb-0 pl-1">วันสุดท้าย</label>*@
-							<input type="date" name="dateEnd" id="dateEnd" value="@ViewBag.dateEnd" class="form-control">
+							<input type="date"  name="dateEnd" id="dateEnd" value="@ViewBag.dateEnd" class="form-control">
 						</div>
 
 						<div class="col-3 pl-1">
@@ -116,8 +151,9 @@ table{
 		</div>
 			
 		<div class="card-body">
-				<div class="table-responsive  ">
-					<table class="table table-bordered "  @* id="dataTable"*@  >
+
+				<div id="printTB" class="table-responsive  ">
+					<table class="table table-bordered"  @* id="dataTable"*@  >
 						<thead>
 							<tr>
 								<th class="text-center">
@@ -132,7 +168,7 @@ table{
 								<th>ชื่อหนังสือ</th>
 								<th>CallNumber</th>
 								<th>จุดรับหนังสือ</th>
-								<th>edit</th>
+								@*<th>edit</th>*@
 								<th>วันรับหนังสือ</th>
 								<th>กำหนดคืนหนังสือ</th>
 								<th>สถานะ</th>
@@ -157,10 +193,17 @@ table{
 									<td>@item.BookTitle</td>
 									<td>@item.CallNumber</td>
 									<td>@item.LocationName</td>
-									<td>@item.UpdatedAt</td>
+									@*<td>@item.UpdatedAt</td>*@
 									<td>@item.S_ReceiveDate</td>
 									<td>@item.S_ReturnDate</td>
-									<td>@item.Status</td>
+									<td>
+										@if(item.state  == "new")
+										{
+											<label class="Snew mb-0">new</label>
+										}
+
+										@item.Status 
+									</td>
 									@*@if(item.StatusID == 1){
 										<td class="text-warning">@item.Status</td>
 										}else if (item.StatusID == 2)
@@ -203,16 +246,18 @@ table{
 	</div>
 </div>
 
-
-<input type="text" class="adasd" value="asdasdasd" />
+<button type="button" id="print" class="btn btn-secondary">
+	print
+</button>
 
 <script type="text/javascript">
 	$( document ).ready(function() {
-		var Hisid = $(".adasd").val();
-		console.log("Hisid");
-		console.log(Hisid);
-		var sas =Hisid.length;
-		console.log(sas);
+		$('#print').click(function(){
+
+			alert("asd");
+			 $("#printTB").print();
+			 //window.print();
+		});
 
 		//$("#filterStatus").change(function() {
 		//	//alert("asd");

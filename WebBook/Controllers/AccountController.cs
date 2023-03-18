@@ -220,7 +220,7 @@ namespace WebBook.Controllers
         }
         public IActionResult Login()
         {
-            return PartialView();
+            return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -237,7 +237,8 @@ namespace WebBook.Controllers
                 //ถ้าใช้ RedirectToAction ไม่สามารถใช้ ViewBag ได้ ต้องใช้ TempData
                 TempData["Message"] = "ไม่พบผู้ใช้";
                 //ViewBag.ErrorMessage = "ระบุผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
-                return PartialView();
+                //return PartialView();
+                return RedirectToAction();
             }
             ///try?
             string decryptPassword = DecryptString(userinfo.Password,key);

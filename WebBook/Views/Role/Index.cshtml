@@ -1,57 +1,68 @@
 ﻿@model IEnumerable<WebBook.Models.Role>
 @{
-    ViewData["Title"] = "Role Page";
+	ViewData["Title"] = "Role Page";
 }
 
 @{
 }
 @if (ViewBag.ErrorMessage != null)
 {
-    <script type="text/javascript">
-        window.onload = function () {
-            alert("@ViewBag.ErrorMessage");
-        };
-    </script>
+	<script type="text/javascript">
+		window.onload = function () {
+			alert("@ViewBag.ErrorMessage");
+		};
+	</script>
 }
 
 <h1 class="text-success">จัดการสถานะ</h1>
+<div class="container-fluid  px-0">
+	<div class="card shadow w-100 mb-1">
+		<div class="card-header py-2 ">
+			<form asp-controller="Role" asp-action="Index">
+				<div class="row">
+					<div class="col-sm-6 col-md-8 col-lg-9">
+						<a class="btn btn-primary" asp-action="Create">
+							<i class="bi bi-plus-lg"></i>    เพิ่ม
+						</a>
+					</div>
+				</div>
+			</form>
 
-<form asp-controller="Role" asp-action="Index">
-    <div class="row">
-        <div class="col-sm-6 col-md-8 col-lg-9">
-            <a class="btn btn-primary" asp-action="Create">
-                <i class="bi bi-plus-lg"></i>    เพิ่ม
-            </a>
-        </div>
-    </div>
-</form>
 
-<table class="table table-borderless table-hover">
-    <tr>
-        <th>ID</th>
-        <th>ชื่อหน้าที่</th>
-        <th></th>
-        <th></th>
-    </tr>
-    @{
-        var i = 0;
-    }
-    @foreach (var item in Model)
-    {
-        i++;
-        <tr>
-            <th>@item.RoleId</th>
-            <td>@item.RoleName</td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RoleId">
-                    <i class="bi bi-pencil-square"></i>
-                </a>
-            </td>
-            <td>
-                <a asp-action="Delete" asp-route-id="@item.RoleId">
-                    <i class="bi bi-x-lg text-danger"></i>
-                </a>
-            </td>
-        </tr>
-    }
-</table>
+		</div>
+		<div class="card-body">
+
+			<div class="table-responsive  ">
+				<table class="table table-bordered">
+					<tr>
+						<th>ID</th>
+						<th>ชื่อหน้าที่</th>
+						<th></th>
+						<th></th>
+					</tr>
+					@{
+						var i = 0;
+					}
+					@foreach (var item in Model)
+					{
+						i++;
+						<tr>
+							<th>@item.RoleId</th>
+							<td>@item.RoleName</td>
+							<td class="text-center">
+								<a asp-action="Edit" asp-route-id="@item.RoleId">
+									<i class="bi bi-pencil-square"></i>
+								</a>
+							</td>
+							<td class="text-center">
+								<a asp-action="Delete" asp-route-id="@item.RoleId">
+									<i class="bi bi-x-lg text-danger"></i>
+								</a>
+							</td>
+						</tr>
+					}
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

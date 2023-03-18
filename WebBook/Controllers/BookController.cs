@@ -37,24 +37,11 @@ namespace WebBook.Controllers
 
             List<BookViewModel> book = new List<BookViewModel>();
             book.AddRange(bb);
-            //var ad = DateTime.Now;
-            //ViewBag.CheckBT = cbt.ToList();
-            //ViewData["CheckBT"] = new SelectList(_db.CheckBookTypes, "BookId", "BookTypeId", "CheckBt");
-            //for (var i = 0; i <= book.Count(); i++)
-            //{   //var path = "wwwroot\\img\\imgbook\\" + book.BookCover;
-            //    try
-            //    {
-            //        var path = "wwwroot\\img\\imgbook\\" + book[i].BookCover;
-            //        IEnumerable<string> items = Directory.EnumerateFileSystemEntries(path);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        book[i].BookCover = "img-notFound.jpg";
-            //    }
-            //}
-            //    //var imgg = Path.Combine(path, book.BookCover);
-            //    //var exists = System.IO.File.Exists(imgg);
-            //}
+            var bt = from btt in _db.BookTypes
+                     select btt;
+            ViewBag.stext = null;
+            ViewBag.BookType = bt;
+
             if (book == null) return NotFound();
             return View(book);
 
@@ -62,13 +49,13 @@ namespace WebBook.Controllers
 
         [HttpPost]
         [Route("Admin/Book")]
-        public IActionResult Index(string? stext)
+        public IActionResult Index(string? stext ,int idBT)
         {
                       
 
             var bb = (from b in _db.Books
-                    where b.BookName.Contains(stext) ||
-                          b.AuthorName.Contains(stext)
+                    //where b.BookName.Contains(stext) ||
+                    //      b.AuthorName.Contains(stext)
                       select new ViewModels.BookViewModel
                       {
                           BookId = b.BookId,
@@ -79,10 +66,40 @@ namespace WebBook.Controllers
                           BookCover = b.BookCover,
                           BookDetail = b.BookDetail,
                           BookLang = b.BookLang,
+                          BookType1 =  b.BookType1,
+                          BookType2 =  b.BookType2,
+                          BookType3 =  b.BookType3,
+                          BookType4 =  b.BookType4,
+                          BookType5 =  b.BookType5,
+                          BookType6 =  b.BookType6,
+                          BookType7 =  b.BookType7,
+                          BookType8 =  b.BookType8,
+                          BookType9 =  b.BookType9,
+                          BookType10 = b.BookType10,
                           CreatedAt = b.CreatedAt//ต้องมีเพาะเอาไปเรียงข้อมูล
                       }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
-            if (bb == null) return NotFound();
-            return View(bb);
+
+            var book = new List<BookViewModel>();
+            book.AddRange(bb);
+            if(stext != null)
+            {
+                book = book.Where(b => (b.BookName.Contains(stext)) || (b.AuthorName.Contains(stext))).ToList();
+            }
+            if (idBT != 0)
+            {
+                book = book.Where(b => ((b.BookType1.Equals(idBT)) || (b.BookType2.Equals(idBT)) || (b.BookType3.Equals(idBT)) || (b.BookType4.Equals(idBT)) ||
+                                 (b.BookType5.Equals(idBT)) || (b.BookType6.Equals(idBT)) || (b.BookType7.Equals(idBT)) || (b.BookType8.Equals(idBT)) ||
+                                 (b.BookType9.Equals(idBT)) || (b.BookType10.Equals(idBT)) )).ToList();
+            }
+            var bt = from btt in _db.BookTypes
+                     where btt.BookTypeId != idBT
+                     select btt;
+            ViewBag.BookType = bt;
+            ViewBag.stext = stext;
+            ViewBag.filterBT = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == idBT);
+
+            if (book == null) return NotFound();
+            return View(book);
         }
         // GET: BookController/Details/5
 

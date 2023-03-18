@@ -18,6 +18,8 @@ namespace WebBook.Controllers
             //DateTime dt = DateTime.ParseExact(yourObject.ToString(), "MM/dd/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
 
             //string s = dt.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+            List<RequestViewModel> rqq = new List<RequestViewModel>();
+
             var rq = (from r in _db.Histories
                       join ue in _db.Users on r.UserId equals ue.UserId into join_r_ue
                       from r_ue in join_r_ue.DefaultIfEmpty()
@@ -42,16 +44,24 @@ namespace WebBook.Controllers
                           S_ReturnDate = Convert.ToDateTime(r.ReturnDate).ToString("dd/MM/yyyy"),
                           S_CreatedAt = Convert.ToDateTime(r.CreatedAt).ToString("dd/MM/yyyy")
                       }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
+            rqq = rq.ToList();
+            var i = 0;
+            foreach (var r in rqq)
+            {
+                if (r.CreatedAt == r.UpdatedAt)
+                {
+                    rqq[i].state = "new";
+                }
+            }
 
-
-            var bt = from b in _db.Statuses
+            var st = from b in _db.Statuses
                      select b;
 
-            if (rq == null) return NotFound();
-            ViewBag.Status = bt;
+            if (rqq == null) return NotFound();
+            ViewBag.Status = st;
             ViewBag.filterDate = null;
             //ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName");
-            return View(rq);
+            return View(rqq);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -87,7 +97,14 @@ namespace WebBook.Controllers
                       }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
 
             rqq = rq.ToList();
-            
+            var i = 0;
+            foreach (var r in rqq)
+            {
+                if (r.CreatedAt == r.UpdatedAt)
+                {
+                    rqq[i].state = "new";
+                }
+            }
 
             // Filter
             if (stext != null)
@@ -157,11 +174,12 @@ namespace WebBook.Controllers
 
 
             ViewBag.stext = stext;
-            var bt = from b in _db.Statuses
+            var st = from b in _db.Statuses
+                     where filterStatus != b.StatusName
                      select b;
-            ViewBag.Status = bt;
+            ViewBag.Status = st;
             ViewBag.filterDate = filterDate;
-            ViewBag.filterStatus = filterStatus;
+            ViewBag.filterStatus = ViewBag.filterBT = _db.Statuses.FirstOrDefault(ue => ue.StatusName == filterStatus);
             if (dateStart != DateTime.MinValue.Date)
             {
                 ViewBag.dateStart = dateStart.ToString("yyyy-MM-dd");

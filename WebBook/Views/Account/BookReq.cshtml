@@ -2,6 +2,10 @@
 
 @{
     ViewData["Title"] = "Book Delivery";
+    var Sdate = (DateTime.Now).AddDays(1);
+    //var Edate = (DateTime.Now).AddDays(180);
+    Sdate.ToString("yyyy-MM-dd");
+    //Edate.ToString("yyyy-MM-dd");
 }
 @if (TempData["Message"] != null)
 {
@@ -53,7 +57,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ReceiveDate" class="control-label"></label>
-                <input asp-for="ReceiveDate" type="datetime" class="form-control" />
+                <input asp-for="ReceiveDate"  type="date" class="form-control" />
                 <span asp-validation-for="ReceiveDate" class="text-danger"></span>
             </div>
             <div class="form-group">

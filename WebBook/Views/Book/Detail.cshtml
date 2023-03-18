@@ -1,9 +1,6 @@
 ﻿@model WebBook.Models.Book
 
-
-
-<h1>รายละเอียด</h1>
-    <hr />  
+<div id="detailModalBook">  
     <div class="row">
         <div class = "col-4">
             @{
@@ -60,6 +57,7 @@
         </div>
 
          <div class = "col-12">
+             <p>เนื้อหา</p>
             @Html.DisplayFor(model => model.BookDetail)
         </div>
 @*
@@ -124,4 +122,5 @@
             @Html.DisplayFor(model => model.BookType10)
         </dd>*@
     
+</div>
 </div>
