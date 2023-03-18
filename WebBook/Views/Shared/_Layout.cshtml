@@ -21,57 +21,57 @@
 </head>
 <body>
 
-		<header class="p-3 mb-3 border-bottom">
-    <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-        </a>
+		<header class="p-1 mb-3 border-bottom">
+	<div class="container">
+	  <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+		<a asp-controller="Home" asp-action="Index" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">		
+			 <img src="img/KU_Logo_JPG.jpg"  width="52" height="52" >
+		</a>
 
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a class="nav-link  text-dark" asp-area="" asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
-          <li><a class="nav-link  text-dark" asp-area="" asp-controller="Account" asp-action="BookReq">ส่งคำขอยืม</a></li>
-        @*  <li><a class="nav-link  text-dark" asp-area="" asp-controller="Book" asp-action="Index">Home</a></li>
-          <li><a class="nav-link  text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>*@
-        </ul>
+		<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+		  <li><a class="nav-link  text-dark" asp-area="" asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+		  <li><a class="nav-link  text-dark" asp-area="" asp-controller="Account" asp-action="BookReq">ส่งคำขอยืม</a></li>
+					@*  <li><a class="nav-link  text-dark" asp-area="" asp-controller="Book" asp-action="Index">Home</a></li>
+						<li><a class="nav-link  text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>*@
+		</ul>
 
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" asp-controller="Home" asp-action="Search">
-          <input type="search" class="form-control" placeholder="Search..." aria-label="Search" value="@stext">
+		<form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" asp-controller="Home" asp-action="Search">
+		  <input type="search" class="form-control" placeholder="Search..." aria-label="Search" value="@stext">
 
-        </form>
+		</form>
 
-		@if (UserId != null)
-		{
-			<div class="dropdown text-end">
-			<a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<img src="https://image.pngaaa.com/117/4811117-small.png" alt="mdo" width="32" height="32" class="rounded-circle">
-			  </a>
-			  <ul class="dropdown-menu dropdown-menu-right shadow animated--grow-in"aria-labelledby="dropdownUser">
-				<li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">ข้อมูลส่วนตัว</a></li>
-				<li><a class="dropdown-item" asp-controller="Account" asp-action="History">ประวัติคำขอยืม</a></li>
-				<li><a class="dropdown-item" href="#">#</a></li>
-				<li><hr class="dropdown-divider"></li>
-				<li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Sign out</a></li>
-			  </ul>
-			</div>
-		}
-		else
-		{
-			<div class=" text-end">
-          		<a  asp-controller="Account" asp-action="Login" class="btn btn-outline-dark">
+				@if (UserId != null)
+				{
+				<div class="dropdown text-end">
+				<a class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img src="https://image.pngaaa.com/117/4811117-small.png" alt="mdo" width="32" height="32" class="rounded-circle">
+				  </a>
+				  <ul class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="dropdownUser">
+					<li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">ข้อมูลส่วนตัว</a></li>
+					<li><a class="dropdown-item" asp-controller="Account" asp-action="History">ประวัติคำขอยืม</a></li>
+					<li><a class="dropdown-item" href="#">#</a></li>
+					<li><hr class="dropdown-divider"></li>
+					<li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Sign out</a></li>
+				  </ul>
+				</div>
+				}
+				else
+				{
+				<div class=" text-end">
+					  <a  asp-controller="Account" asp-action="Login" class="btn btn-outline-dark">
 
-				<span>Login</span></a>
-			</div>
-		}
-
-		
+					<span>Login</span></a>
+				</div>
+				}
 
 
 
-      </div>
-    </div>
 
-	
+
+	  </div>
+	</div>
+
+
 		@*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light  bg-success border-bottom box-shadow  ">
 			<div class="container-fluid ">
 			<div class="d-flex justify-content-start">
