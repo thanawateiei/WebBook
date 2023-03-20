@@ -144,7 +144,6 @@ namespace WebBook.Controllers
                 TempData["Message"] = "ต้องระบุค่า ID";
                 return RedirectToAction("Index");
             }
-            // ทำการเขียน Query หา Record ของ Product.pdId จาก id ที่ส่งมา
             var userinfo = _db.Users.Find(id);
             if (User == null)
             {
@@ -238,7 +237,7 @@ namespace WebBook.Controllers
                 TempData["Message"] = "ไม่พบผู้ใช้";
                 //ViewBag.ErrorMessage = "ระบุผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
                 //return PartialView();
-                return RedirectToAction();
+                return View();
             }
             ///try?
             string decryptPassword = DecryptString(userinfo.Password,key);
@@ -248,7 +247,7 @@ namespace WebBook.Controllers
             if (!isValidPassword)
             {
                 TempData["Message"] = "รหัสผ่านไม่ถูกต้อง";
-                return RedirectToAction();
+                return View();
             }
             //ถ้าหาข้อมูลพบ ให้เก็บค่าเข้า Session 
             string UserId;
@@ -284,9 +283,6 @@ namespace WebBook.Controllers
         }
         public IActionResult Register()
         {
-            Guid myuuid = Guid.NewGuid();
-            string myuuidAsString = myuuid.ToString();
-            ViewBag.UserId = "User-" + myuuidAsString;
             ViewData["Agency"] = new SelectList(_db.Agencies, "AgencyId", "AgencyName");
             ViewData["UserType"] = new SelectList(_db.UserTypes, "UserTypeId", "UserTypeName");
             return View();
@@ -295,12 +291,25 @@ namespace WebBook.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Register(User obj)
         {
+            ViewData["Agency"] = new SelectList(_db.Agencies, "AgencyId", "AgencyName");
+            ViewData["UserType"] = new SelectList(_db.UserTypes, "UserTypeId", "UserTypeName");
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var key = "E546C8DF278CD5931069B522E695D4F2";
-                    obj.CreatedAt = DateTime.Now.Date;
+					Guid myuuid = Guid.NewGuid();
+					string myuuidAsString = myuuid.ToString();
+					var key = "E546C8DF278CD5931069B522E695D4F2";
+					var userEmail = from u in _db.Users
+									where u.Email.Equals(obj.Email)
+									select u;
+					if (userEmail.ToList().Count >= 1)
+					{
+						TempData["Message"] = "อีเมลถูกใช้แล้ว";
+                        return View(obj);
+                    }
+                    obj.UserId = "User-" + myuuidAsString;
+					obj.CreatedAt = DateTime.Now.Date;
                     obj.UpdatedAt = DateTime.Now.Date;
                     obj.Role = 3;
                     obj.Password = EncryptString(obj.Password,key);
@@ -311,11 +320,9 @@ namespace WebBook.Controllers
             }
             catch (Exception ex)
             {
-                //ถ้าไม่ Valid ก็ สร้าง Error Message ขึ้นมา แล้ว ส่ง Obj กลับไปที่ View
-                ViewBag.ErrorMessage = ex.Message;
+                TempData["Message"] = ex.Message;
                 return View(obj);
             }
-            //ถ้าไม่ Valid ก็ สร้าง Error Message ขึ้นมา แล้ว ส่ง Obj กลับไปที่ View
             TempData["Message"] = "การบันทึกผิดพลาด";
             return View(obj);
         }

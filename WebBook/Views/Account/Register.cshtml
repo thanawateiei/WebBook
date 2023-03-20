@@ -4,13 +4,11 @@
     ViewData["Title"] = "Create";
 }
 
-@if (ViewBag.ErrorMessage != null)
+@if (TempData["Message"] != null)
 {
-            <script type="text/javascript">
-                window.onload = function () {
-                    alert("@ViewBag.ErrorMessage");
-                };
-            </script>
+    <div class="alert alert-info">
+        @TempData["Message"]
+    </div>
 }
 
 <h1>Register</h1>
@@ -20,11 +18,6 @@
     <div class="col-md-4">
         <form asp-action="Register">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group" hidden>
-                <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" value="@ViewBag.UserId"/>
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
