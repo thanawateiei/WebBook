@@ -44,6 +44,20 @@ namespace WebBook.Controllers
                           S_ReturnDate = Convert.ToDateTime(r.ReturnDate).ToString("dd/MM/yyyy"),
                           S_CreatedAt = Convert.ToDateTime(r.CreatedAt).ToString("dd/MM/yyyy")
                       }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
+
+            
+            List<CountStatusViewModel> CStatus = new List<CountStatusViewModel>();
+            for(var s = 1; s <= _db.Statuses.Count(); s++)
+            {
+                CountStatusViewModel CS = new CountStatusViewModel();
+                var sta = _db.Statuses.FirstOrDefault(ue => ue.StatusId == s);
+                CS.StatusId = sta.StatusId;
+                CS.StatusName = sta.StatusName;
+                CS.Count = _db.Histories.Where(x => x.StatusId.Equals(s)).Count();
+                CStatus.Add(CS);
+            }
+           
+
             rqq = rq.ToList();
             var i = 0;
             foreach (var r in rqq)
@@ -56,8 +70,10 @@ namespace WebBook.Controllers
 
             var st = from b in _db.Statuses
                      select b;
+            
 
             if (rqq == null) return NotFound();
+            ViewBag.CountStatus = CStatus;
             ViewBag.Status = st;
             ViewBag.filterDate = null;
             //ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName");
@@ -66,7 +82,7 @@ namespace WebBook.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("admin/request")]
-        public IActionResult Index(string stext, string filterDate, string filterStatus, DateTime dateStart, DateTime dateEnd)
+        public IActionResult Index(string stext, string filterDate, string filterStatus, DateTime dateStart, DateTime dateEnd , string T_btn)
         {
 
             List<RequestViewModel> rqq = new List<RequestViewModel>();
@@ -170,8 +186,16 @@ namespace WebBook.Controllers
                 rqq = rqq.Where(r => (r.Status.Contains(filterStatus))).OrderByDescending(c => c.UpdatedAt.Date).OrderBy(c => c.UpdatedAt.TimeOfDay).ToList();
             }
             // Filter End
-
-
+            List<CountStatusViewModel> CStatus = new List<CountStatusViewModel>();
+            for (var s = 1; s <= _db.Statuses.Count(); s++)
+            {
+                CountStatusViewModel CS = new CountStatusViewModel();
+                var sta = _db.Statuses.FirstOrDefault(ue => ue.StatusId == s);
+                CS.StatusId = sta.StatusId;
+                CS.StatusName = sta.StatusName;
+                CS.Count = _db.Histories.Where(x => x.StatusId.Equals(s)).Count();
+                CStatus.Add(CS);
+            }
 
             ViewBag.stext = stext;
             var st = from b in _db.Statuses
@@ -180,6 +204,7 @@ namespace WebBook.Controllers
             ViewBag.Status = st;
             ViewBag.filterDate = filterDate;
             ViewBag.filterStatus = ViewBag.filterBT = _db.Statuses.FirstOrDefault(ue => ue.StatusName == filterStatus);
+            ViewBag.CountStatus = CStatus;
             if (dateStart != DateTime.MinValue.Date)
             {
                 ViewBag.dateStart = dateStart.ToString("yyyy-MM-dd");
@@ -196,11 +221,44 @@ namespace WebBook.Controllers
             {
                 ViewBag.dateEnd = null;
             }
+           
 
+            if(T_btn == "print")
+            {
+                return print(rqq,stext, filterDate,  filterStatus,  dateStart,  dateEnd);
+            }
             return View(rqq);
 
         }
+        public IActionResult print(List<RequestViewModel> rqq, string stext, string filterDate, string filterStatus, DateTime dateStart, DateTime dateEnd)
+        {
+            ViewBag.stext = stext;
+            ViewBag.filterDate = filterDate;
+            ViewBag.filterStatus = filterStatus;
+            var dateStart1 = "";
+            var dateEnd1 = "";
+            if (dateStart != DateTime.MinValue )
+            {
+                dateStart1 = Convert.ToDateTime(dateStart).ToString("dd/MM/yyyy");
+            }
+            else
+            {
+                dateStart1 = "ไม่มี";
 
+            }
+            if (dateEnd != DateTime.MinValue)
+            {
+                dateEnd1 = Convert.ToDateTime(dateEnd).ToString("dd/MM/yyyy");
+            }
+            else
+            {
+                dateEnd1 = "ไม่มี";
+
+            }
+            ViewBag.dateStart = dateStart1;
+            ViewBag.dateEnd = dateEnd1;
+            return PartialView("print", rqq);
+        }
         [Route("admin/request/edit/{id}")]
         public IActionResult Edit(string id)
         {

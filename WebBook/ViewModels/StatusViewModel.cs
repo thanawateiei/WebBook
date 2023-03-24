@@ -9,5 +9,11 @@ namespace WebBook.ViewModels
         public string? StatusName { get; set; }
     }
 
+    public class CountStatusViewModel
+    {
+        public int StatusId { get; set; }
+        public string? StatusName { get; set; }
+        public int Count { get; set; }
+    }
 
 }

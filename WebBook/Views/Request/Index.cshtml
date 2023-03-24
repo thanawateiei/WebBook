@@ -6,6 +6,7 @@
 	var stext = ViewBag.stext;
 	var filterDate = ViewBag.filterDate;
 	var filterStatus = ViewBag.filterStatus;
+	var CountStatus = ViewBag.CountStatus;
 
 
 }
@@ -17,11 +18,14 @@
 		};
 	</script>
 }
+
 <style>
-/*table{
-  overflow-x: auto;
-  white-space: nowrap;
-}*/
+ /* * {
+    display: none;
+  }*/
+  #printableTable {
+    display: block;
+  }
 .Sfail{
 	
 	width: 45px;
@@ -57,14 +61,19 @@
 }
 
 </style>
-<h1 class="text-success">รายการคำขอยืม</h1>
-
-<label class="Sfail m-2">fail</label>
+<h1 class="text-success ">รายการคำขอยืม</h1>
+@foreach (var item in CountStatus)
+{
+	@*<p>@item.StatusId</p>*@
+	<p>@item.StatusName จำนวน @item.Count</p>
+	
+}
+@*<label class="Sfail m-2">fail</label>
 <label class="Snew m-2">new</label>
 <label class="Ssucceed m-2">succeed</label>
-<label class="Sprogress m-2">in progress</label>
+<label class="Sprogress m-2">in progress</label>*@
 
-<div class="container-fluid  px-0">
+<div class="container-fluid  px-0" id="printableTable">
 	<!-- DataTales Example -->
 	<div class="card shadow w-100 mb-1">
 		<div class="card-header py-2 ">
@@ -77,7 +86,7 @@
 							<select class="form-control" aria-label="Default select example" name="filterStatus" id="filterStatus">
 								@if (@filterStatus != null)
 								{
-									<option value="@filterStatus.StatusId">@filterStatus.StatusName</option>
+									<option value="@filterStatus.StatusName">@filterStatus.StatusName</option>
 								}
 								<option value=" ">สถานะทั้งหมด</option>
 								@foreach (var item in ViewBag.Status)
@@ -135,7 +144,7 @@
 
 
 
-
+					<input type="text" name="T_btn" id="T_btn" hidden class="form-control" value="search" />
 					<div class="col-12 px-0">
 						<button type="submit" id="submit" class="btn btn-secondary  my-2  w-100">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -241,6 +250,7 @@
 						</tbody>
 
 					</table>
+					 <iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
 				</div>
 		</div>
 	</div>
@@ -253,10 +263,11 @@
 <script type="text/javascript">
 	$( document ).ready(function() {
 		$('#print').click(function(){
-
-			alert("asd");
-			 $("#printTB").print();
-			 //window.print();
+			$( "#T_btn" ).val("print");
+			$( "#submit" ).click();
+			//alert("asd");
+			 //$("#printTB").print();
+			// window.print();
 		});
 
 		//$("#filterStatus").change(function() {

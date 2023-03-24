@@ -41,7 +41,17 @@ namespace WebBook.Controllers
                      select btt;
             ViewBag.stext = null;
             ViewBag.BookType = bt;
-
+            for(var i=0; i<book.Count ; i++) {
+            try
+            {
+                var path = "wwwroot\\img\\imgbook\\" + book[i].BookCover;
+                IEnumerable<string> items = Directory.EnumerateFileSystemEntries(path);
+            }
+            catch (Exception ex)
+            {
+               book[i].BookCover = "img-notFound.jpg";
+            } 
+            }
             if (book == null) return NotFound();
             return View(book);
 
@@ -296,11 +306,15 @@ namespace WebBook.Controllers
                         //delete
                         var fileName = obj.BookCover;
                         var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgbook");
-                        var filePath = Path.Combine(imagePath, fileName);
-                        if (System.IO.File.Exists(filePath))
+                        if (fileName != null)
                         {
-                            System.IO.File.Delete(filePath);
+                            var filePath = Path.Combine(imagePath, fileName);
+                            if (System.IO.File.Exists(filePath))
+                            {
+                                System.IO.File.Delete(filePath);
+                            }
                         }
+                       
 
                         //Save
                         var LocalfileName = Path.GetFileName(obj.Bookimg.FileName);

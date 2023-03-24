@@ -1,0 +1,150 @@
+﻿@model IEnumerable<WebBook.ViewModels.RequestViewModel>
+@{
+
+	//var stext = ViewBag.stext;
+	//var filterDate = ViewBag.filterDate;
+	//var filterStatus = ViewBag.filterStatus;
+	//var CountStatus = ViewBag.CountStatus;
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - WebBook</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+</head>
+<body>
+	<style>
+		* {
+			font-size: 15px;
+		}
+	</style>
+	<div class="row">
+		<div class="col-3">
+			<h1 class="text-success ">Print</h1>
+		</div>
+		<div class="col-9">
+			<div class="row">
+				<div class="col-6">
+					ค้นหา
+				</div>
+				<div class="col-6">
+					@ViewBag.stext
+				</div>
+				<div class="col-6">
+					วันรับ/วันขอยิม
+				</div>
+				<div class="col-6">
+					@if (@ViewBag.filterDate == "CreatedAt")
+					{
+						<label>วันขอยืมหนังสือ</label>
+					}
+					else if (@ViewBag.filterDate == "ReceiveDate")
+					{
+						<label>วันรับหนังสือ</label>
+					}
+				</div>
+				<div class="col-6">
+					สถานะ
+				</div>
+				<div class="col-6">
+					@if (@ViewBag.filterStatus == null)
+					{
+						<label>ทั้งหมด</label>
+					}
+					else
+					{
+						<label>@ViewBag.filterStatus</label>
+					}
+					
+				</div>
+				<div class="col-6">
+					วันแรก-วันสุดท้าย
+				</div>
+				<div class="col-6">
+					@ViewBag.dateStart - @ViewBag.dateEnd
+				</div>
+			
+
+			</div>
+		</div>
+	
+	</div>
+
+	<div class=" px-0" id="printableTable">
+
+
+		<div id="printTB" class="table-responsive  ">
+			<table class="table table-hover" @* id="dataTable"*@>
+				<thead>
+					<tr>
+						<th class="text-center">
+							<a>
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-down" viewBox="0 0 16 16">
+									<path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+								</svg>
+							</a>
+						</th>
+						@*<th >ID</th>*@
+						<th style="width:50px;">Email</th>
+						<th style="width:150px;">ชื่อหนังสือ</th>
+						<th>CallNumber</th>
+						<th>จุดรับหนังสือ</th>
+						@*<th>edit</th>*@
+						<th>วันรับหนังสือ</th>
+						<th>กำหนดคืนหนังสือ</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					@{
+						//var i = 0;
+						var count = 0;
+					}
+
+					@foreach (var item in Model)
+					{
+						count++;
+						<tr>
+							<td class="text-center">@count</td>
+							@*<td ><label class="ttd idHis">@item.RequestId</label></td>*@
+							<td><small>@item.UserEmail</small></td>
+							<td>@item.BookTitle</td>
+							<td>@item.CallNumber</td>
+							<td><small>@item.LocationName</small></td>
+							@*<td>@item.UpdatedAt</td>*@
+							<td><small>@item.S_ReceiveDate</small></td>
+							<td><small>@item.S_ReturnDate</small></td>
+
+						</tr>
+					}
+
+				</tbody>
+
+			</table>
+			<iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
+		</div>
+	</div>
+
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>
+
+<script type="text/javascript">
+	$( document ).ready(function() {
+
+			 window.print();
+
+	});// END document  ready
+
+</script>
