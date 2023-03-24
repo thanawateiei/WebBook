@@ -230,7 +230,6 @@ namespace WebBook.Controllers
 				{
 					if (ModelState.IsValid)
 					{
-                        obj.FeedbackId = _db.Feedbacks.Max(x => x.FeedbackId)+1;
 						_db.Feedbacks.Add(obj);
 						_db.SaveChanges();
                         return View();
