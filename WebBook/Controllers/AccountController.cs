@@ -217,7 +217,34 @@ namespace WebBook.Controllers
             if (htr == null) return NotFound();
             return View(htr);
         }
-        public IActionResult Login()
+		public IActionResult Feedback()
+		{
+			return PartialView();
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Feedback(Feedback obj)
+		{
+			{
+				try
+				{
+					if (ModelState.IsValid)
+					{
+						_db.Feedbacks.Add(obj);
+						_db.SaveChanges();
+                        return View();
+					}
+				}
+				catch (Exception ex)
+				{
+					TempData["Message"] = ex.Message;
+					return View(obj);
+				}
+				TempData["Message"] = "การบันทึกผิดพลาด";
+				return View(obj);
+			}
+		}
+		public IActionResult Login()
         {
             return View();
         }

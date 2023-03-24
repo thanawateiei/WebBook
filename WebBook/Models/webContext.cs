@@ -19,6 +19,7 @@ namespace WebBook.Models
         public virtual DbSet<Agency> Agencies { get; set; } = null!;
         public virtual DbSet<Book> Books { get; set; } = null!;
         public virtual DbSet<BookType> BookTypes { get; set; } = null!;
+        public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
         public virtual DbSet<History> Histories { get; set; } = null!;
         public virtual DbSet<Location> Locations { get; set; } = null!;
         public virtual DbSet<PopularBook> PopularBooks { get; set; } = null!;
@@ -143,6 +144,28 @@ namespace WebBook.Models
                     .HasColumnName("bookType_name");
             });
 
+            modelBuilder.Entity<Feedback>(entity =>
+            {
+                entity.ToTable("Feedback");
+
+                entity.Property(e => e.FeedbackId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("feedback_id")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.FeedbackDetail)
+                    .IsUnicode(false)
+                    .HasColumnName("feedback_detail");
+
+                entity.Property(e => e.FeedbackLike)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("feedback_like");
+
+                entity.Property(e => e.FeedbackScore).HasColumnName("feedback_score");
+            });
+
             modelBuilder.Entity<History>(entity =>
             {
                 entity.ToTable("History");
@@ -227,7 +250,7 @@ namespace WebBook.Models
             modelBuilder.Entity<PopularBook>(entity =>
             {
                 entity.HasKey(e => e.PopularId)
-                    .HasName("PK__PopularB__49127DF800DE0197");
+                    .HasName("PK__PopularB__49127DF886ED8F82");
 
                 entity.ToTable("PopularBook");
 
