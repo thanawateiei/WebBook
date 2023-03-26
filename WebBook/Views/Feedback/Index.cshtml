@@ -1,0 +1,93 @@
+﻿@model IEnumerable<WebBook.Models.Feedback>
+@{
+	ViewData["Title"] = "ข้อเสนอแนะ";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@{
+}
+@if (ViewBag.ErrorMessage != null)
+{
+	<script type="text/javascript">
+		window.onload = function () {
+			alert("@ViewBag.ErrorMessage");
+		};
+	</script>
+}
+
+<h1 class="text-success">ข้อเสนอแนะ</h1>
+<div class="container-fluid  px-0">
+	<div class="card shadow w-100 mb-1">
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-bordered">
+					<tr>
+						<th>#</th>
+						<th>ผู้ใช้</th>
+						<th>ความรู้สึก</th>
+						<th>คะแนน</th>
+						<th>ข้อเสนอแนะ</th>
+						<th></th>
+					</tr>
+					@{
+						var i = 0;
+					}
+					@foreach (var item in Model)
+					{
+						i++;
+						<tr>
+							<th>@item.FeedbackId</th>
+							<td>@item.UserId</td>
+							<td>@item.FeedbackLike</td>
+							<td>@item.FeedbackScore</td>
+							<td>@item.FeedbackDetail</td>
+							<td class="text-center">
+								<a data-toggle="modal" data-target="#DetailModal" class="FeedbackDetail">
+									<input type="text" id="idFeedback" hidden value="@item.FeedbackId" />
+									<i class="bi bi bi-eye-fill"></i>
+								</a>
+							</td>
+						</tr>
+					}
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1>รายละเอียดหนังสือ</h1>
+
+				<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				
+			</div>
+			<div class="modal-body">
+				<div id="detailFeedback">
+
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$( document ).ready(function() {
+		$('.FeedbackDetail').click(function() {
+			var idFeedback = $(this).find("#idFeedback").val();
+			console.log("idFeedback " + idFeedback);
+			$('#detailFeedback').load("/Feedback/Detail/" + idFeedback);
+		});
+		$('#DetailModal').on('hidden.bs.modal', function () {
+			console.log("remove  ");
+			$(".modal-body").find("#detailModalFeedback").remove();
+		})
+	});
+
+</script>
