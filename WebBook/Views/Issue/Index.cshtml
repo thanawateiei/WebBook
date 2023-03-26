@@ -1,0 +1,133 @@
+﻿@model IEnumerable<WebBook.Models.Issue>
+@{
+	ViewData["Title"] = "แจ้งปัญหา";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@{
+}
+@if (ViewBag.ErrorMessage != null)
+{
+	<script type="text/javascript">
+		window.onload = function () {
+			alert("@ViewBag.ErrorMessage");
+		};
+	</script>
+}
+
+<h1 class="text-success">แจ้งปัญหา</h1>
+<div class="container-fluid  px-0">
+	<div class="card shadow w-100 mb-1">
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-bordered">
+					<tr>
+						<th>#</th>
+						<th>อีเมลผู้ใช้</th>
+						<th>เรื่อง</th>
+						<th>รายละเอียด</th>
+						<th>สถานะ</th>
+						<th></th>
+						<th></th>
+					</tr>
+					@{
+						var i = 0;
+					}
+					@foreach (var item in Model)
+					{
+						i++;
+						<tr>
+							<th>@item.IssueId</th>
+							<td>@item.UserId</td>
+							<td>@item.IssueTitle</td>
+							<td>@item.IssueDetail</td>
+							<td>@item.IssueStatus</td>
+							<td class="text-center">
+								<a data-toggle="modal" data-target="#DetailModal" class="IssueDetail">
+									<input type="text" id="idIssue" hidden value="@item.IssueId" />
+									<i class="bi bi bi-eye-fill"></i>
+								</a>
+							</td>
+							<td class="text-center">
+								<a data-toggle="modal" data-target="#EditModal" class="IssueEdit">
+									<input type="text" id="idIssue" hidden value="@item.IssueId" />
+									<i class="bi bi-pencil-fill"></i>
+								</a>
+							</td>
+						</tr>
+					}
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1>รายละเอียด</h1>
+
+				<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+
+			</div>
+			<div class="modal-body">
+				<div id="detailIssue">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+<form asp-action="Edit">
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1>แก้ไข</h1>
+
+				<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+
+			</div>
+			<div class="modal-body">
+				<div id="editIssue">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+					<input type="submit" value="Save" class="btn btn-primary" />
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('.IssueDetail').click(function () {
+			var idIssue = $(this).find("#idIssue").val();
+			console.log("idIssue " + idIssue);
+			$('#detailIssue').load("/Issue/Detail/" + idIssue);
+		});
+		$('#DetailModal').on('hidden.bs.modal', function () {
+			console.log("remove  ");
+			$(".modal-body").find("#detailModalIssue").remove();
+		});
+		$('.IssueEdit').click(function () {
+			var idIssue = $(this).find("#idIssue").val();
+			console.log("idIssue " + idIssue);
+			$('#editIssue').load("/Issue/Edit/" + idIssue);
+		});
+		$('#EditModal').on('hidden.bs.modal', function () {
+			console.log("remove  ");
+			$(".modal-body").find("#editModalIssue").remove();
+		});
+	});
+
+</script>

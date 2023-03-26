@@ -21,6 +21,7 @@ namespace WebBook.Models
         public virtual DbSet<BookType> BookTypes { get; set; } = null!;
         public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
         public virtual DbSet<History> Histories { get; set; } = null!;
+        public virtual DbSet<Issue> Issues { get; set; } = null!;
         public virtual DbSet<Location> Locations { get; set; } = null!;
         public virtual DbSet<PopularBook> PopularBooks { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
@@ -227,6 +228,29 @@ namespace WebBook.Models
 
                 entity.Property(e => e.UserId)
                     .HasMaxLength(512)
+                    .IsUnicode(false)
+                    .HasColumnName("user_id");
+            });
+
+            modelBuilder.Entity<Issue>(entity =>
+            {
+                entity.ToTable("Issue");
+
+                entity.Property(e => e.IssueId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("issue_id");
+
+                entity.Property(e => e.IssueDetail).HasColumnName("issue_detail");
+
+                entity.Property(e => e.IssueStatus)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("issue_status");
+
+                entity.Property(e => e.IssueTitle).HasColumnName("issue_title");
+
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("user_id");
             });

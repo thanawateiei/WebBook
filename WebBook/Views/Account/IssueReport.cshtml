@@ -1,0 +1,42 @@
+﻿@model WebBook.Models.Issue
+
+@{
+    ViewData["Title"] = "แจ้งปัญหา";
+}
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Message"]
+    </div>
+}
+
+<h1>แจ้งปัญหา</h1>
+
+<form asp-action="IssueReport">
+<div class="row">
+    <div class="col-md-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <input asp-for="UserId" class="form-control" value="@ViewBag.UserEmail" disabled/>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IssueTitle" class="control-label"></label>
+                <input asp-for="IssueTitle" class="form-control" />
+                <span asp-validation-for="IssueTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IssueDetail" class="control-label"></label>
+                <textarea asp-for="IssueDetail" class="form-control"></textarea>
+                <span asp-validation-for="IssueDetail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="ส่ง" class="btn btn-primary" />
+            </div>
+    </div>
+</div>
+</form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

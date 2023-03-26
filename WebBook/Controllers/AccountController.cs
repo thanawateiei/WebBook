@@ -219,12 +219,22 @@ namespace WebBook.Controllers
         }
 		public IActionResult Feedback()
 		{
+			if (HttpContext.Session.GetString("UserId") == null)
+			{
+				TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+				return RedirectToAction("Login");
+			}
 			return PartialView();
 		}
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult Feedback(Feedback obj)
 		{
+			if (HttpContext.Session.GetString("UserId") == null)
+			{
+				TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+				return RedirectToAction("Login");
+			}
 			{
 				try
 				{
@@ -236,6 +246,51 @@ namespace WebBook.Controllers
                         obj.UserId = HttpContext.Session.GetString("UserId");
                         _db.Feedbacks.Add(obj);
 						_db.SaveChanges();
+                        return View();
+					}
+				}
+				catch (Exception ex)
+				{
+					TempData["Message"] = ex.Message;
+					return View(obj);
+				}
+				TempData["Message"] = "การบันทึกผิดพลาด";
+				return View(obj);
+			}
+		}
+		public IActionResult IssueReport()
+		{
+			if (HttpContext.Session.GetString("UserId") == null)
+			{
+				TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+				return RedirectToAction("Login");
+			}
+			ViewBag.UserEmail = HttpContext.Session.GetString("UserEmail");
+			return View();
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult IssueReport(Issue obj)
+		{
+			if (HttpContext.Session.GetString("UserId") == null)
+			{
+				TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+				return RedirectToAction("Login");
+			}
+			{
+				try
+				{
+					if (ModelState.IsValid)
+					{
+						var idIssue = from i in _db.Issues
+										 select i.IssueId;
+						obj.IssueId = (idIssue.ToList().Count >= 1) ? idIssue.Max() + 1 : 1;
+						obj.UserId = HttpContext.Session.GetString("UserId");
+                        obj.IssueStatus = "รอการแก้ไข";
+						_db.Issues.Add(obj);
+						_db.SaveChanges();
+                        TempData["Message"] = "สำเร็จ";
+                        ViewBag.UserEmail = HttpContext.Session.GetString("UserEmail");
                         return View();
 					}
 				}
