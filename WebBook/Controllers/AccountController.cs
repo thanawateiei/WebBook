@@ -230,7 +230,11 @@ namespace WebBook.Controllers
 				{
 					if (ModelState.IsValid)
 					{
-						_db.Feedbacks.Add(obj);
+                        var idFeedback = from f in _db.Feedbacks
+                                         select f.FeedbackId;
+                        obj.FeedbackId = (idFeedback.ToList().Count >= 1) ? idFeedback.Max() + 1 : 1;
+                        obj.UserId = HttpContext.Session.GetString("UserId");
+                        _db.Feedbacks.Add(obj);
 						_db.SaveChanges();
                         return View();
 					}

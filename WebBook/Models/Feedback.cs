@@ -5,7 +5,8 @@ namespace WebBook.Models
 {
     public partial class Feedback
     {
-        public string? FeedbackId { get; set; }
+        public int? FeedbackId { get; set; }
+        public string? UserId { get; set; }
         public string? FeedbackLike { get; set; }
         public int? FeedbackScore { get; set; }
         public string? FeedbackDetail { get; set; }

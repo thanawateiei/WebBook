@@ -149,10 +149,8 @@ namespace WebBook.Models
                 entity.ToTable("Feedback");
 
                 entity.Property(e => e.FeedbackId)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("feedback_id")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedNever()
+                    .HasColumnName("feedback_id");
 
                 entity.Property(e => e.FeedbackDetail)
                     .IsUnicode(false)
@@ -164,6 +162,11 @@ namespace WebBook.Models
                     .HasColumnName("feedback_like");
 
                 entity.Property(e => e.FeedbackScore).HasColumnName("feedback_score");
+
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(512)
+                    .IsUnicode(false)
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<History>(entity =>
