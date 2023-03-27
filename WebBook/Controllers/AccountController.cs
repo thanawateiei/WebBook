@@ -56,6 +56,7 @@ namespace WebBook.Controllers
             his.PublicationYear = bookInfo.PublicationYear;
             his.Publisher = bookInfo.Publisher;
             his.CallNumber = bookInfo.CallNumber;
+            his.ReceiveDate = DateTime.Now.AddDays(1);
             ViewData["Location"] = new SelectList(_db.Locations, "LocationId", "LocationName");
             return View(his);
         }
@@ -312,7 +313,6 @@ namespace WebBook.Controllers
         public IActionResult Login(string userEmail, string userPass)
         {
             var key = "E546C8DF278CD5931069B522E695D4F2";
-            //Query หาว่ามี Login Password ที่ระบุหรือไม่
             var user = from u in _db.Users
                        where u.Email.Equals(userEmail)
                        select u;
@@ -322,8 +322,8 @@ namespace WebBook.Controllers
                 //ถ้าใช้ RedirectToAction ไม่สามารถใช้ ViewBag ได้ ต้องใช้ TempData
                 TempData["Message"] = "ไม่พบผู้ใช้";
                 //ViewBag.ErrorMessage = "ระบุผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
-                //return PartialView();
                 return View();
+                //return View();
             }
             ///try?
             string decryptPassword = DecryptString(userinfo.Password,key);
