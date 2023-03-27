@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using WebBook.Models;
@@ -83,8 +84,89 @@ namespace WebBook.Controllers
             return View();
         }
 
-        public IActionResult Search()
+        public IActionResult Search(string stext)
         {
+            
+            return View();
+        }
+        public IActionResult BookDetail(string id)
+        {
+            var obj = _db.Books.Find(id);
+            BookViewModel book = new BookViewModel();
+            List<BookTypeViewModel> booktype = new List<BookTypeViewModel>();
+            if (obj.BookType1 != 0) {
+                BookTypeViewModel bookt = new BookTypeViewModel();
+                bookt.BookTypeId = obj.BookType1;
+                bookt.BookTypeName  = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == obj.BookType1).BookTypeName;
+                booktype.Add(bookt);
+            }
+            if (obj.BookType2 != 0)
+            {
+                BookTypeViewModel bookt = new BookTypeViewModel();
+                bookt.BookTypeId = obj.BookType2;
+                bookt.BookTypeName = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == obj.BookType2).BookTypeName;
+                booktype.Add(bookt);
+            }
+            if (obj.BookType3 != 0)
+            {
+                BookTypeViewModel bookt = new BookTypeViewModel();
+                bookt.BookTypeId = obj.BookType3;
+                bookt.BookTypeName = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == obj.BookType3).BookTypeName;
+                booktype.Add(bookt);
+            }
+            if (obj.BookType4 != 0)
+            {
+                BookTypeViewModel bookt = new BookTypeViewModel();
+                bookt.BookTypeId = obj.BookType4;
+                bookt.BookTypeName = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == obj.BookType4).BookTypeName;
+                booktype.Add(bookt);
+            }
+            if (obj.BookType5 != 0)
+            {
+                BookTypeViewModel bookt = new BookTypeViewModel();
+                bookt.BookTypeId = obj.BookType5;
+                bookt.BookTypeName = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == obj.BookType5).BookTypeName;
+                booktype.Add(bookt);
+            }
+            if (obj.BookType6 != 0)
+            {
+                BookTypeViewModel bookt = new BookTypeViewModel();
+                bookt.BookTypeId = obj.BookType6;
+                bookt.BookTypeName = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == obj.BookType6).BookTypeName;
+                booktype.Add(bookt);
+            }
+            if (obj.BookType7 != 0)
+            {
+                BookTypeViewModel bookt = new BookTypeViewModel();
+                bookt.BookTypeId = obj.BookType7;
+                bookt.BookTypeName = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == obj.BookType7).BookTypeName;
+                booktype.Add(bookt);
+            }
+            if (obj.BookType8 != 0)
+            {
+                BookTypeViewModel bookt = new BookTypeViewModel();
+                bookt.BookTypeId = obj.BookType8;
+                bookt.BookTypeName = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == obj.BookType8).BookTypeName;
+                booktype.Add(bookt);
+            }
+            if (obj.BookType9 != 0)
+            {
+                BookTypeViewModel bookt = new BookTypeViewModel();
+                bookt.BookTypeId = obj.BookType9;
+                bookt.BookTypeName = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == obj.BookType9).BookTypeName;
+                booktype.Add(bookt);
+            }
+            if (obj.BookType10 != 0)
+            {
+                BookTypeViewModel bookt = new BookTypeViewModel();
+                bookt.BookTypeId = obj.BookType10;
+                bookt.BookTypeName = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == obj.BookType10).BookTypeName;
+                booktype.Add(bookt);
+            }
+
+
+            ViewBag.booktype = booktype;
+            ViewBag.Book = obj;
             return View();
         }
 

@@ -228,8 +228,17 @@
 			<!--  หนังสือใหม่ -->
 
 			<h2>หนังสือใหม่</h2>
+			<form asp-controller="Home" asp-action="search">
+	
+		
+				<input type="text" name="stext" id="search" hidden class="form-control" value="หนังสือใหม่" />
+				<button type="submit" style="border:none; background: none;">
+					ดูทั้งหมด
+				</button>
 
-			<a href="#">ดูทั้งหมด</a>
+			</form>
+			@*<button id="allNewBook">ดูทั้งหมด</button>*@
+			
 
 		</div>
 		<div class="card-Book">
@@ -253,7 +262,7 @@
 											@*<div class="d-flex justify-content-center p-0 btn-group">
 
 												<div class="btn-group w-100 " role="group" aria-label="Basic example">*@
-													<a href="#" class="btn book-btn h6">ดู</a>
+													<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
 													<a href="#" class="btn book-btn h6">ยืมหนังสือ</a>
 
 												@*</div>
@@ -277,7 +286,7 @@
 											@*<div class="d-flex justify-content-center p-0 btn-group">
 
 												<div class="btn-group w-100 " role="group" aria-label="Basic example">*@
-													<a href="#" class="btn book-btn h6">ดู</a>
+													<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
 													<a href="#" class="btn book-btn h6">ยืมหนังสือ</a>
 
 												@*</div>
@@ -314,7 +323,16 @@
 
 			<h2>หนังสือแนะนำ</h2>
 
-			<a href="#">ดูทั้งหมด</a>
+			<form asp-controller="Home" asp-action="search">
+	
+		
+				<input type="text" name="stext" id="search" hidden class="form-control" value="หนังสือแนะนำ" />
+			
+				<button  type="submit"style="border:none; background: none;">
+					ดูทั้งหมด
+				</button>
+
+			</form>
 
 		</div>
 		<div class="card-Book">
@@ -332,12 +350,13 @@
 										<div class="card-body">
 											<div class="Simg">
 											<img src="@img" class="card-img-top imageBook " alt="...">
-											</div>											<h5 class="card-title">@item.BookName</h5>
+											</div>											
+											<h5 class="card-title">@item.BookName</h5>
 
 											@*<div class="d-flex justify-content-center p-0 btn-group">
 
 												<div class="btn-group w-100 " role="group" aria-label="Basic example">*@
-													<a href="#" class="btn book-btn">ดู</a>
+													<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
 													<a href="#" class="btn book-btn">ยืมหนังสือ</a>
 
 												@*</div>
@@ -361,7 +380,7 @@
 											@*<div class="d-flex justify-content-center p-0 btn-group">
 
 												<div class="btn-group w-100 " role="group" aria-label="Basic example">*@
-													<a href="#" class="btn book-btn">ดู</a>
+													<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
 													<a href="#" class="btn book-btn">ยืมหนังสือ</a>
 
 												@*</div>
@@ -404,29 +423,10 @@
 <!-- Initialize Swiper -->
 <script type="text/javascript">
 	$( document ).ready(function() {
-		//		var swiper = new Swiper(".mySwiper", {
-		//				slidesPerView: 1,
-		//				spaceBetween: 20,
-		//				pagination: {
-		//					el: ".swiper-pagination",
-		//					dynamicBullets: true,
-		//				},
-		//				navigation: {
-		//					nextEl: ".swiper-button-next",
-		//					prevEl: ".swiper-button-prev",
-		//				},
-		//				breakpoints: {
-		//					300: {
-		//						slidesPerView: 2
-		//					},
-		//					768: {
-		//						slidesPerView: 4
-		//					},
-		//					1024: {
-		//						slidesPerView: 7
-		//					},
-		//				},
-		//			});
+ 	
+
+
+
 
 		$('.multiple-card-slider .carousel').each(function(){
 			//alert("Asdasd");

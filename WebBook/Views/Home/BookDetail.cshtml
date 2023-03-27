@@ -1,0 +1,30 @@
+﻿@model IEnumerable<WebBook.ViewModels.BookViewModel>
+@{
+	var book =  ViewBag.Book;
+	var img = "/img/imgbook/" + book.BookCover;
+	var booktype = ViewBag.BTT;
+}
+
+<div class="container">
+<div class="row ">
+<div class="col-12 ">@book.BookName</div>	
+<div class="col-4 ">
+	<img src="@img" class="" height="400px" alt="...">
+</div>
+<div class="col-5 ">
+	<div class="row ">
+		<div class="col-12">
+			<p>โดย : @book.AuthorName</p>
+			<p>สำนักพิมพ์ : @book.Publisher</p>
+		</div><hr />
+		<div class="col-12">
+			@{
+				if(book.BookType1 != 0){}
+			}
+		</div><hr />
+
+	</div>
+</div>
+
+</div>
+</div>

@@ -18,16 +18,16 @@ namespace WebBook.ViewModels
         public string? BookLang { get; set; } 
         public DateTime UpdatedAt { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int? BookType1 { get; set; }
-        public int? BookType2 { get; set; }
-        public int? BookType3 { get; set; }
-        public int? BookType4 { get; set; }
-        public int? BookType5 { get; set; }
-        public int? BookType6 { get; set; }
-        public int? BookType7 { get; set; }
-        public int? BookType8 { get; set; }
-        public int? BookType9 { get; set; }
-        public int? BookType10 { get; set; }
+        public int BookType1 { get; set; }
+        public int BookType2 { get; set; }
+        public int BookType3 { get; set; }
+        public int BookType4 { get; set; }
+        public int BookType5 { get; set; }
+        public int BookType6 { get; set; }
+        public int BookType7 { get; set; }
+        public int BookType8 { get; set; }
+        public int BookType9 { get; set; }
+        public int BookType10 { get; set; }
 
 
     }
