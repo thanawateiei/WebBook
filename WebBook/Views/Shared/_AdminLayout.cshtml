@@ -35,24 +35,20 @@
 		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
 			<!-- Sidebar - Brand -->
-			<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+			<a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Admin" asp-action="index">
 				<div class="sidebar-brand-icon rotate-n-15">
 					<i class="fas fa-laugh-wink"></i>
 				</div>
-				<div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
 			</a>
-
-			<!-- Divider -->
-			<hr class="sidebar-divider my-0">
-
-			<!-- Nav Item - Dashboard -->
-			<li class="nav-item active">
-				<a class="nav-link" href="index.html">
-					<i class="fas fa-fw fa-tachometer-alt"></i>
-					<span>Dashboard</span>
+		<li class="nav-item">
+				<a class="nav-link "
+				   asp-controller="Admin" asp-action="index">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+						<path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+					</svg>
+					<span>หน้าแรก</span>
 				</a>
-			</li>
-
+		</li>
 		<li class="nav-item">
 				<a class="nav-link "
 				   asp-controller="Home" asp-action="index">
@@ -335,9 +331,8 @@
 			</div>
 		</div>
 	</div>
-	@*<script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
-	<script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-	<script src="~/js/demo/datatables-demo.js"></script>*@
+	<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/jquery.canvasjs.min.js"></script>
 	<!-- Bootstrap core JavaScript-->
 	<script src="~/vendor/jquery/jquery.min.js"></script>
 	<script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -348,12 +343,12 @@
 	<!-- Custom scripts for all pages-->
 	<script src="~/js/sb-admin-2.min.js" asp-append-version="true"></script>
 
-	<!-- Page level plugins -->
-	<script src="~/vendor/chart.js/Chart.min.js"></script>
+	@*<!-- Page level plugins -->
+	<script src="~/vendor/chart.js/Chart.min.js"></script>*@
 
-	<!-- Page level custom scripts -->
+@*	<!-- Page level custom scripts -->
 	<script src="~/js/demo/chart-area-demo.js"></script>
-	<script src="~/js/demo/chart-pie-demo.js"></script>
+	<script src="~/js/demo/chart-pie-demo.js"></script>*@
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 

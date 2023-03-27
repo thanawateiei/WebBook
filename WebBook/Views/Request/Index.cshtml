@@ -20,265 +20,372 @@
 }
 
 <style>
- /* * {
-    display: none;
-  }*/
-  #printableTable {
-    display: block;
-  }
-.Sfail{
-	
-	width: 45px;
-	background: #FFC6D3;
-	color: #FB2576;
-	border: 2px solid #FB2576;
-	border-radius: 18px;
-	text-align: center;
-}
-.Snew{
-	width: 45px;
-	background: #F6F7C1;
-	color: #E7B10A;
-	border: 2px solid #E7B10A;
-	border-radius: 18px;
-	text-align: center;
-}
-.Ssucceed{
-	width: 75px;
-	background: #DDF7E3;
-	color: #9DC08B;
-	border: 2px solid #9DC08B;
-	border-radius: 18px;
-	text-align: center;
-}
-.Sprogress{
-	width: 95px;
-	background: #C9EEFF;
-	color: #19A7CE;
-	border: 2px solid #19A7CE;
-	border-radius: 18px;
-	text-align: center;
-}
+	/* * {
+		display: none;
+	  }*/
+	#printableTable {
+		display: block;
+	}
 
+	.Sfail {
+		width: 45px;
+		background: #FFC6D3;
+		color: #FB2576;
+		border: 2px solid #FB2576;
+		border-radius: 18px;
+		text-align: center;
+	}
+
+	.Snew {
+		width: 45px;
+		background: #F6F7C1;
+		color: #E7B10A;
+		border: 2px solid #E7B10A;
+		border-radius: 18px;
+		text-align: center;
+	}
+
+	.Ssucceed {
+		width: 75px;
+		background: #DDF7E3;
+		color: #9DC08B;
+		border: 2px solid #9DC08B;
+		border-radius: 18px;
+		text-align: center;
+	}
+
+	.Sprogress {
+		width: 95px;
+		background: #C9EEFF;
+		color: #19A7CE;
+		border: 2px solid #19A7CE;
+		border-radius: 18px;
+		text-align: center;
+	}
+	.disabled{
+  pointer-events: none;
+}
 </style>
 <h1 class="text-success ">รายการคำขอยืม</h1>
 @foreach (var item in CountStatus)
 {
 	@*<p>@item.StatusId</p>*@
-	<p>@item.StatusName จำนวน @item.Count</p>
-	
+	<h6>@item.StatusName จำนวน @item.Count</h6>
+
 }
 @*<label class="Sfail m-2">fail</label>
-<label class="Snew m-2">new</label>
-<label class="Ssucceed m-2">succeed</label>
-<label class="Sprogress m-2">in progress</label>*@
+	<label class="Snew m-2">new</label>
+	<label class="Ssucceed m-2">succeed</label>
+	<label class="Sprogress m-2">in progress</label>*@
 
 <div class="container-fluid  px-0" id="printableTable">
 	<!-- DataTales Example -->
 	<div class="card shadow w-100 mb-1">
 		<div class="card-header py-2 ">
 
-				<form asp-controller="Request" asp-action="Index">
-					<div class="row  justify-content-between">
+			<form asp-controller="Request" asp-action="Index">
+				<div class="row  justify-content-between">
 
-						<div class="col-2  pr-0">
-							@*<label class="mb-0 pl-1">สถานะ</label>*@
-							<select class="form-control" aria-label="Default select example" name="filterStatus" id="filterStatus">
-								@if (@filterStatus != null)
-								{
-									<option value="@filterStatus.StatusName">@filterStatus.StatusName</option>
-								}
-								<option value=" ">สถานะทั้งหมด</option>
-								@foreach (var item in ViewBag.Status)
-								{
-									<option value="@item.StatusName">@item.StatusName</option>
-								}
+					<div class="col-2  pr-0">
+						@*<label class="mb-0 pl-1">สถานะ</label>*@
+						<select class="form-control" aria-label="Default select example" name="filterStatus" id="filterStatus">
+							@if (@filterStatus != null)
+							{
+								<option value="@filterStatus.StatusName">@filterStatus.StatusName</option>
+							}
+							<option value=" ">สถานะทั้งหมด</option>
+							@foreach (var item in ViewBag.Status)
+							{
+								<option value="@item.StatusName">@item.StatusName</option>
+							}
 
-							</select>
-						</div>
-						<div class="col-2  pr-0">
-							@*<label class="mb-0 pl-1">วันรับ/วันขอยืม</label>*@
-							<select class="form-control" aria-label="Default select example" name="filterDate" id="filterDate">
-								@if (@filterDate == "ReceiveDate")
-								{
-									<option value="ReceiveDate">วันรับหนังสือ</option>
-									<option value=" ">วันรับ/วันขอยืม </option>
-									<option value="CreatedAt">วันขอยืมหนังสือ</option>
-								}
-								else if (@filterDate == "CreatedAt")
-								{
-									<option value="CreatedAt">วันขอยืมหนังสือ</option>
-									<option value=" ">วันรับ/วันขอยืม </option>
-									<option value="ReceiveDate">วันรับหนังสือ</option>
-								}
-								else
-								{
-									<option value=" ">วันรับ/วันขอยืม</option>
-									<option value="CreatedAt">วันขอยืมหนังสือ</option>
-									<option value="ReceiveDate">วันรับหนังสือ</option>
-								}
-
-
-							</select>
-						</div>
-						<div class="col-2  pr-1">
-							@*<label class="mb-0 pl-1">วันแรก</label>*@
-							<input type="date" name="dateStart" id="dateStart" value="@ViewBag.dateStart" class="form-control">
-						</div>
-
-						<label class="pt-2">To</label>
-
-						<div class="col-2  pl-1">
-							@*<label class="mb-0 pl-1">วันสุดท้าย</label>*@
-							<input type="date"  name="dateEnd" id="dateEnd" value="@ViewBag.dateEnd" class="form-control">
-						</div>
-
-						<div class="col-3 pl-1">
-							@*<label class="mb-0 pl-1">ค้นหา</label>*@
-							<input type="text" name="stext" id="search" placeholder="ค้นหา..." class="form-control" value="@stext" />
-						</div>
+						</select>
+					</div>
+					<div class="col-2  pr-0">
+						@*<label class="mb-0 pl-1">วันรับ/วันขอยืม</label>*@
+						<select class="form-control" aria-label="Default select example" name="filterDate" id="filterDate">
+							@if (@filterDate == "ReceiveDate")
+							{
+								<option value="ReceiveDate">วันรับหนังสือ</option>
+								<option value=" ">วันรับ/วันขอยืม </option>
+								<option value="CreatedAt">วันขอยืมหนังสือ</option>
+							}
+							else if (@filterDate == "CreatedAt")
+							{
+								<option value="CreatedAt">วันขอยืมหนังสือ</option>
+								<option value=" ">วันรับ/วันขอยืม </option>
+								<option value="ReceiveDate">วันรับหนังสือ</option>
+							}
+							else
+							{
+								<option value=" ">วันรับ/วันขอยืม</option>
+								<option value="CreatedAt">วันขอยืมหนังสือ</option>
+								<option value="ReceiveDate">วันรับหนังสือ</option>
+							}
 
 
+						</select>
+					</div>
+					<div class="col-2  pr-1">
+						@*<label class="mb-0 pl-1">วันแรก</label>*@
+						<input type="date" name="dateStart" id="dateStart" value="@ViewBag.dateStart" class="form-control">
+					</div>
 
+					<label class="pt-2">To</label>
+
+					<div class="col-2  pl-1">
+						@*<label class="mb-0 pl-1">วันสุดท้าย</label>*@
+						<input type="date" name="dateEnd" id="dateEnd" value="@ViewBag.dateEnd" class="form-control">
+					</div>
+
+					<div class="col-3 pl-1">
+						@*<label class="mb-0 pl-1">ค้นหา</label>*@
+						<input type="text" name="stext" id="search" placeholder="ค้นหา..." class="form-control" value="@stext" />
 					</div>
 
 
 
-					<input type="text" name="T_btn" id="T_btn" hidden class="form-control" value="search" />
-					<div class="col-12 px-0">
-						<button type="submit" id="submit" class="btn btn-secondary  my-2  w-100">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-								<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-							</svg>
-							ค้นหา
-						</button>
-					</div>
+				</div>
+
+
+				
+				<input type="text" name="T_btn" id="T_btn" hidden class="form-control" value="search" />
+				<input name="ListNumber" id="ListNumber" hidden class="form-control" value="@ViewBag.ListNumber" />
+				<input name="pageNow" id="pageNow" hidden class="form-control" value=" @ViewBag.pagenow" />
+				<div class="col-12 px-0">
+					<button type="submit" id="submit" class="btn btn-secondary  my-2  w-100">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+							<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+						</svg>
+						ค้นหา
+					</button>
+				</div>
 
 
 
-				</form>
+			</form>
 		</div>
-			
+
 		<div class="card-body">
 
-				<div id="printTB" class="table-responsive  ">
-					<table class="table table-bordered"  @* id="dataTable"*@  >
-						<thead>
+			<div id="printTB" class="table-responsive  ">
+				<table class="table table-bordered">
+					<div class="d-flex justify-content-between mb-1">
+						<div>
+							<select class="form-control" aria-label="Default select example" id="listNumber">
+								@if(@ViewBag.ListNumber == 10){
+									<option value="10">10</option>
+									<option value="2">2</option>
+									<option value="5">5</option>
+									
+								}else if (@ViewBag.ListNumber == 5)
+								{
+									<option value="5">5</option>
+									<option value="2">2</option>
+									<option value="10">10</option>
+								}else{
+									<option value="2">2</option>
+									<option value="5">5</option>
+									<option value="10">10</option>
+								}
+							</select>
+						</div>
+						<div>
+							<button type="button" id="deweiei" class="btn btn-secondary">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+									<path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+									<path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+								</svg>
+							</button>
+							<button type="button" id="print" class="btn btn-secondary">
+								print
+							</button>
+						</div>
+
+					</div>
+
+					<thead>
+						<tr>
+							<th class="text-center">
+								<a>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-down" viewBox="0 0 16 16">
+										<path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+									</svg>
+								</a>
+							</th>
+							@*<th >ID</th>*@
+							<th>Email</th>
+							<th>ชื่อหนังสือ</th>
+							<th>CallNumber</th>
+							<th>จุดรับหนังสือ</th>
+							@*<th>edit</th>*@
+							<th>วันรับหนังสือ</th>
+							<th>กำหนดคืนหนังสือ</th>
+							<th>สถานะ</th>
+
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						@{
+							//var i = 0;
+							var count = 1;
+								if (ViewBag.pagenow != 1)
+									{
+										count = ((ViewBag.pagenow * ViewBag.ListNumber)-ViewBag.ListNumber)+1;
+									}
+								//if (ViewBag.pagenow == 1)
+								//	{
+								//		count++;
+								//	}
+						}
+						<input hidden id="SList"  value="@count">
+						@foreach (var item in Model)
+						{
+							
 							<tr>
-								<th class="text-center">
-									<a>
-										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-down" viewBox="0 0 16 16">
-											<path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+								<td class="text-center">@count</td>
+								@*<td ><label class="ttd idHis">@item.RequestId</label></td>*@
+								<td>@item.UserEmail</td>
+								<td>@item.BookTitle</td>
+								<td>@item.CallNumber</td>
+								<td>@item.LocationName</td>
+								@*<td>@item.UpdatedAt</td>*@
+								<td>@item.S_ReceiveDate</td>
+								<td>@item.S_ReturnDate</td>
+								<td>
+									@if (item.state == "new")
+									{
+										<label class="Snew mb-0">new</label>
+									}
+
+									@item.Status
+								</td>
+								@*@if(item.StatusID == 1){
+									<td class="text-warning">@item.Status</td>
+									}else if (item.StatusID == 2)
+									{
+									<td class="text-info">@item.Status</td>
+									}else if (item.StatusID == 3)
+									{
+									<td class="text-primary">@item.Status</td>
+									}else if (item.StatusID == 4)
+									{
+									<td class="text-success">@item.Status</td>
+									}else if (item.StatusID == 5)
+									{
+									<td class="text">@item.Status</td>
+									}*@
+
+								<td class="text-center">
+									<a asp-action="Edit" asp-route-id="@item.RequestId">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+											<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+											<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
 										</svg>
 									</a>
-								</th>
-								@*<th >ID</th>*@
-								<th>Email</th>
-								<th>ชื่อหนังสือ</th>
-								<th>CallNumber</th>
-								<th>จุดรับหนังสือ</th>
-								@*<th>edit</th>*@
-								<th>วันรับหนังสือ</th>
-								<th>กำหนดคืนหนังสือ</th>
-								<th>สถานะ</th>
-
-								<th></th>
-								<th></th>
+								</td>
+								<td class="text-center">
+									<a asp-action="Delete" asp-route-id="@item.RequestId">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-x text-danger" viewBox="0 0 16 16">
+											<path d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708z"></path>
+											<path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"></path>
+										</svg>
+									</a>
+								</td>
 							</tr>
-						</thead>
-						<tbody>
-							@{
-								//var i = 0;
-								var count = 0;
-							}
+							count++;
+						}
+					</tbody>
+					<input hidden id="EList"  value="@count">
+				</table>
+			</div>
+	
+			
+			<div class="btn-group m-2" id="listNumder" role="group" aria-label="Basic radio toggle button group">
 
-							@foreach (var item in Model)
-							{
-								count++;
-								<tr>
-									<td  class="text-center">@count</td>
-									@*<td ><label class="ttd idHis">@item.RequestId</label></td>*@
-									<td>@item.UserEmail</td>
-									<td>@item.BookTitle</td>
-									<td>@item.CallNumber</td>
-									<td>@item.LocationName</td>
-									@*<td>@item.UpdatedAt</td>*@
-									<td>@item.S_ReceiveDate</td>
-									<td>@item.S_ReturnDate</td>
-									<td>
-										@if(item.state  == "new")
-										{
-											<label class="Snew mb-0">new</label>
-										}
+				  <input type="radio" class="btn-check btnradio" hidden id="btnradio-previous"  autocomplete="off" value="previous" >
+				  <label class="btn btn-outline-secondary" id="label-previous" for="btnradio-previous">previous</label>
+				  @for (var i = 0; i < ViewBag.allListNum; i++)
+					{
+						var pages = i + 1;
+						var setid = "btnradio" + pages;
+						@if(pages == ViewBag.pagenow)
+						{
+							<input type="radio" class="btn-check btnradio "  checked hidden id="@setid" autocomplete="off"  value="@pages">
+							<label class="btn btn-outline-secondary active" for="@setid">@pages</label>
+						}
+						else
+						{
+							<input type="radio" class="btn-check btnradio " hidden id="@setid" autocomplete="off"  value="@pages">
+							<label class="btn btn-outline-secondary" for="@setid">@pages</label>
+						}
 
-										@item.Status 
-									</td>
-									@*@if(item.StatusID == 1){
-										<td class="text-warning">@item.Status</td>
-										}else if (item.StatusID == 2)
-										{
-										<td class="text-info">@item.Status</td>
-										}else if (item.StatusID == 3)
-										{
-										<td class="text-primary">@item.Status</td>
-										}else if (item.StatusID == 4)
-										{
-										<td class="text-success">@item.Status</td>
-										}else if (item.StatusID == 5)
-										{
-										<td class="text">@item.Status</td>
-										}*@
+						
+					}
+				  <input type="radio" class="btn-check btnradio" hidden id="btnradio-next" autocomplete="off" value="next">
+				  <label class="btn btn-outline-secondary" id="label-next" for="btnradio-next">next</label>
 
-									<td class="text-center">
-										<a asp-action="Edit" asp-route-id="@item.RequestId">
-											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-												<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
-												<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
-											</svg>
-										</a>
-									</td>
-									<td class="text-center">
-										<a asp-action="Delete" asp-route-id="@item.RequestId">
-											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-x text-danger" viewBox="0 0 16 16">
-												<path d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708z"></path>
-												<path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"></path>
-											</svg>
-										</a>
-									</td>
-								</tr>
-							}
-						</tbody>
-
-					</table>
-					 <iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
 				</div>
+			<input  id="allpage" hidden value=" @ViewBag.allListNum" />
+			<input  id="allData" hidden value=" @ViewBag.allData" />
 		</div>
 	</div>
-</div>
 
-<button type="button" id="print" class="btn btn-secondary">
-	print
-</button>
 
-<script type="text/javascript">
-	$( document ).ready(function() {
-		$('#print').click(function(){
-			$( "#T_btn" ).val("print");
-			$( "#submit" ).click();
-			//alert("asd");
-			 //$("#printTB").print();
-			// window.print();
-		});
 
-		//$("#filterStatus").change(function() {
-		//	//alert("asd");
-		//	var val = $(this).val();
-		//	$( "#search" ).val(val);
-		//	$( "#submit" ).click();
-		//});
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			
+			var pagenow = 	$( "#pageNow" ).val();
+			var pageall = 	$( "#allpage" ).val();
+			var SList = 	$( "#SList" ).val();
+			var EList = 	$( "#EList" ).val();
+			var allData = 	$( "#allData" ).val();
+			//console.log("SList "+SList + "SList "+EList);
 
-	});// END document  ready
+			$('#listNumder').before('<p class="mb-0">Showing '+SList+' to '+(EList-1)+' of '+allData+' entries</p>');
 
-</script>
+			if(pagenow == pageall){
+				$( "#label-next" ).addClass('disabled');
+			}
+			if(pagenow == 1){
+				$( "#label-previous" ).addClass('disabled');
+			}
+
+			$('#deweiei').click(function() {
+						location.reload();
+			});
+			$('#print').click(function(){
+				$( "#T_btn" ).val("print");
+				$( "#submit" ).click();
+			});
+
+			$("#listNumber").change(function() {
+
+				var list = $("#listNumber").val();
+				//alert(list);
+				$( "#pageNow" ).val(1);
+				$( "#ListNumber" ).val(list);
+				$( "#submit" ).click();
+			});
+			$(".btnradio").change(function() {
+				var pageN = $( "#pageNow" ).val();
+				var list = $(this).val();
+				//alert(pageN)
+				if(list == "previous"){
+					list = parseInt(pageN) - 1;
+				}else if(list == "next"){
+					list = parseInt(pageN) + 1;
+				}
+				//alert(list);
+				$( "#pageNow" ).val(list);
+				$( "#submit" ).click();
+			});
+
+		});// END document  ready
+
+	</script>
 
 
