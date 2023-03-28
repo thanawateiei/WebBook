@@ -57,6 +57,7 @@ namespace WebBook.Controllers
             his.Publisher = bookInfo.Publisher;
             his.CallNumber = bookInfo.CallNumber;
             his.ReceiveDate = DateTime.Now.AddDays(1);
+            his.BookLang = bookInfo.BookLang;
             ViewData["Location"] = new SelectList(_db.Locations, "LocationId", "LocationName");
             return View(his);
         }

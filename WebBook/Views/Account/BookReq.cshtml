@@ -22,68 +22,137 @@
     }
 </style>
 <div class="container">
-    <form class="card-body cardbody-color" asp-controller="Account" asp-action="BookReqCreate">
-        <div class="row jumbotron box8">
-            <div class="col-6">
-                <h2 class="text-center text-dark mt-2">ส่งคำขอยืมหนังสือ</h2>
-                <div class="form-group">
-                    <label asp-for="BookName" class="control-label"></label>
-                    <input asp-for="BookName" class="form-control" />
-                    <span asp-validation-for="BookName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="AuthorName" class="control-label"></label>
-                    <input asp-for="AuthorName" class="form-control" />
-                    <span asp-validation-for="AuthorName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="PublicationYear" class="control-label"></label>
-                    <input asp-for="PublicationYear" class="form-control" />
-                    <span asp-validation-for="PublicationYear" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Publisher" class="control-label"></label>
-                    <input asp-for="Publisher" class="form-control" />
-                    <span asp-validation-for="Publisher" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="CallNumber" class="control-label"></label>
-                    <input asp-for="CallNumber" class="form-control" />
-                    <span asp-validation-for="CallNumber" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="BookLang" class="control-label"></label>
-                    <select asp-for="BookLang" class="form-select">
-                        <option value="TH">TH</option>
-                        <option value="EN">EN</option>
-                    </select>
-                    <span asp-validation-for="BookLang" class="text-danger"></span>
-                </div>
-                <div class=" form-group">
-                    <label asp-for="ReceiveDate" class="control-label"></label>
-                    <input asp-for="ReceiveDate" class="form-control" />
-                    <span asp-validation-for="ReceiveDate" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="LocationId" class="control-label"></label>
-                    <select asp-for="LocationId" class="form-select" asp-items="ViewBag.Location"></select>
-                    <span asp-validation-for="LocationId" class="text-danger"></span>
-                </div>
-                <div class="form-group" hidden>
-                    <label asp-for="StatusId" class="control-label"></label>
-                    <input asp-for="StatusId" class="form-control" />
-                    <span asp-validation-for="StatusId" class="text-danger"></span>
-                </div>
+    @if (Model == null)
+    {
+        <form class="card-body cardbody-color" asp-controller="Account" asp-action="BookReqCreate">
+            <div class="row jumbotron box8">
+                <div class="col-6">
+                    <h2 class="text-center text-dark mt-2">ส่งคำขอยืมหนังสือ</h2>
+                    <div class="form-group">
+                        <label asp-for="BookName" class="control-label"></label>
+                        <input asp-for="BookName" class="form-control" />
+                        <span asp-validation-for="BookName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AuthorName" class="control-label"></label>
+                        <input asp-for="AuthorName" class="form-control" />
+                        <span asp-validation-for="AuthorName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PublicationYear" class="control-label"></label>
+                        <input asp-for="PublicationYear" class="form-control" />
+                        <span asp-validation-for="PublicationYear" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Publisher" class="control-label"></label>
+                        <input asp-for="Publisher" class="form-control" />
+                        <span asp-validation-for="Publisher" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CallNumber" class="control-label"></label>
+                        <input asp-for="CallNumber" class="form-control" />
+                        <span asp-validation-for="CallNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BookLang" class="control-label"></label>
+                        <select asp-for="BookLang" class="form-select">
+                            <option value="TH">TH</option>
+                            <option value="EN">EN</option>
+                        </select>
+                        <span asp-validation-for="BookLang" class="text-danger"></span>
+                    </div>
+                    <div class=" form-group">
+                        <label asp-for="ReceiveDate" class="control-label"></label>
+                        <input asp-for="ReceiveDate" class="form-control" />
+                        <span asp-validation-for="ReceiveDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LocationId" class="control-label"></label>
+                        <select asp-for="LocationId" class="form-select" asp-items="ViewBag.Location"></select>
+                        <span asp-validation-for="LocationId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden>
+                        <label asp-for="StatusId" class="control-label"></label>
+                        <input asp-for="StatusId" class="form-control" />
+                        <span asp-validation-for="StatusId" class="text-danger"></span>
+                    </div>
 
-                <div class="text-end mt-3">
-                    <button type="submit" class="btn btn-color mb-3 w-30">ยืนยัน</button>
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-color mb-3 w-30">ยืนยัน</button>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <img src="/img/bookreq.jpg" width="100%" height="600px">
                 </div>
             </div>
-            <div class="col-6">
-                <img src="/img/bookreq.jpg" width="100%" height="auto">
+        </form>
+    }
+    else
+    {
+        <form class="card-body cardbody-color" asp-controller="Account" asp-action="BookReqCreate">
+            <div class="row jumbotron box8">
+                <div class="col-6">
+                    <h2 class="text-center text-dark mt-2">ส่งคำขอยืมหนังสือ</h2>
+                    <div class="form-group">
+                        <label asp-for="BookName" class="control-label"></label>
+                        <input asp-for="BookName" class="form-control" readonly/>
+                        <span asp-validation-for="BookName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AuthorName" class="control-label"></label>
+                        <input asp-for="AuthorName" class="form-control" readonly />
+                        <span asp-validation-for="AuthorName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PublicationYear" class="control-label"></label>
+                        <input asp-for="PublicationYear" class="form-control" readonly />
+                        <span asp-validation-for="PublicationYear" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Publisher" class="control-label"></label>
+                        <input asp-for="Publisher" class="form-control" readonly />
+                        <span asp-validation-for="Publisher" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CallNumber" class="control-label"></label>
+                        <input asp-for="CallNumber" class="form-control" readonly />
+                        <span asp-validation-for="CallNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BookLang" class="control-label"></label>
+                        <select asp-for="BookLang" class="form-select" readonly>
+                            <option value="TH">TH</option>
+                            <option value="EN">EN</option>
+                        </select>
+                        <span asp-validation-for="BookLang" class="text-danger"></span>
+                    </div>
+                    <div class=" form-group">
+                        <label asp-for="ReceiveDate" class="control-label"></label>
+                        <input asp-for="ReceiveDate" class="form-control" />
+                        <span asp-validation-for="ReceiveDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LocationId" class="control-label"></label>
+                        <select asp-for="LocationId" class="form-select" asp-items="ViewBag.Location"></select>
+                        <span asp-validation-for="LocationId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden>
+                        <label asp-for="StatusId" class="control-label"></label>
+                        <input asp-for="StatusId" class="form-control" />
+                        <span asp-validation-for="StatusId" class="text-danger"></span>
+                    </div>
+
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-color mb-3 w-30">ยืนยัน</button>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <img src="/img/bookreq.jpg" width="100%" height="auto">
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    }
+
 </div>
 
 </div>
