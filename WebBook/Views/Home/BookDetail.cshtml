@@ -2,9 +2,21 @@
 @{
 	var book =  ViewBag.Book;
 	var img = "/img/imgbook/" + book.BookCover;
-	var booktype = ViewBag.BTT;
+	var booktype =  ViewBag.booktype;
 }
+<style>
+	.book-btn {
+		color: #fff;
+		background-color: #3D8361;
+		border-color: #3D8361; /*set the color you want here*/
+	}
 
+		.book-btn:hover {
+			color: #fff;
+			background-color: #1C6758;
+			border-color: #1C6758; /*set the color you want here*/
+		}
+</style>
 <div class="container">
 <div class="row ">
 <div class="col-12 ">@book.BookName</div>	
@@ -18,10 +30,15 @@
 			<p>สำนักพิมพ์ : @book.Publisher</p>
 		</div><hr />
 		<div class="col-12">
-			@{
-				if(book.BookType1 != 0){}
+			@foreach (var item in booktype)
+			{
+				<a asp-action="Search" class="btn book-btn" asp-route-id="@item.BookTypeId">@item.BookTypeName</a>
 			}
-		</div><hr />
+		</div> <hr />
+		<div class="col-12 ">
+			<p>เรื่องย่อ</p>
+			@book.BookDetail
+		</div> 
 
 	</div>
 </div>

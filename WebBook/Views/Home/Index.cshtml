@@ -228,15 +228,7 @@
 			<!--  หนังสือใหม่ -->
 
 			<h2>หนังสือใหม่</h2>
-			<form asp-controller="Home" asp-action="search">
-	
-		
-				<input type="text" name="stext" id="search" hidden class="form-control" value="หนังสือใหม่" />
-				<button type="submit" style="border:none; background: none;">
-					ดูทั้งหมด
-				</button>
-
-			</form>
+			<a asp-action="Search"  asp-route-id="1">ดูทั้งหมด</a>
 			@*<button id="allNewBook">ดูทั้งหมด</button>*@
 			
 
@@ -263,8 +255,7 @@
 
 												<div class="btn-group w-100 " role="group" aria-label="Basic example">*@
 													<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
-													<a href="#" class="btn book-btn h6">ยืมหนังสือ</a>
-
+													<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
 												@*</div>
 											</div>*@
 										</div>
@@ -287,7 +278,7 @@
 
 												<div class="btn-group w-100 " role="group" aria-label="Basic example">*@
 													<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
-													<a href="#" class="btn book-btn h6">ยืมหนังสือ</a>
+													<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
 
 												@*</div>
 											</div>*@
@@ -322,17 +313,7 @@
 			<!--  หนังสือแนะนำ -->
 
 			<h2>หนังสือแนะนำ</h2>
-
-			<form asp-controller="Home" asp-action="search">
-	
-		
-				<input type="text" name="stext" id="search" hidden class="form-control" value="หนังสือแนะนำ" />
-			
-				<button  type="submit"style="border:none; background: none;">
-					ดูทั้งหมด
-				</button>
-
-			</form>
+			<a asp-action="Search"  asp-route-id="2">ดูทั้งหมด</a>
 
 		</div>
 		<div class="card-Book">
@@ -357,7 +338,7 @@
 
 												<div class="btn-group w-100 " role="group" aria-label="Basic example">*@
 													<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
-													<a href="#" class="btn book-btn">ยืมหนังสือ</a>
+													<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
 
 												@*</div>
 											</div>*@
@@ -381,9 +362,8 @@
 
 												<div class="btn-group w-100 " role="group" aria-label="Basic example">*@
 													<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
-													<a href="#" class="btn book-btn">ยืมหนังสือ</a>
-
-												@*</div>
+													<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
+											@*</div>
 											</div>*@
 										</div>
 									</div>
