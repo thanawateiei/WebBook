@@ -15,57 +15,13 @@ namespace WebBook.Controllers
         public BookController(webContext db)
         { _db = db; }
 
-     
+
         [Route("Admin/Book")]
         public IActionResult Index()
         {
 
 
-           var bb = (from b in _db.Books
-                     select new ViewModels.BookViewModel
-                     {
-                         BookId = b.BookId,
-                         BookName = b.BookName,
-                         AuthorName = b.AuthorName,
-                         PublicationYear = b.PublicationYear,
-                         Publisher = b.Publisher,
-                         BookCover = b.BookCover,
-                         BookDetail = b.BookDetail,
-                         BookLang = b.BookLang,
-                         CreatedAt = b.CreatedAt//ต้องมีเพาะเอาไปเรียงข้อมูล
-                     }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
-
-            List<BookViewModel> book = new List<BookViewModel>();
-            book.AddRange(bb);
-            var bt = from btt in _db.BookTypes
-                     select btt;
-            ViewBag.stext = null;
-            ViewBag.BookType = bt;
-            for(var i=0; i<book.Count ; i++) {
-            try
-            {
-                var path = "wwwroot\\img\\imgbook\\" + book[i].BookCover;
-                IEnumerable<string> items = Directory.EnumerateFileSystemEntries(path);
-            }
-            catch (Exception ex)
-            {
-               book[i].BookCover = "img-notFound.jpg";
-            } 
-            }
-            if (book == null) return NotFound();
-            return View(book);
-
-        }
-
-        [HttpPost]
-        [Route("Admin/Book")]
-        public IActionResult Index(string? stext ,int idBT)
-        {
-                      
-
             var bb = (from b in _db.Books
-                    //where b.BookName.Contains(stext) ||
-                    //      b.AuthorName.Contains(stext)
                       select new ViewModels.BookViewModel
                       {
                           BookId = b.BookId,
@@ -76,22 +32,67 @@ namespace WebBook.Controllers
                           BookCover = b.BookCover,
                           BookDetail = b.BookDetail,
                           BookLang = b.BookLang,
-                          BookType1 =  b.BookType1,
-                          BookType2 =  b.BookType2,
-                          BookType3 =  b.BookType3,
-                          BookType4 =  b.BookType4,
-                          BookType5 =  b.BookType5,
-                          BookType6 =  b.BookType6,
-                          BookType7 =  b.BookType7,
-                          BookType8 =  b.BookType8,
-                          BookType9 =  b.BookType9,
+                          CreatedAt = b.CreatedAt//ต้องมีเพาะเอาไปเรียงข้อมูล
+                      }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
+
+            List<BookViewModel> book = new List<BookViewModel>();
+            book.AddRange(bb);
+            var bt = from btt in _db.BookTypes
+                     select btt;
+            ViewBag.stext = null;
+            ViewBag.BookType = bt;
+            for (var i = 0; i < book.Count; i++)
+            {
+                try
+                {
+                    var path = "wwwroot\\img\\imgbook\\" + book[i].BookCover;
+                    IEnumerable<string> items = Directory.EnumerateFileSystemEntries(path);
+                }
+                catch (Exception ex)
+                {
+                    book[i].BookCover = "img-notFound.jpg";
+                }
+            }
+            if (book == null) return NotFound();
+            return View(book);
+
+        }
+
+        [HttpPost]
+        [Route("Admin/Book")]
+        public IActionResult Index(string? stext, int idBT)
+        {
+
+
+            var bb = (from b in _db.Books
+                          //where b.BookName.Contains(stext) ||
+                          //      b.AuthorName.Contains(stext)
+                      select new ViewModels.BookViewModel
+                      {
+                          BookId = b.BookId,
+                          BookName = b.BookName,
+                          AuthorName = b.AuthorName,
+                          PublicationYear = b.PublicationYear,
+                          Publisher = b.Publisher,
+                          BookCover = b.BookCover,
+                          BookDetail = b.BookDetail,
+                          BookLang = b.BookLang,
+                          BookType1 = b.BookType1,
+                          BookType2 = b.BookType2,
+                          BookType3 = b.BookType3,
+                          BookType4 = b.BookType4,
+                          BookType5 = b.BookType5,
+                          BookType6 = b.BookType6,
+                          BookType7 = b.BookType7,
+                          BookType8 = b.BookType8,
+                          BookType9 = b.BookType9,
                           BookType10 = b.BookType10,
                           CreatedAt = b.CreatedAt//ต้องมีเพาะเอาไปเรียงข้อมูล
                       }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
 
             var book = new List<BookViewModel>();
             book.AddRange(bb);
-            if(stext != null)
+            if (stext != null)
             {
                 book = book.Where(b => (b.BookName.Contains(stext)) || (b.AuthorName.Contains(stext))).ToList();
             }
@@ -99,7 +100,7 @@ namespace WebBook.Controllers
             {
                 book = book.Where(b => ((b.BookType1.Equals(idBT)) || (b.BookType2.Equals(idBT)) || (b.BookType3.Equals(idBT)) || (b.BookType4.Equals(idBT)) ||
                                  (b.BookType5.Equals(idBT)) || (b.BookType6.Equals(idBT)) || (b.BookType7.Equals(idBT)) || (b.BookType8.Equals(idBT)) ||
-                                 (b.BookType9.Equals(idBT)) || (b.BookType10.Equals(idBT)) )).ToList();
+                                 (b.BookType9.Equals(idBT)) || (b.BookType10.Equals(idBT)))).ToList();
             }
             var bt = from btt in _db.BookTypes
                      where btt.BookTypeId != idBT
@@ -141,8 +142,8 @@ namespace WebBook.Controllers
             Guid myuuid = Guid.NewGuid();
             string myuuidAsString = myuuid.ToString();
 
-            ViewBag.newidbook = "BOOK-"+ myuuidAsString;
-         
+            ViewBag.newidbook = "BOOK-" + myuuidAsString;
+
 
             //ViewData["CheckBt"] = new SelectList(_db.CheckBookTypes, "BookId", "BookTypeId", "CheckBt");
             ViewData["BTT"] = new SelectList(_db.BookTypes, "BookTypeId", "BookTypeName");
@@ -159,11 +160,11 @@ namespace WebBook.Controllers
             try
             {
                 //CheckBookType cbt = new CheckBookType();
-                
+
                 Book book = new Book();
                 if (ModelState.IsValid)
                 {
-                   
+
 
                     book.BookId = obj.BookId;
                     book.BookName = obj.BookName;
@@ -191,7 +192,7 @@ namespace WebBook.Controllers
                         var LocalfileName = Path.GetFileName(obj.Bookimg.FileName);
                         var NewFileName = obj.BookId;
                         var FileExtension = Path.GetExtension(LocalfileName);
-                        var UpFileName =  NewFileName + FileExtension;
+                        var UpFileName = NewFileName + FileExtension;
                         var savedir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\imgbook");
                         var Filepath = Path.Combine(savedir, UpFileName);
 
@@ -207,7 +208,7 @@ namespace WebBook.Controllers
                     _db.SaveChanges();
 
                     return RedirectToAction("index");
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -277,7 +278,7 @@ namespace WebBook.Controllers
 
                 if (ModelState.IsValid)
                 {
-                   
+
                     Book book = new Book();
                     book.BookId = obj.BookId;
                     book.BookName = obj.BookName;
@@ -314,7 +315,7 @@ namespace WebBook.Controllers
                                 System.IO.File.Delete(filePath);
                             }
                         }
-                       
+
 
                         //Save
                         var LocalfileName = Path.GetFileName(obj.Bookimg.FileName);
@@ -330,9 +331,9 @@ namespace WebBook.Controllers
                         }
                         book.BookCover = UpFileName;
 
-					}
-					else
-					{
+                    }
+                    else
+                    {
                         book.BookCover = obj.BookCover;
                     }
 
