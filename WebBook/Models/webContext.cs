@@ -25,6 +25,7 @@ namespace WebBook.Models
         public virtual DbSet<Location> Locations { get; set; } = null!;
         public virtual DbSet<PopularBook> PopularBooks { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
+        public virtual DbSet<Setting> Settings { get; set; } = null!;
         public virtual DbSet<Status> Statuses { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserType> UserTypes { get; set; } = null!;
@@ -34,7 +35,7 @@ namespace WebBook.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=MSI\\SQLEXPRESS01;Initial Catalog=web;Persist Security Info=True;User ID=webdev;Password=56785678");
+                optionsBuilder.UseSqlServer("Data Source=LAPTOP-8FFPN76C\\SQLEXPRESS;Initial Catalog=web;Persist Security Info=True;User ID=webdev;Password=1234");
             }
         }
 
@@ -277,7 +278,7 @@ namespace WebBook.Models
             modelBuilder.Entity<PopularBook>(entity =>
             {
                 entity.HasKey(e => e.PopularId)
-                    .HasName("PK__PopularB__49127DF886ED8F82");
+                    .HasName("PK__PopularB__49127DF8332629BD");
 
                 entity.ToTable("PopularBook");
 
@@ -310,6 +311,33 @@ namespace WebBook.Models
                     .HasMaxLength(512)
                     .IsUnicode(false)
                     .HasColumnName("role_name");
+            });
+
+            modelBuilder.Entity<Setting>(entity =>
+            {
+                entity.ToTable("Setting");
+
+                entity.Property(e => e.SettingId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("setting_id");
+
+                entity.Property(e => e.BannerImg)
+                    .IsUnicode(false)
+                    .HasColumnName("banner_img");
+
+                entity.Property(e => e.BannerStatus)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("banner_status");
+
+                entity.Property(e => e.Detail)
+                    .IsUnicode(false)
+                    .HasColumnName("detail");
+
+                entity.Property(e => e.DetailStatus)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("detail_status");
             });
 
             modelBuilder.Entity<Status>(entity =>
