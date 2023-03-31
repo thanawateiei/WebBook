@@ -39,7 +39,7 @@ namespace WebBook.Controllers
                             BookType10 = b.BookType10,
                             CreatedAt = b.CreatedAt//ต้องมีเพาะเอาไปเรียงข้อมูล
                         }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
-
+            //book new
             List<BookViewModel> BNew = new List<BookViewModel>();
             BNew.AddRange(book);
             BNew = BNew.Where(b => ((b.BookType1.Equals(1)) || (b.BookType2.Equals(1)) || (b.BookType3.Equals(1)) || (b.BookType4.Equals(1)) ||
@@ -58,6 +58,7 @@ namespace WebBook.Controllers
                 }
             }
 
+            //book Recommend 
             List<BookViewModel> BRecommend = new List<BookViewModel>();
             BRecommend.AddRange(book);
             BRecommend = BRecommend.Where(b => ((b.BookType1.Equals(2)) || (b.BookType2.Equals(2)) || (b.BookType3.Equals(2)) || (b.BookType4.Equals(2)) ||
@@ -77,6 +78,18 @@ namespace WebBook.Controllers
             }
             ViewBag.BookNew = BNew;
             ViewBag.BookRecommend = BRecommend;
+
+            var setImg = (from s in _db.Settings
+                         where s.BannerStatus == "on" && s.BannerImg!=null
+                         select new Setting
+                         {
+                             SettingId = s.SettingId,
+                             BannerImg = s.BannerImg,
+                             BannerStatus = s.BannerStatus
+                         }).OrderByDescending(c => c.SettingId).ThenBy(c => c.SettingId);
+
+            ViewBag.setImg = setImg;
+
             return View();
         }
         public IActionResult Privacy()
@@ -112,17 +125,32 @@ namespace WebBook.Controllers
 
             var book = new List<BookViewModel>();
             book.AddRange(bb);
+            for (var i = 0; i < book.Count; i++)
+            {
+                try
+                {
+                    var path = "wwwroot\\img\\imgbook\\" + book[i].BookCover;
+                    IEnumerable<string> items = Directory.EnumerateFileSystemEntries(path);
+                }
+                catch (Exception ex)
+                {
+                    book[i].BookCover = "img-notFound.jpg";
+                }
+            }
+            var search = "";
             if (stext != null)
             {
                 book = book.Where(b => (b.BookName.Contains(stext)) || (b.AuthorName.Contains(stext)) || (b.Publisher.Contains(stext))).ToList();
+                search = stext;
             }
             if (id != 0)
             {
                 book = book.Where(b => ((b.BookType1.Equals(id)) || (b.BookType2.Equals(id)) || (b.BookType3.Equals(id)) || (b.BookType4.Equals(id)) ||
                                  (b.BookType5.Equals(id)) || (b.BookType6.Equals(id)) || (b.BookType7.Equals(id)) || (b.BookType8.Equals(id)) ||
                                  (b.BookType9.Equals(id)) || (b.BookType10.Equals(id)))).ToList();
+                search = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == id).BookTypeName;
             }
-
+            ViewBag.search = search;
             return View(book);
         }
         public IActionResult BookDetail(string id)
@@ -205,7 +233,15 @@ namespace WebBook.Controllers
             }
 
 
-
+            try
+            {
+                var path = "wwwroot\\img\\imgbook\\" + book.BookCover;
+                IEnumerable<string> items = Directory.EnumerateFileSystemEntries(path);
+            }
+            catch (Exception ex)
+            {
+                book.BookCover = "img-notFound.jpg";
+            }
             ViewBag.booktype = booktype;
             ViewBag.Book = obj;
             return View();

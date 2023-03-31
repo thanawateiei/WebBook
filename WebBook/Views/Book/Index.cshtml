@@ -1,8 +1,16 @@
-﻿@model IEnumerable<WebBook.ViewModels.BookViewModel>
+﻿@using System.Globalization
+@model IEnumerable<WebBook.ViewModels.BookViewModel>
 @{
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 	ViewData["Title"] = "หนังสือ";
 	var stext = ViewBag.stext;
+	CultureInfo us = new CultureInfo("en-US");
+	string theDate = DateTime.Now.Date.ToString("yyyy-MM-dd", us);
+    //ถ้าไม่ได้ระบุวันให้เป็นวันปัจจุบัน
+    //if (ViewBag.theDate!=null)
+    //    theDate = ViewBag.theDate;
+    //else
+    //    
 }
 
 @*@if (ViewBag.ErrorMessage != null)

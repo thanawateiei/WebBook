@@ -18,23 +18,42 @@
     {
         <div class="alert alert-warning">@TempData["ErrorMessage"]</div>
     }
+    <style>
+	.book-btn {
+		color: #fff;
+		background-color: #3D8361;
+		border-color: #3D8361; /*set the color you want here*/
+	}
 
+		.book-btn:hover {
+			color: #fff;
+			background-color: #1C6758;
+			border-color: #1C6758; /*set the color you want here*/
+		}
+		.Simg ,.imageBook {
+		width: auto;
+		height: 200px;
+		}
+</style>
   <div class="container">
+	  <h2>@ViewBag.search </h2>
         <div class="p-2">
             <div class="row">
-            @for(var i=1;i<20;i++){
-                <div class="col-2 my-2">
-               
-                 <div class="card">
-                            <img src="/img/imgbook/Book-7.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">Some quick example text to.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
-                       </div>
-                 </div>
-                  </div>
-                 }
+						@foreach (var item in Model)
+						{
+                         
+								var img = "/img/imgbook/" + item.BookCover;  
+                                <div class="col-2">
+								<div class="carousel-item active">
+											<div class="Simg">
+											<img src="@img" class="card-img-top imageBook " alt="...">
+											</div>
+											<h5 class="card-title">@item.BookName</h5>
+													<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
+													<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
+									
+								</div></div>
+						}
             </div>
         </div>
     </div>

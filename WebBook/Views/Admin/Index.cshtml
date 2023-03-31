@@ -2,39 +2,109 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
 
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Admin";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Admin";
+
 }
 @*<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/jquery.canvasjs.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/jquery.canvasjs.min.js"></script>
 *@
+<div class="row p-2">
+	<div class="col-3">
+		<div class="card shadow w-100 h-100 mb-1">
+				<div class="card-header py-2 ">
+					คำขอยืมทั้งหมด 
+				</div>
+				<div class="card-body ">
+					<label>@ViewBag.HisCount</label>
+				</div>
+			</div>
+		</div>
+		<div class="col-9">
+			<div class="row ">
+	@foreach (var item in ViewBag.datastatus)
+	{
+		<div class="col-4 ">
+			<div class="card shadow w-100 h-100 mb-1">
+				<div class="card-header py-2 ">
+					@item.Label 
+				</div>
+				<div class="card-body">
+					<label> @item.Y</label>
+				</div>
+			</div>
+			</div>
+		
+	}</div>
+	</div>
 
-<div id="chartContainer" style="height: 370px; width: 370px"></div>
+</div>
+<div class="row p-2">
+	<div class="col-6">
+			<div class="card shadow w-100 mb-1">
+				<div class="card-header py-2 ">
+					แสดงจำนวน user ตามคณะ (Agency)
+				</div>
+				<div class="card-body">
+					<div id="chartAgency" style="height: 470px; width: auto;"></div>
+				</div>
+			</div>
+		</div>
+	
+	<div class="col-6">
 
-<h1>admin</h1>
+		<div class="container-fluid  px-0">
+			<div class="card shadow w-100 mb-1">
+				<div class="card-header py-2 ">
+					แสดงจำนวน user ตามคณะ (Agency)
+				</div>
+				<div class="card-body">
+					<div id="chartUserType" style="height: 470px; width: auto;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 
 <script type="text/javascript">
 
-window.onload = function () {
-	var chart = new CanvasJS.Chart("chartContainer", {
-		title:{
-			text: "My First Chart in CanvasJS"              
-		},
-		data: [              
-		{
-			// Change type to "doughnut", "line", "splineArea", etc.
-			type: "column",
-			dataPoints: [
-				{ label: "apple",  y: 10  },
-				{ label: "orange", y: 15  },
-				{ label: "banana", y: 25  },
-				{ label: "mango",  y: 50  },
-				{ label: "grape",  y: 28  }
-			]
-		}
-		]
-	});
-	chart.render();
-}
+	window.onload = function () {
+	var chartAgency = new CanvasJS.Chart("chartAgency", {
+		theme: "light2", // "light1", "light2", "dark1", "dark2"
+		exportEnabled: true,
+		animationEnabled: true,
+			title: {
+				text: "สถานะ รายการคำยืมหนังสือ",
+				fontSize: 30
+			},
+			height:390,
+			data: [{
+				type: "pie",
+				startAngle: 160,
+				toolTipContent: "<b>{label}</b>: {y}",
+				indexLabel: "{label} : {y}",
+				dataPoints: @Html.Raw(ViewBag.dataUserAgency)
+			}]
+		});
+	var chartUserType = new CanvasJS.Chart("chartUserType", {
+		theme: "light2", // "light1", "light2", "dark1", "dark2"
+		exportEnabled: true,
+		animationEnabled: true,
+			title: {
+				text: "สถานะ รายการคำยืมหนังสือ",
+				fontSize: 30
+			},
+			height:390,
+			data: [{
+				type: "pie",
+				startAngle: 160,
+				toolTipContent: "<b>{label}</b>: {y}",
+				indexLabel: "{label} : {y}",
+				dataPoints: @Html.Raw(ViewBag.dataUserType)
+			}]
+		});
+		chartAgency.render();
+		chartUserType.render();
+	}
 </script>

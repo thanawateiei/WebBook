@@ -19,7 +19,8 @@
     @*<link rel="stylesheet" href="~/bs5/icons/bootstrap-icons.css" />*@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-
+      <!--Datetime Picker-->
+    <link href="~/css/jquery.datetimepicker.min.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -33,8 +34,8 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a class="nav-link  text-dark" asp-area="" asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
                     <li><a class="nav-link  text-dark" asp-area="" asp-controller="Account" asp-action="BookReq">ส่งคำขอยืม</a></li>
-                    @*  <li><a class="nav-link  text-dark" asp-area="" asp-controller="Book" asp-action="Index">Home</a></li>
-                    <li><a class="nav-link  text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>*@
+                    <li><a class="nav-link  text-dark" asp-area="" asp-controller="Account" asp-action="Feedback">Feedback</a></li>
+                    <li><a class="nav-link  text-dark" asp-area="" asp-controller="Account" asp-action="IssueReport">แจ้งปัญหา</a></li>
                 </ul>
 
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" asp-controller="Home" asp-action="Search">
@@ -81,26 +82,7 @@
 
             </div>
         </div>
-        <div class="modal fade" id="FeedbackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1>ข้อเสนอแนะ</h1>
-
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-
-                    </div>
-                    <div class="modal-body">
-                        <div id="feedback">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+ 
 
         @*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light  bg-success border-bottom box-shadow  ">
         <div class="container-fluid ">
@@ -155,24 +137,20 @@
         </main>
 
     </div>
-
-    <footer class="border-top footer text-muted">
+    <br /><br />
+    <footer class="border-top bg-gradient-info footer text-muted">
         <div class="container">
             &copy; 2023 - WebBook - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    @*	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+    
+    <!--Datetime Picker-->
+    <script src="~/js/jquery.datetimepicker.full.min.js"></script>
+
     <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#Feedback').click(function () {
-            $('#feedback').load("/Account/Feedback");
-        });
-    });
-</script>
+

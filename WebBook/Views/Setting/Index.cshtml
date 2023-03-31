@@ -1,0 +1,102 @@
+﻿@model IEnumerable<WebBook.ViewModels.SettingViewModel>
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Settin";
+	var stext = ViewBag.stext;
+}
+
+@*@if (ViewBag.ErrorMessage != null)
+	{
+	<script type="text/javascript">
+	window.onload = function () {
+	alert("@ViewBag.ErrorMessage");
+	};
+	</script>
+	}*@
+
+	<style>
+		.imgset{
+			width:auto;
+			max-height:300px;
+		}
+	</style>
+
+	<div class="container-fluid  px-0">
+	<div class="card shadow w-100 mb-1">
+		<div class="card-header py-2 ">
+			<a class="btn btn-primary" asp-action="Create">
+							<i class="bi bi-plus-lg"></i>    เพิ่ม
+						</a>
+		</div>
+		<div class="card-body">
+			<h3>ข้อความประกาศ</h3>
+			<div class="table-responsive  ">
+				<table class="table table-bordered">
+					<tr>
+						<th>ID</th>
+						<th>รายละเอียด</th>
+						<th>สถานะ</th>
+						<th></th>
+						<th></th>
+					</tr>
+					@foreach (var item in ViewBag.SetDetail)
+					{
+						<tr>
+							<th>@item.SettingId</th>
+							<th>@item.Detail</th>
+							<td>@item.DetailStatus</td>
+							<td class="text-center">
+								<a asp-action="Edit" asp-route-id="@item.SettingId">
+									<i class="bi bi-pencil-square"></i>
+								</a>
+							</td>
+							<td class="text-center">
+								<a asp-action="Delete" asp-route-id="@item.SettingId">
+									<i class="bi bi-x-lg text-danger"></i>
+								</a>
+							</td>
+						</tr>
+					}
+				</table>
+
+			<h3>รูป</h3>
+			<div class="table-responsive  ">
+				<table class="table table-bordered">
+					<tr>
+						<th>ID</th>
+						<th>รูป</th>
+						<th>สถานะ</th>
+						<th></th>
+						<th></th>
+					</tr>
+					@foreach (var item in ViewBag.Setimg)
+					{
+						
+						var img = "/img/setting/" + @item.BannerImg;
+						
+						<tr>
+							<th>@item.SettingId</th>
+							@if (item.BannerImg != null)
+							{
+								<th><img src="@img" class="imgset"></th>
+							}else{
+								<th></th>
+							}
+							<td>@item.BannerStatus</td>
+							<td class="text-center">
+								<a asp-action="Edit" asp-route-id="@item.SettingId">
+									<i class="bi bi-pencil-square"></i>
+								</a>
+							</td>
+							<td class="text-center">
+								<a asp-action="Delete" asp-route-id="@item.SettingId">
+									<i class="bi bi-x-lg text-danger"></i>
+								</a>
+							</td>
+						</tr>
+					}
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
