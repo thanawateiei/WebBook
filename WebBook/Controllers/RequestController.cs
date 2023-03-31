@@ -59,14 +59,6 @@ namespace WebBook.Controllers
            
 
             rqq = rq.ToList();
-            var i = 0;
-            foreach (var r in rqq)
-            {
-                if (r.CreatedAt == r.UpdatedAt)
-                {
-                    rqq[i].state = "new";
-                }
-            }
 
             var st = from b in _db.Statuses
                      select b;
@@ -622,32 +614,41 @@ namespace WebBook.Controllers
 
         public IActionResult print(List<RequestViewModel> rqq, string stext, string filterDate, string filterStatus, DateTime dateStart, DateTime dateEnd)
         {
-            ViewBag.stext = stext;
-            ViewBag.filterDate = filterDate;
-            ViewBag.filterStatus = filterStatus;
-            var dateStart1 = "";
-            var dateEnd1 = "";
-            if (dateStart != DateTime.MinValue )
+            try
             {
-                dateStart1 = Convert.ToDateTime(dateStart).ToString("dd/MM/yyyy");
-            }
-            else
-            {
-                dateStart1 = "ไม่มี";
+                ViewBag.stext = stext;
+                ViewBag.filterDate = filterDate;
+                ViewBag.filterStatus = filterStatus;
+                var dateStart1 = "";
+                var dateEnd1 = "";
+                if (dateStart != DateTime.MinValue )
+                {
+                    dateStart1 = Convert.ToDateTime(dateStart).ToString("dd/MM/yyyy");
+                }
+                else
+                {
+                    dateStart1 = "ไม่มี";
 
-            }
-            if (dateEnd != DateTime.MinValue)
-            {
-                dateEnd1 = Convert.ToDateTime(dateEnd).ToString("dd/MM/yyyy");
-            }
-            else
-            {
-                dateEnd1 = "ไม่มี";
+                }
+                if (dateEnd != DateTime.MinValue)
+                {
+                    dateEnd1 = Convert.ToDateTime(dateEnd).ToString("dd/MM/yyyy");
+                }
+                else
+                {
+                    dateEnd1 = "ไม่มี";
 
+                }
+                ViewBag.dateStart = dateStart1;
+                ViewBag.dateEnd = dateEnd1;
+                return PartialView("print", rqq);
             }
-            ViewBag.dateStart = dateStart1;
-            ViewBag.dateEnd = dateEnd1;
-            return PartialView("print", rqq);
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return RedirectToAction("Index");
+            }
+           
         }
         [Route("admin/request/edit/{id}")]
         public IActionResult Edit(string id)

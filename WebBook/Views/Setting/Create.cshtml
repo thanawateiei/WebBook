@@ -1,0 +1,134 @@
+﻿@model WebBook.ViewModels.SettingViewModel
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Create";
+}
+
+<h1>สร้าง</h1>
+
+<h4>ประเภทผู้ใช้</h4>
+
+<div class="form-check form-check-inline">
+  <input class="form-check-input Cimg" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1" checked>
+  <label class="form-check-label" for="inlineRadio1">เพิ่มรูป</label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input CDetail" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
+  <label class="form-check-label" for="inlineRadio2">  เพิ่มรายละเอียด</label>
+</div>
+<hr />
+<form enctype="multipart/form-data" asp-action="Create">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<div class="row">
+		<div class="col-6">
+			<div id="img">
+			<div class="form-group">
+				<label asp-for="BannerStatus" class="control-label"></label>
+				<select asp-for="BannerStatus " class="form-control BannerStatus">
+					<option value="off">off</option>
+					<option value="on">on</option>
+				</select>
+				<span asp-validation-for="BannerStatus" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+
+				<input class="countimg" hidden value="1" />
+				<label asp-for="Settingimg" class="control-label"></label>
+				<input asp-for="Settingimg" id="showimg" class="form-control Settingimg" />
+				<span asp-validation-for="Settingimg" class="text-danger"></span>
+			</div>
+		</div>
+		</div>
+		<div class="col-6">
+			<div id="De">
+			<div class="form-group">
+				<label asp-for="Detail" class="control-label"></label>
+				<input asp-for="Detail" class="form-control Detail" />
+				<span asp-validation-for="Detail" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="DetailStatus" class="control-label"></label>
+					<select asp-for="DetailStatus" class="form-control DetailStatus "  >	
+						<option value="off">off</option>
+						<option value="on">on</option>
+				</select>
+				<span asp-validation-for="DetailStatus" class="text-danger"></span>
+			</div>
+			</div>
+		</div><div class="imgshow"></div>
+	</div>
+	<div class="form-group">
+		<br />
+
+		<div class="d-flex justify-content-between">
+			<a type="button" class="btn btn-secondary" asp-action="Index">Back</a>
+			<input type="submit" value="Create" class="btn btn-primary  " />
+		</div>
+	</div>
+</form>
+
+
+<script type="text/javascript">
+	$( document ).ready(function() {
+				//set();
+				$(".Detail").attr('disabled', 'disabled');
+				$(".DetailStatus").attr('disabled', 'disabled');
+
+			   $("#showimg").change(function(){
+					console.log("shopimg");
+					readURL(this);
+				});
+				 $("input[name$='inlineRadioOptions']").click(function() {
+					var test = $(this).val();
+					console.log(test);
+					if(test == 1){
+						console.log("t"+test);
+						$(".Detail").val(null);
+						$(".Detail").attr('disabled', 'disabled');
+						$(".DetailStatus").attr('disabled', 'disabled');
+						$(".BannerStatus").removeAttr("disabled");
+						$(".Settingimg").removeAttr("disabled");
+					}else if(test == 2){
+						var c = $(".countimg").val();
+						if(c != 1){
+							$(".countimg").val(1);
+							$("#blah").remove();
+						}
+						//console.log("t"+test);
+						$(".Settingimg").val(null);
+						$(".BannerStatus").attr('disabled', 'disabled');
+						$(".Settingimg").attr('disabled', 'disabled');
+						$(".Detail").removeAttr("disabled");
+						$(".DetailStatus").removeAttr("disabled");
+					}
+					//$("div.desc").hide();
+					//$("#Cars" + test).show();
+   
+				});
+	});// END document  ready
+
+
+			function readURL(input) {
+
+			if (input.files && input.files[0]) {
+				var c = $(".countimg").val();
+				 if(c==1){
+					$( ".imgshow" ).append("<br> <img id='blah' style='max-height:450px;'  class='img-fluid'src='#' alt='your image'/> ");
+					$(".countimg").val(5);
+				 }
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					$('#blah').attr('src', e.target.result);
+				}
+
+					reader.readAsDataURL(input.files[0]);
+				}
+			}
+
+
+</script>
+@section Scripts {
+    @{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

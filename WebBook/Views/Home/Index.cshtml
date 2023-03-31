@@ -26,8 +26,8 @@
 	<div class="alert alert-warning">@TempData["ErrorMessage"]</div>
 }
 <header>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-		  integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+	@*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+		  integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">*@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 </header>
 
@@ -79,20 +79,7 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-
-	@@media (min-width: 1200px) {
-	}
-
-	@@media (min-width: 768px) {
-		.textover {
-			/*white-space: normal; */
-			width: auto;
-			height: auto;
-			max-width: 140px;
-			max-height: 95px;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
+@@media (min-width: 768px) {
 
 		.card-Book .multiple-card-slider .carousel-item {
 			margin-right: 0;
@@ -105,7 +92,22 @@
 			display: flex;
 		}
 	}
+@@media (min-width: 100px) {
 
+
+		.card-Book .multiple-card-slider .carousel-item {
+			margin-right: 0;
+			flex: 0 0 calc(100% / 5);
+			display: block;
+			backface-visibility: visible;
+		}
+
+		.card-Book .multiple-card-slider .carousel-inner {
+			display: flex;
+		}
+
+
+	}
 	.book-btn {
 		color: #fff;
 		background-color: #3D8361;
@@ -193,21 +195,39 @@
 <section>
 	<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
 		<div class="carousel-indicators">
-			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-			<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+			@{ var i = 0;}
+			@foreach (var item1 in ViewBag.setImg)
+			{
+				var Slide = "Slide " + (i + 1);
+				if (i == 0){
+					<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i" class="active" aria-current="true" aria-label="@Slide"></button>
+					i++;
+				
+				}else{
+					<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i" aria-label="@Slide"></button>
+					i++;
+				}
+			}
 		</div>
 
 		<div class="carousel-inner img-Show  ">
-			<div class="carousel-item active ">
-				<img src="img/b3d7bb95-0591-40ec-8dd3-24fd14128d18.png"  class="  d-block m-auto  " alt="...">
-			</div>
-			<div class="carousel-item ">
-				<img src="img/bg2.jpg" class="  d-block m-auto  " alt="...">
-			</div>
-			<div class="carousel-item">
-				<img src="img/bg.jpg" class=" d-block m-auto " alt="...">
-			</div>
+			@{ var count = 1;}
+			@foreach (var item in ViewBag.setImg)
+			{
+					var img = "/img/setting/" + @item.BannerImg;
+					if (count == 1)
+					{
+						<div class="carousel-item active ">
+							<img src="@img"  class="  d-block m-auto  " alt="...">
+						</div>
+						count=+10;
+					}else{
+						<div class="carousel-item  ">
+							<img src="@img"  class="  d-block m-auto  " alt="...">
+						</div>
+					}
+			}
+			
 		</div>
 
 		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -244,8 +264,8 @@
 							{
 								var img = "img/imgbook/" + item.BookCover;
 								<div class="carousel-item active">
-									<div class="card">
-										<div class="card-body">
+									@*<div class="card">
+										<div class="card-body">*@
 											<div class="Simg">
 											<img src="@img" class="card-img-top imageBook " alt="...">
 											</div>
@@ -258,8 +278,8 @@
 													<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
 												@*</div>
 											</div>*@
-										</div>
-									</div>
+									@*	</div>
+									</div>*@
 								</div>
 								Bnew = 5;
 							}
@@ -267,8 +287,8 @@
 							{
 								var img = "img/imgbook/" + item.BookCover;
 								<div class="carousel-item">
-									<div class="card">
-										<div class="card-body">
+									@*<div class="card">
+										<div class="card-body">*@
 											<div class="Simg">
 											<img src="@img" class="card-img-top imageBook " alt="...">
 											</div>								
@@ -282,8 +302,8 @@
 
 												@*</div>
 											</div>*@
-										</div>
-									</div>
+										@*</div>
+									</div>*@
 								</div>
 							}
 
@@ -413,7 +433,7 @@
 			var currentCarouselId = '#' + $(this).attr('id');
 			const multipleItemCarousel = document.querySelector(currentCarouselId);
 
-			if(window.matchMedia("(min-width:576px)").matches){
+			if(window.matchMedia("(min-width:100px)").matches){
 				const carousel = new bootstrap.Carousel(multipleItemCarousel, {
 					interval: false,
 					wrap: false

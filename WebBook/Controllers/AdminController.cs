@@ -4,6 +4,7 @@ using WebBook.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace WebBook.Controllers
 {
@@ -26,6 +27,46 @@ namespace WebBook.Controllers
                 HttpContext.Session.Clear();
                 return RedirectToAction("Login");
             }
+
+            var his = from h in _db.Histories
+                      select h;
+
+            List<History> dataHis = new List<History>();
+            dataHis.AddRange(his);
+
+            //set data status
+            List<DataPoint> datastatus = new List<DataPoint>();
+            var Status = from s in _db.Statuses
+                      select s;
+            foreach(var item in Status)
+            {
+                datastatus.Add(new DataPoint(item.StatusName, dataHis.Where(x => x.StatusId.Equals(item.StatusId)).Count() ));
+            }
+            //set data UserAgency
+            List<User> dataUser= new List<User>();
+            List<DataPoint> dataUserAgency = new List<DataPoint>();
+            List<DataPoint> dataUserType = new List<DataPoint>();
+            var User = from u in _db.Users
+                         select u;
+            dataUser.AddRange(User);
+            var Agency = from a in _db.Agencies
+                       select a;
+            var UserType = from ut in _db.UserTypes
+                         select ut;
+
+            foreach (var item in Agency)
+            {
+                dataUserAgency.Add(new DataPoint(item.AgencyName, dataUser.Where(x => x.AgencyId.Equals(item.AgencyId)).Count()));
+            }
+            foreach (var item in UserType)
+            {
+                dataUserType.Add(new DataPoint(item.UserTypeName, dataUser.Where(x => x.UserType.Equals(item.UserTypeId)).Count()));
+            }
+
+            ViewBag.dataUserAgency = JsonConvert.SerializeObject(dataUserAgency);
+            ViewBag.dataUserType = JsonConvert.SerializeObject(dataUserType);
+            ViewBag.datastatus = datastatus;
+            ViewBag.HisCount = dataHis.Count();
             return View();
         }
         public IActionResult Login()

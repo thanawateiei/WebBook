@@ -254,14 +254,7 @@
 								@*<td>@item.UpdatedAt</td>*@
 								<td>@item.S_ReceiveDate</td>
 								<td>@item.S_ReturnDate</td>
-								<td>
-									@if (item.state == "new")
-									{
-										<label class="Snew mb-0">new</label>
-									}
-
-									@item.Status
-								</td>
+								<td>@item.Status</td>
 								@*@if(item.StatusID == 1){
 									<td class="text-warning">@item.Status</td>
 									}else if (item.StatusID == 2)

@@ -259,8 +259,7 @@ namespace WebBook.Controllers
             book.BookType10 = obj.BookType10;
             book.CreatedAt = obj.CreatedAt;
 
-
-
+            
 
 
             ViewBag.BLang = obj.BookLang;
@@ -298,7 +297,7 @@ namespace WebBook.Controllers
                     book.BookType8 = obj.BookType8;
                     book.BookType9 = obj.BookType9;
                     book.BookType10 = obj.BookType10;
-                    book.CreatedAt = obj.CreatedAt;
+                    book.CreatedAt = obj.CreatedAt.ToUniversalTime();
                     book.UpdatedAt = DateTime.Now;
 
 

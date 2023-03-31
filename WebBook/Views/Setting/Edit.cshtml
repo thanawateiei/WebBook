@@ -1,0 +1,124 @@
+﻿@model WebBook.ViewModels.SettingViewModel
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Create";
+}
+
+<h1>สร้าง</h1>
+
+<h4>Setting</h4>
+<hr />
+<form enctype="multipart/form-data" asp-action="Edit">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<div class="row">
+		@if( ViewBag.BannerImg != null){
+			<div class="col-12">
+			<div class="form-group" hidden>
+					<input asp-for="SettingId" class="form-control" />
+			</div>
+			<div class="form-group">
+				<label asp-for="BannerStatus" class="control-label"></label>
+				<select asp-for="BannerStatus" class="form-control">
+					@if (ViewBag.BannerStatus == "on")
+					{
+						<option value="on">on</option>
+						<option value="off">off</option>
+					}
+					else
+					{
+						<option value="off">off</option>
+						<option value="on">on</option>
+					}
+				</select>
+				<span asp-validation-for="BannerStatus" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input asp-for="BannerImg" hidden class="form-control" />
+			</div>
+			<div class="form-group">
+				<input class="countimg" hidden value="1" />
+				<label asp-for="Settingimg" class="control-label"></label>
+				<input asp-for="Settingimg" id="showimg" class="form-control" />
+				<span asp-validation-for="Settingimg" class="text-danger"></span>
+				@{
+					var img = "/img/setting/" + @Model.BannerImg;
+				}
+				<br />
+			</div>
+			</div>
+		
+		<img id='blah' class='img-fluid' style="max-height:450px;" src='@img' alt='' />
+				<div class="imgshow" style="max-height:450px;"></div>
+		}else{
+				<div class="col-12">
+				<div class="form-group" hidden>
+					<input asp-for="SettingId" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label asp-for="Detail" class="control-label"></label>
+					<input asp-for="Detail" class="form-control" />
+					<span asp-validation-for="Detail" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="DetailStatus" class="control-label"></label>
+					<select asp-for="DetailStatus" class="form-control">
+						@if (ViewBag.DetailStatus == "on")
+						{
+							<option value="on">on</option>
+							<option value="off">off</option>
+						}
+						else
+						{
+							<option value="off">off</option>
+							<option value="on">on</option>
+						}
+					</select>
+					<span asp-validation-for="DetailStatus" class="text-danger"></span>
+				</div>
+			</div>
+			}
+
+	</div>
+	<div class="form-group">
+		<br />
+
+		<div class="d-flex justify-content-between">
+			<a type="button" class="btn btn-secondary" asp-action="Index">Back</a>
+			<input type="submit" value="Save" class="btn btn-primary  " />
+		</div>
+	</div>
+</form>
+
+
+<script type="text/javascript">
+	$( document ).ready(function() {
+				//set();
+			   $("#showimg").change(function(){
+					console.log("shopimg");
+					readURL(this);
+				});
+
+	});// END document  ready
+
+
+			function readURL(input) {
+
+			if (input.files && input.files[0]) {
+					var c = $(".countimg").val();
+				//alert("asdf");
+					var reader = new FileReader();
+					reader.onload = function (e) {
+						$('#blah').attr('src', e.target.result);
+					}
+
+						reader.readAsDataURL(input.files[0]);
+					}
+			}
+
+
+</script>
+@section Scripts {
+    @{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}
