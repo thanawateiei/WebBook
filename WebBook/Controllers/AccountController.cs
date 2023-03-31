@@ -130,6 +130,7 @@ namespace WebBook.Controllers
                 return RedirectToAction("Profile", "Account");
             }
             ViewBag.UserId = obj.UserId;
+            ViewBag.UserEmail = _db.Users.FirstOrDefault(ue => ue.UserId == obj.UserId).Email;
             ViewBag.Agency = _db.Agencies.FirstOrDefault(ag => ag.AgencyId == obj.AgencyId).AgencyName;
             ViewBag.UserType = _db.UserTypes.FirstOrDefault(ut => ut.UserTypeId == obj.UserType).UserTypeName;
             return View(obj);
@@ -226,7 +227,7 @@ namespace WebBook.Controllers
 				TempData["Message"] = "กรุณาเข้าสู่ระบบ";
 				return RedirectToAction("Login");
 			}
-			return PartialView();
+			return View();
 		}
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -248,17 +249,18 @@ namespace WebBook.Controllers
                         obj.UserId = HttpContext.Session.GetString("UserId");
                         _db.Feedbacks.Add(obj);
 						_db.SaveChanges();
-                        return View();
-					}
+                        TempData["Message"] = "สำเร็จ! ขอบคุณสำหรับคำแนะนำ";
+                        return RedirectToAction("Index");
+                    }
 				}
 				catch (Exception ex)
 				{
 					TempData["Message"] = ex.Message;
-					return View(obj);
-				}
+                    return RedirectToAction("Index");
+                }
 				TempData["Message"] = "การบันทึกผิดพลาด";
-				return View(obj);
-			}
+                return RedirectToAction("Index");
+            }
 		}
 		public IActionResult IssueReport()
 		{
@@ -266,8 +268,11 @@ namespace WebBook.Controllers
 			{
 				TempData["Message"] = "กรุณาเข้าสู่ระบบ";
 				return RedirectToAction("Login");
-			}
-			ViewBag.UserEmail = HttpContext.Session.GetString("UserEmail");
+            }
+            else
+            {
+                ViewBag.UserEmail = HttpContext.Session.GetString("UserEmail");
+            }
 			return View();
 		}
 		[HttpPost]
@@ -291,7 +296,7 @@ namespace WebBook.Controllers
                         obj.IssueStatus = "รอการแก้ไข";
 						_db.Issues.Add(obj);
 						_db.SaveChanges();
-                        TempData["Message"] = "สำเร็จ";
+                        TempData["Message"] = "แจ้งปัญหาสำเร็จ";
                         ViewBag.UserEmail = HttpContext.Session.GetString("UserEmail");
                         return View();
 					}

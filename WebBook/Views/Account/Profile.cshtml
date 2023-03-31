@@ -13,10 +13,10 @@
 }
 <div class="container">
     <div class="row">
-        <div class="col-md-3 border-right">
-            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">@Html.DisplayFor(model => model.Firstname) @Html.DisplayFor(model => model.Lastname)</span><span class="text-black-50">@Html.DisplayFor(model => model.Email)</span><span> </span></div>
+        <div class="col-md-2 col-lg-2 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">@Html.DisplayFor(model => model.Firstname) @Html.DisplayFor(model => model.Lastname)</span></div>
         </div>
-        <div class="col-md-5 border-right">
+        <div class="col-md-10 col-lg-10 border-right">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="text-right">ข้อมูลผู้ใช้</h4>
@@ -27,47 +27,15 @@
                 <div class="row mt-3">
                     <div class="col-md-6"><label class="labels">ชื่อ</label><input type="text" class="form-control" value="@Html.DisplayFor(model => model.Firstname)" disabled></div>
                     <div class="col-md-6"><label class="labels">นามสกุล</label><input type="text" class="form-control" value="@Html.DisplayFor(model => model.Lastname)" disabled></div>
-                    <div class="col-md-6"><label class="labels">รหัสประจำตัว</label><input type="text" class="form-control" value="@Html.DisplayFor(model => model.StudentId)" disabled></div>
+                    <div class="col-md-6"><label class="labels">อีเมล</label><input type="email" class="form-control" value="@ViewBag.UserEmail" disabled></div>
                     <div class="col-md-6"><label class="labels">รหัสผ่าน</label><input type="password" class="form-control" value="********" disabled></div>
+                    <div class="col-md-6"><label class="labels">รหัสประจำตัว</label><input type="text" class="form-control" value="@Html.DisplayFor(model => model.StudentId)" disabled></div>
                     <div class="col-md-6"><label class="labels">เบอร์โทรศัพท์</label><input type="tel" class="form-control" value="@Html.DisplayFor(model => model.Telephone)" disabled></div>
-                    <div class="col-md-6"></div>
                     <div class="col-md-6"><label class="labels">หน่วยงาน</label><input type="text" class="form-control" value="@ViewBag.Agency" disabled></div>
                     <div class="col-md-6"><label class="labels">ประเภทผู้ใช้</label><input type="text" class="form-control" value="@ViewBag.UserType" disabled></div>
                 </div>
             </div>
         </div>
     </div>
-    <a data-toggle="modal" data-target="#FeedbackModal" class="Feedback btn btn-outline-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ticket-detailed" viewBox="0 0 16 16">
-            <path d="M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5Zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5ZM5 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H5Z"></path>
-            <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6V4.5ZM1.5 4a.5.5 0 0 0-.5.5v1.05a2.5 2.5 0 0 1 0 4.9v1.05a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-1.05a2.5 2.5 0 0 1 0-4.9V4.5a.5.5 0 0 0-.5-.5h-13Z"></path>
-        </svg>
-    </a>
+
 </div>
-<div class="modal fade" id="FeedbackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1>แจ้งปัญหา</h1>
-
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-
-            </div>
-            <div class="modal-body">
-                <div id="feedback">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.Feedback').click(function() {
-            $('#feedback').load("/Account/Feedback");
-		});
-    });
-</script>
