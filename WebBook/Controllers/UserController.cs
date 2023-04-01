@@ -167,6 +167,7 @@ namespace WebBook.Controllers
                 if (ModelState.IsValid)
                 {
                     var key = "E546C8DF278CD5931069B522E695D4F2";
+                    obj.CreatedAt = _db.Users.FirstOrDefault(ue => ue.UserId == obj.UserId).CreatedAt;
                     obj.Password = EncryptString(obj.Password, key);
                     obj.UpdatedAt = DateTime.Now;
                     _db.Users.Update(obj);

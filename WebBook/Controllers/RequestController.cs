@@ -4,6 +4,7 @@ using WebBook.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Globalization;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebBook.Controllers
 {
@@ -685,8 +686,10 @@ namespace WebBook.Controllers
             {
                 if (ModelState.IsValid)
                 {
+
+                    obj.CreatedAt = _db.Histories.AsNoTracking().FirstOrDefault(ue => ue.HistoryId == obj.HistoryId).CreatedAt;
                     obj.UpdatedAt = DateTime.Now;
-                    obj.ReturnDate = DateTime.Now;
+                    obj.ReturnDate = DateTime.Now; 
                     _db.Histories.Update(obj);
                     _db.SaveChanges();
                     return RedirectToAction("Index");

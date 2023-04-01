@@ -297,7 +297,7 @@ namespace WebBook.Controllers
                     book.BookType8 = obj.BookType8;
                     book.BookType9 = obj.BookType9;
                     book.BookType10 = obj.BookType10;
-                    book.CreatedAt = obj.CreatedAt.ToUniversalTime();
+                    book.CreatedAt = _db.Books.FirstOrDefault(ue => ue.BookId == obj.BookId).CreatedAt;
                     book.UpdatedAt = DateTime.Now;
 
 

@@ -15,6 +15,13 @@ namespace WebBook.ViewModels
 
 
     }
+    public class CreatedAtViewModel
+    {
+        public DateTime? CreatedAt { get; set; }
+      
+
+
+    }
 
 }
 

@@ -20,22 +20,24 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-9">
+		<div class="col-6">
 			<div class="row ">
+				<div class="card shadow w-100 h-100 mb-1">
+				<div class="card-header py-2 ">
+					สถานะ
+				</div>
 	@foreach (var item in ViewBag.datastatus)
 	{
-		<div class="col-4 ">
-			<div class="card shadow w-100 h-100 mb-1">
-				<div class="card-header py-2 ">
-					@item.Label 
-				</div>
+		
+			
 				<div class="card-body">
-					<label> @item.Y</label>
+					<label>@item.Label  :  @item.Y</label>
 				</div>
-			</div>
-			</div>
+			
+			
 		
 	}</div>
+	</div>
 	</div>
 
 </div>
@@ -43,7 +45,7 @@
 	<div class="col-6">
 			<div class="card shadow w-100 mb-1">
 				<div class="card-header py-2 ">
-					แสดงจำนวน user ตามคณะ (Agency)
+					<h3>แสดงจำนวน user ตามคณะ (Agency)</h3>
 				</div>
 				<div class="card-body">
 					<div id="chartAgency" style="height: 470px; width: auto;"></div>
@@ -56,7 +58,7 @@
 		<div class="container-fluid  px-0">
 			<div class="card shadow w-100 mb-1">
 				<div class="card-header py-2 ">
-					แสดงจำนวน user ตามคณะ (Agency)
+					<h3>แสดงจำนวน user ตามคณะ (Agency)</h3>
 				</div>
 				<div class="card-body">
 					<div id="chartUserType" style="height: 470px; width: auto;"></div>
@@ -74,10 +76,7 @@
 		theme: "light2", // "light1", "light2", "dark1", "dark2"
 		exportEnabled: true,
 		animationEnabled: true,
-			title: {
-				text: "สถานะ รายการคำยืมหนังสือ",
-				fontSize: 30
-			},
+			
 			height:390,
 			data: [{
 				type: "pie",
@@ -91,10 +90,7 @@
 		theme: "light2", // "light1", "light2", "dark1", "dark2"
 		exportEnabled: true,
 		animationEnabled: true,
-			title: {
-				text: "สถานะ รายการคำยืมหนังสือ",
-				fontSize: 30
-			},
+		
 			height:390,
 			data: [{
 				type: "pie",
