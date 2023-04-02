@@ -79,8 +79,8 @@
                             <div class="form-group">
                                 <label asp-for="BookLang" class="control-label"></label>
                                 <select asp-for="BookLang" class="form-select">
-                                    <option value="TH">TH</option>
-                                    <option value="EN">EN</option>
+                                    <option value="TH">หนังสือภาษาไทย</option>
+                                    <option value="EN">หนังสือภาษาอังกฤษ</option>
                                 </select>
                                 <span asp-validation-for="BookLang" class="text-danger"></span>
                             </div>
@@ -112,67 +112,84 @@
     }
     else
     {
-        <form class="card-body cardbody-color" asp-controller="Account" asp-action="BookReqCreate">
+        <form asp-controller="Account" asp-action="BookReqCreate">
             <div class="row jumbotron box8">
-                <div class="col-6">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 pt-5">
                     <div class="card">
-                        <h2 class="text-center text-dark mt-2">ขั้นตอนการสืบค้นหนังสือ</h2>
-                        <img src="/img/bookreq.jpg" width="100%" height="auto">
+                        <div class="card-body">
+                            <h2 class="card-title text-center text-dark mt-2">ขั้นตอนการขอยืมหนังสือ</h2>
+                            <hr>
+                            <p class="card-text">1.ทำการค้นหาหนังสือที่ต้องการจากเว็บไซต์ <a href="http://intanin.lib.ku.ac.th/" target="_blank">http://intanin.lib.ku.ac.th/</a></p>
+                            <p class="card-text">2.หนังสือที่ยืมได้จะต้องมี </p>
+                            <p class="card-text text-center fw-bold">สภานที่ (Location) เป็น ศรีราชา (Si Racha)</p>
+                            <p class="card-text text-center fw-bold">สภานภาพ (Status) เป็น ดูที่ชั้น (Check Shelf)</p>
+                            <p class="card-text">3.นำรายละเอียดของหนังสือที่ต้องการยืมกรอกลงในฟอร์ม ได้แก่</p>
+                            <p class="card-text">ชื่อหนังสือ / ชื่อผู้แต่ง / ปีที่พิมพ์ / สำนักพิมพ์ / เลขหมู่หนังสือ</p>
+                            <hr>
+                            <h5 class="card-text text-center fw-bold">การส่งคำร้องขอยืมหนังสือ</h5>
+                            <p class="card-text text-center fw-bold">- ส่งคำร้องตั้งแต่เวลา 8.30- 11.00 น. รับหนังสือเวลา 14.00-15.00 น.</p>
+                            <p class="card-text text-center fw-bold">- ส่งคำร้องหลังเวลา 11.00 น. รับหนังสือในวันถัดไปเวลา 10.00-15.00 น.</p>
+                            <p class="card-text text-center fw-bold">- ให้บริการเฉพาะวันจันทร์-วันศุกร์ เท่านั้น</p>
+                        </div>
+                        @*<img src="/img/bookreq.jpg" width="100%" height="auto">*@
                     </div>
                 </div>
-                <div class="col-6">
-                    <h2 class="text-center text-dark mt-2">ส่งคำขอยืมหนังสือ</h2>
-                    <div class="form-group">
-                        <label asp-for="BookName" class="control-label"></label>
-                        <input asp-for="BookName" class="form-control" readonly />
-                        <span asp-validation-for="BookName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="AuthorName" class="control-label"></label>
-                        <input asp-for="AuthorName" class="form-control" readonly />
-                        <span asp-validation-for="AuthorName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="PublicationYear" class="control-label"></label>
-                        <input asp-for="PublicationYear" class="form-control" readonly />
-                        <span asp-validation-for="PublicationYear" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Publisher" class="control-label"></label>
-                        <input asp-for="Publisher" class="form-control" readonly />
-                        <span asp-validation-for="Publisher" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="CallNumber" class="control-label"></label>
-                        <input asp-for="CallNumber" class="form-control" readonly />
-                        <span asp-validation-for="CallNumber" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="BookLang" class="control-label"></label>
-                        <select asp-for="BookLang" class="form-select" readonly>
-                            <option value="TH">TH</option>
-                            <option value="EN">EN</option>
-                        </select>
-                        <span asp-validation-for="BookLang" class="text-danger"></span>
-                    </div>
-                    <div class=" form-group">
-                        <label asp-for="ReceiveDate" class="control-label"></label>
-                        <input asp-for="ReceiveDate" class="form-control" />
-                        <span asp-validation-for="ReceiveDate" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="LocationId" class="control-label"></label>
-                        <select asp-for="LocationId" class="form-select" asp-items="ViewBag.Location"></select>
-                        <span asp-validation-for="LocationId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group" hidden>
-                        <label asp-for="StatusId" class="control-label"></label>
-                        <input asp-for="StatusId" class="form-control" />
-                        <span asp-validation-for="StatusId" class="text-danger"></span>
-                    </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 pt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title text-center text-dark mt-2">ส่งคำร้องขอยืมหนังสือ</h2>
+                            <hr>
+                            <div class="form-group">
+                                <label asp-for="BookName" class="control-label"></label>
+                                <input asp-for="BookName" class="form-control" readonly/>
+                                <span asp-validation-for="BookName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="AuthorName" class="control-label"></label>
+                                <input asp-for="AuthorName" class="form-control" readonly />
+                                <span asp-validation-for="AuthorName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PublicationYear" class="control-label"></label>
+                                <input asp-for="PublicationYear" class="form-control" readonly />
+                                <span asp-validation-for="PublicationYear" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Publisher" class="control-label"></label>
+                                <input asp-for="Publisher" class="form-control" readonly />
+                                <span asp-validation-for="Publisher" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CallNumber" class="control-label"></label>
+                                <input asp-for="CallNumber" class="form-control" readonly />
+                                <span asp-validation-for="CallNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BookLang" class="control-label"></label>
+                                <input asp-for="BookLang" class="form-control" readonly />
+                                <span asp-validation-for="BookLang" class="text-danger"></span>
+                            </div>
+                            <div class=" form-group">
+                                <label asp-for="ReceiveDate" class="control-label"></label>
+                                <input asp-for="ReceiveDate" class="form-control" />
+                                <span asp-validation-for="ReceiveDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="LocationId" class="control-label"></label>
+                                <select asp-for="LocationId" class="form-select" asp-items="ViewBag.Location"></select>
+                                <span asp-validation-for="LocationId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group" hidden>
+                                <label asp-for="StatusId" class="control-label"></label>
+                                <input asp-for="StatusId" class="form-control" />
+                                <span asp-validation-for="StatusId" class="text-danger"></span>
+                            </div>
 
-                    <div class="text-end mt-3">
-                        <button type="submit" class="btn btn-color mb-3 w-30">ยืนยัน</button>
+                            <div class="text-end mt-3">
+                                <button type="submit" class="btn btn-color w-30">ส่งคำขอ</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
