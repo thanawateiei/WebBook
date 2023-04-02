@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 namespace WebBook.Controllers
 {
@@ -14,40 +15,34 @@ namespace WebBook.Controllers
         private readonly webContext _db;
         public AccountController(webContext db)
         { _db = db; }
-        public IActionResult Index()
-        {
-            return View();
-        }
-        [Route("Account/BookReq")]
+        [Route("BookReq")]
         public IActionResult BookReq()
         {
             if (HttpContext.Session.GetString("UserId") == null)
             {
-				TempData["Message"] = "กรุณาเข้าสู่ระบบ";
-				return RedirectToAction("Login");
+                TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+                return RedirectToAction("Login");
             }
             ViewData["Location"] = new SelectList(_db.Locations, "LocationId", "LocationName");
             return View();
         }
-        [Route("Account/BookReq/{id}")]
+        [Route("BookReq/{id}")]
         public IActionResult BookReq(string id)
         {
             if (HttpContext.Session.GetString("UserId") == null)
             {
                 TempData["Message"] = "กรุณาเข้าสู่ระบบ";
-				return RedirectToAction("Login");
+                return RedirectToAction("Login");
             }
-            //ตรวจสอบว่ามีการส่ง id มาหรือไม่
             if (id == null)
             {
                 TempData["Message"] = "ต้องระบุค่า ID";
                 return RedirectToAction("Index");
             }
-            // ทำการเขียน Query หา Record ของ Product.pdId จาก id ที่ส่งมา
             var bookInfo = _db.Books.Find(id);
             if (bookInfo == null)
             {
-				TempData["Message"] = "ไม่พบข้อมูลที่ระบุ";
+                TempData["Message"] = "ไม่พบข้อมูลที่ระบุ";
                 return RedirectToAction("Index");
             }
             History his = new History();
@@ -61,6 +56,8 @@ namespace WebBook.Controllers
             ViewData["Location"] = new SelectList(_db.Locations, "LocationId", "LocationName");
             return View(his);
         }
+        [Route("BookReq")]
+        [Route("BookReq/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult BookReqCreate(History obj)
@@ -76,27 +73,26 @@ namespace WebBook.Controllers
                 {
                     var userType = _db.UserTypes.Find(HttpContext.Session.GetInt32("UserType"));
                     var limit = from lm in _db.Histories
-                                       where lm.UserId.Equals(obj.UserId) && lm.StatusId != 6
-                                       select lm;
+                                where lm.UserId.Equals(HttpContext.Session.GetString("UserId")) && lm.StatusId != 6
+                                select lm;
                     if (limit.ToList().Count >= userType.Limit)
                     {
-                        TempData["Message"] = "ไม่สามารถยืมเนื่องจากคุณยืมหนังสือเกิน "+ userType.Limit + " เล่ม";
-                        return RedirectToAction("BookReq", "Account");
+                        TempData["Message"] = "ไม่สามารถยืมเนื่องจากคุณยืมหนังสือเกิน " + userType.Limit + " เล่ม";
+                        return RedirectToAction("BookReq");
                     }
                     else
                     {
                         Guid myuuid = Guid.NewGuid();
-                        string myuuidAsString = "His-"+myuuid.ToString();
+                        string myuuidAsString = "His-" + myuuid.ToString();
                         obj.HistoryId = myuuidAsString;
                         obj.UserId = HttpContext.Session.GetString("UserId");
-                        obj.ReceiveDate = obj.ReceiveDate.Date;
                         if (obj.BookLang == "EN")
                         {
-                            obj.ReturnDate = obj.ReceiveDate.AddDays((Double)userType.Enbook).Date;
+                            obj.ReturnDate = obj.ReceiveDate.AddDays((Double)userType.Enbook);
                         }
                         else
                         {
-                            obj.ReturnDate = obj.ReceiveDate.AddDays((Double)userType.Thbook).Date;
+                            obj.ReturnDate = obj.ReceiveDate.AddDays((Double)userType.Thbook);
                         }
                         obj.CreatedAt = DateTime.Now;
                         obj.UpdatedAt = DateTime.Now;
@@ -104,18 +100,19 @@ namespace WebBook.Controllers
                         _db.Histories.Add(obj);
                         _db.SaveChanges();
                         TempData["Message"] = "สำเร็จ";
-                        return RedirectToAction("BookReq", "Account");
+                        return RedirectToAction("BookReq");
                     }
                 }
             }
             catch (Exception ex)
             {
                 TempData["Message"] = ex.Message;
-                return RedirectToAction("BookReq", "Account");
+                return RedirectToAction("BookReq");
             }
-			TempData["Message"] = "การแก้ไขผิดพลาด";
-            return View(obj);
+            TempData["Message"] = "การแก้ไขผิดพลาด";
+            return RedirectToAction("BookReq");
         }
+        [Route("Profile")]
         public IActionResult Profile()
         {
             if (HttpContext.Session.GetString("UserId") == null)
@@ -135,6 +132,7 @@ namespace WebBook.Controllers
             ViewBag.UserType = _db.UserTypes.FirstOrDefault(ut => ut.UserTypeId == obj.UserType).UserTypeName;
             return View(obj);
         }
+        [Route("Profile/{id}")]
         public IActionResult ProfileEdit(string id)
         {
             if (HttpContext.Session.GetString("UserId") == null)
@@ -154,11 +152,13 @@ namespace WebBook.Controllers
                 return RedirectToAction("Index");
             }
             var key = "E546C8DF278CD5931069B522E695D4F2";
-            TempData["Pass"] = DecryptString(userinfo.Password,key);
+            TempData["Pass"] = DecryptString(userinfo.Password, key);
             ViewBag.Agency = _db.Agencies.FirstOrDefault(ag => ag.AgencyId == userinfo.AgencyId).AgencyName;
             ViewBag.UserType = _db.UserTypes.FirstOrDefault(ut => ut.UserTypeId == userinfo.UserType).UserTypeName;
             return View(userinfo);
         }
+        [Route("Profile")]
+        [Route("Profile/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ProfileEdit(User obj)
@@ -177,7 +177,7 @@ namespace WebBook.Controllers
                     obj.UpdatedAt = DateTime.Now;
                     _db.Users.Update(obj);
                     _db.SaveChangesAsync();
-                    return RedirectToAction("Profile","Account");
+                    return RedirectToAction("Profile", "Account");
                 }
             }
             catch (Exception ex)
@@ -189,6 +189,7 @@ namespace WebBook.Controllers
             return View(obj);
 
         }
+        [Route("History")]
         public IActionResult History()
         {
             if (HttpContext.Session.GetString("UserId") == null)
@@ -196,124 +197,125 @@ namespace WebBook.Controllers
                 TempData["Message"] = "กรุณาเข้าสู่ระบบ";
                 return RedirectToAction("Login");
             }
+            CultureInfo us = new CultureInfo("en-US");
             var htr = from h in _db.Histories
-                     join ue in _db.Users on h.UserId equals ue.UserId into join_h_ue
-                     from h_ue in join_h_ue.DefaultIfEmpty()
-                     join s in _db.Statuses on h.StatusId equals s.StatusId into join_r_s
-                     from h_s in join_r_s.DefaultIfEmpty()
-                     join ln in _db.Locations on h.LocationId equals ln.LocationId into join_h_ln
-                     from h_ln in join_h_ln.DefaultIfEmpty()
-                     where h.UserId == HttpContext.Session.GetString("UserId")
-                     orderby h.UpdatedAt descending
-                     select new HistoryViewModel
-                     {
-                         HistoryId = h.HistoryId,
-                         UserEmail = h_ue.Email,
-                         BookTitle = h.BookName,
-                         CallNumber = h.CallNumber,
-                         Location = h_ln.LocationName,
-                         //ReceiveDate = r.ReceiveDate,
-                         ReceiveDate = Convert.ToDateTime(h.ReceiveDate).ToString("dd/MM/yyyy"),
-                         ReturnDate = Convert.ToDateTime(h.ReturnDate).ToString("dd/MM/yyyy"),
-                         Status = h_s.StatusName
-                     };
+                      join ue in _db.Users on h.UserId equals ue.UserId into join_h_ue
+                      from h_ue in join_h_ue.DefaultIfEmpty()
+                      join s in _db.Statuses on h.StatusId equals s.StatusId into join_r_s
+                      from h_s in join_r_s.DefaultIfEmpty()
+                      join ln in _db.Locations on h.LocationId equals ln.LocationId into join_h_ln
+                      from h_ln in join_h_ln.DefaultIfEmpty()
+                      where h.UserId == HttpContext.Session.GetString("UserId")
+                      orderby h.UpdatedAt descending
+                      select new HistoryViewModel
+                      {
+                          HistoryId = h.HistoryId,
+                          UserEmail = h_ue.Email,
+                          BookTitle = h.BookName,
+                          CallNumber = h.CallNumber,
+                          Location = h_ln.LocationName,
+                          //ReceiveDate = r.ReceiveDate,
+                          ReceiveDate = Convert.ToDateTime(h.ReceiveDate).ToString("dd/MM/yyyy",us),
+                          ReturnDate = Convert.ToDateTime(h.ReturnDate).ToString("dd/MM/yyyy",us),
+                          Status = h_s.StatusName
+                      };
             if (htr == null) return NotFound();
             return View(htr);
         }
-		public IActionResult Feedback()
-		{
-			if (HttpContext.Session.GetString("UserId") == null)
-			{
-				TempData["Message"] = "กรุณาเข้าสู่ระบบ";
-				return RedirectToAction("Login");
-			}
-			return View();
-		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult Feedback(Feedback obj)
-		{
-			if (HttpContext.Session.GetString("UserId") == null)
-			{
-				TempData["Message"] = "กรุณาเข้าสู่ระบบ";
-				return RedirectToAction("Login");
-			}
-			{
-				try
-				{
-					if (ModelState.IsValid)
-					{
+        [Route("Feedback")]
+        public IActionResult Feedback()
+        {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+                return RedirectToAction("Login");
+            }
+            return View();
+        }
+        [Route("Feedback")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Feedback(Feedback obj)
+        {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+                return RedirectToAction("Login");
+            }
+                try
+                {
+                    if (ModelState.IsValid)
+                    {
                         var idFeedback = from f in _db.Feedbacks
                                          select f.FeedbackId;
                         obj.FeedbackId = (idFeedback.ToList().Count >= 1) ? idFeedback.Max() + 1 : 1;
                         obj.UserId = HttpContext.Session.GetString("UserId");
                         _db.Feedbacks.Add(obj);
-						_db.SaveChanges();
+                        _db.SaveChanges();
                         TempData["Message"] = "สำเร็จ! ขอบคุณสำหรับคำแนะนำ";
-                        return RedirectToAction("Index");
+                        return View();
                     }
-				}
-				catch (Exception ex)
-				{
-					TempData["Message"] = ex.Message;
-                    return RedirectToAction("Index");
                 }
-				TempData["Message"] = "การบันทึกผิดพลาด";
-                return RedirectToAction("Index");
+                catch (Exception ex)
+                {
+                    TempData["Message"] = ex.Message;
+                    return View(obj);
             }
-		}
-		public IActionResult IssueReport()
-		{
-			if (HttpContext.Session.GetString("UserId") == null)
-			{
-				TempData["Message"] = "กรุณาเข้าสู่ระบบ";
-				return RedirectToAction("Login");
+                TempData["Message"] = "การบันทึกผิดพลาด";
+                return View(obj);
+        }
+        public IActionResult IssueReport()
+        {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+                return RedirectToAction("Login");
             }
             else
             {
                 ViewBag.UserEmail = HttpContext.Session.GetString("UserEmail");
             }
-			return View();
-		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult IssueReport(Issue obj)
-		{
-			if (HttpContext.Session.GetString("UserId") == null)
-			{
-				TempData["Message"] = "กรุณาเข้าสู่ระบบ";
-				return RedirectToAction("Login");
-			}
-			{
-				try
-				{
-					if (ModelState.IsValid)
-					{
-						var idIssue = from i in _db.Issues
-										 select i.IssueId;
-						obj.IssueId = (idIssue.ToList().Count >= 1) ? idIssue.Max() + 1 : 1;
-						obj.UserId = HttpContext.Session.GetString("UserId");
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult IssueReport(Issue obj)
+        {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                TempData["Message"] = "กรุณาเข้าสู่ระบบ";
+                return RedirectToAction("Login");
+            }
+                try
+                {
+                    if (ModelState.IsValid)
+                    {
+                        var idIssue = from i in _db.Issues
+                                      select i.IssueId;
+                        obj.IssueId = (idIssue.ToList().Count >= 1) ? idIssue.Max() + 1 : 1;
+                        obj.UserId = HttpContext.Session.GetString("UserId");
                         obj.IssueStatus = "รอการแก้ไข";
-						_db.Issues.Add(obj);
-						_db.SaveChanges();
+                        _db.Issues.Add(obj);
+                        _db.SaveChanges();
                         TempData["Message"] = "แจ้งปัญหาสำเร็จ";
                         ViewBag.UserEmail = HttpContext.Session.GetString("UserEmail");
                         return View();
-					}
-				}
-				catch (Exception ex)
-				{
-					TempData["Message"] = ex.Message;
-					return View(obj);
-				}
-				TempData["Message"] = "การบันทึกผิดพลาด";
-				return View(obj);
-			}
-		}
-		public IActionResult Login()
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TempData["Message"] = ex.Message;
+                    return View(obj);
+                }
+                TempData["Message"] = "การบันทึกผิดพลาด";
+                return View(obj);
+        }
+        [Route("Login")]
+        public IActionResult Login()
         {
             return View();
         }
+        [Route("Login")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(string userEmail, string userPass)
@@ -332,8 +334,8 @@ namespace WebBook.Controllers
                 //return View();
             }
             ///try?
-            string decryptPassword = DecryptString(userinfo.Password,key);
-            bool isValidPassword = String.Equals(decryptPassword,userPass);
+            string decryptPassword = DecryptString(userinfo.Password, key);
+            bool isValidPassword = String.Equals(decryptPassword, userPass);
             // var cus = _db.Customers.Find(userName);
             //ถ้าข้อมูลเท่ากับ 0 ให้บอกว่าหาข้อมูลไม่พบ
             if (!isValidPassword)
@@ -371,14 +373,16 @@ namespace WebBook.Controllers
             }
             //ทำการบันทึกทุก Record ที่สั่ง Modified ไว้
             _db.SaveChanges();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
+        [Route("Register")]
         public IActionResult Register()
         {
             ViewData["Agency"] = new SelectList(_db.Agencies, "AgencyId", "AgencyName");
             ViewData["UserType"] = new SelectList(_db.UserTypes, "UserTypeId", "UserTypeName");
             return View();
         }
+        [Route("Register")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Register(User obj)
@@ -389,22 +393,22 @@ namespace WebBook.Controllers
             {
                 if (ModelState.IsValid)
                 {
-					Guid myuuid = Guid.NewGuid();
-					string myuuidAsString = myuuid.ToString();
-					var key = "E546C8DF278CD5931069B522E695D4F2";
-					var userEmail = from u in _db.Users
-									where u.Email.Equals(obj.Email)
-									select u;
-					if (userEmail.ToList().Count >= 1)
-					{
-						TempData["Message"] = "อีเมลถูกใช้แล้ว";
+                    Guid myuuid = Guid.NewGuid();
+                    string myuuidAsString = myuuid.ToString();
+                    var key = "E546C8DF278CD5931069B522E695D4F2";
+                    var userEmail = from u in _db.Users
+                                    where u.Email.Equals(obj.Email)
+                                    select u;
+                    if (userEmail.ToList().Count >= 1)
+                    {
+                        TempData["Message"] = "อีเมลถูกใช้แล้ว";
                         return View(obj);
                     }
                     obj.UserId = "User-" + myuuidAsString;
-					obj.CreatedAt = DateTime.Now.Date;
+                    obj.CreatedAt = DateTime.Now.Date;
                     obj.UpdatedAt = DateTime.Now.Date;
                     obj.Role = 3;
-                    obj.Password = EncryptString(obj.Password,key);
+                    obj.Password = EncryptString(obj.Password, key);
                     _db.Users.Add(obj);
                     _db.SaveChanges();
                     return RedirectToAction("Login");
@@ -484,7 +488,7 @@ namespace WebBook.Controllers
         {
             //ล้างทุก Session และย้ายกลับหน้า Index
             HttpContext.Session.Clear();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
