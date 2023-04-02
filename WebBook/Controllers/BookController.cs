@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 using WebBook.Models;
 using WebBook.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebBook.Controllers
 {
@@ -297,7 +298,7 @@ namespace WebBook.Controllers
                     book.BookType8 = obj.BookType8;
                     book.BookType9 = obj.BookType9;
                     book.BookType10 = obj.BookType10;
-                    book.CreatedAt = _db.Books.FirstOrDefault(ue => ue.BookId == obj.BookId).CreatedAt;
+                    book.CreatedAt = _db.Books.AsNoTracking().FirstOrDefault(ue => ue.BookId == obj.BookId).CreatedAt;
                     book.UpdatedAt = DateTime.Now;
 
 
