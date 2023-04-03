@@ -13,13 +13,13 @@
         color: #fff;
     }
 </style>
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-warning">@TempData["Message"]</div>
-}
 <div class="container mt-5">
     <div class="card">
         <div class="card-body cardbody-color p-5">
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert alert-warning">@ViewBag.Message</div>
+            }
             <form asp-action="Register">
                 <div class="row jumbotron box8">
                     <div class="col-sm-12 mb-4">
@@ -47,12 +47,12 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="StudentId" class="control-label"></label>
-                        <input asp-for="StudentId" class="form-control" />
+                        <input type="number" asp-for="StudentId" class="form-control" />
                         <span asp-validation-for="StudentId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Telephone" class="control-label"></label>
-                        <input asp-for="Telephone" class="form-control" />
+                        <input type="number" asp-for="Telephone" class="form-control" />
                         <span asp-validation-for="Telephone" class="text-danger"></span>
                     </div>
                     <div class="form-group">

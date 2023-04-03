@@ -213,10 +213,10 @@ namespace WebBook.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = ex.Message;
+				TempData["Message"] = ex.Message;
                 return View(obj);
             }
-            ViewBag.ErrorMessage = "การบันทึกผิดพลาด";
+            TempData["Message"] = "การบันทึกผิดพลาด";
 
             return RedirectToAction("index");
         }

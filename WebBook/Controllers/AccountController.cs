@@ -328,7 +328,7 @@ namespace WebBook.Controllers
             if (userinfo == null)
             {
                 //ถ้าใช้ RedirectToAction ไม่สามารถใช้ ViewBag ได้ ต้องใช้ TempData
-                TempData["Message"] = "ไม่พบผู้ใช้";
+                ViewBag.Message = "ไม่พบผู้ใช้";
                 //ViewBag.ErrorMessage = "ระบุผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
                 return View();
                 //return View();
@@ -340,7 +340,7 @@ namespace WebBook.Controllers
             //ถ้าข้อมูลเท่ากับ 0 ให้บอกว่าหาข้อมูลไม่พบ
             if (!isValidPassword)
             {
-                TempData["Message"] = "รหัสผ่านไม่ถูกต้อง";
+                ViewBag.Message = "รหัสผ่านไม่ถูกต้อง";
                 return View();
             }
             //ถ้าหาข้อมูลพบ ให้เก็บค่าเข้า Session 
@@ -399,9 +399,17 @@ namespace WebBook.Controllers
                     var userEmail = from u in _db.Users
                                     where u.Email.Equals(obj.Email)
                                     select u;
+                    var studentID = from us in _db.Users
+                                    where us.StudentId.Equals(obj.StudentId)
+                                    select us;
                     if (userEmail.ToList().Count >= 1)
                     {
-                        TempData["Message"] = "อีเมลถูกใช้แล้ว";
+                        ViewBag.Message = "อีเมลถูกใช้แล้ว";
+                        return View(obj);
+                    }
+                    if (studentID.ToList().Count >= 1)
+                    {
+                        ViewBag.Message = "รหัสประจำตัวนี้เป็นสมาชิกอยู่แล้ว";
                         return View(obj);
                     }
                     obj.UserId = "User-" + myuuidAsString;
@@ -416,10 +424,10 @@ namespace WebBook.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
+                ViewBag.Message = ex.Message;
                 return View(obj);
             }
-            TempData["Message"] = "การบันทึกผิดพลาด";
+            ViewBag.Message = "การบันทึกผิดพลาด";
             return View(obj);
         }
         public static string EncryptString(string text, string keyString)

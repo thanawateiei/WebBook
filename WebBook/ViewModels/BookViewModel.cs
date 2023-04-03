@@ -7,15 +7,23 @@ namespace WebBook.ViewModels
     {
         
         public string BookId { get; set; }
-        public string? BookName { get; set; }
-        public string? AuthorName { get; set; }
-        public int? PublicationYear { get; set; }
-        public string? Publisher { get; set; }
+		[Display(Name = "ชื่อหนังสือ")]
+		public string? BookName { get; set; }
+		[Display(Name = "ชื่อผู้แต่ง")]
+		public string? AuthorName { get; set; }
+		[Display(Name = "ปีที่พิมพ์")]
+		public int? PublicationYear { get; set; }
+		[Display(Name = "ชื่อผู้แต่ง")]
+		public string? Publisher { get; set; }
         public string? BookCover { get; set; }
-        public IFormFile? Bookimg { get; set; }
-        public string? BookDetail { get; set; }
-        public string? CallNumber { get; set; }
-        public string? BookLang { get; set; } 
+		[Display(Name = "รูปปกหนังสือ")]
+		public IFormFile? Bookimg { get; set; }
+		[Display(Name = "รายละเอียดหนังสือ")]
+		public string? BookDetail { get; set; }
+		[Display(Name = "เลขหมู่หนังสือ")]
+		public string? CallNumber { get; set; }
+		[Display(Name = "ภาษาของหนังสือ")]
+		public string? BookLang { get; set; } 
         public DateTime UpdatedAt { get; set; }
         public DateTime CreatedAt { get; set; }
         public int BookType1 { get; set; }

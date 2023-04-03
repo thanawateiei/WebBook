@@ -34,8 +34,7 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a class="nav-link  text-dark" asp-area="" asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
                     <li><a class="nav-link  text-dark" asp-area="" asp-controller="Account" asp-action="BookReq">ส่งคำขอยืม</a></li>
-                    <li><a class="nav-link  text-dark" asp-area="" asp-controller="Account" asp-action="Feedback">Feedback</a></li>
-                    <li><a class="nav-link  text-dark" asp-area="" asp-controller="Account" asp-action="IssueReport">แจ้งปัญหา</a></li>
+                    <li><a class="nav-link  text-dark" asp-area="" asp-controller="Account" asp-action="Feedback">ข้อเสนอแนะ</a></li>
                 </ul>
 
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" asp-controller="Home" asp-action="Search">
@@ -52,7 +51,6 @@
                         <ul class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="dropdownUser">
                             <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">ข้อมูลส่วนตัว</a></li>
                             <li><a class="dropdown-item" asp-controller="Account" asp-action="History">ประวัติคำขอยืม</a></li>
-                            <li><a class="dropdown-item text-black fa-i-cursor" data-toggle="modal" data-target="#FeedbackModal" id="Feedback">ข้อเสนอแนะ</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Sign out</a></li>
                         </ul>

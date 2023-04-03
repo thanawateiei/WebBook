@@ -4,6 +4,12 @@
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 	ViewData["Title"] = "Edit";
 }
+@if (ViewBag.Errormessage != null)
+{
+	<div class="alert alert-info">
+		@ViewBag.Errormessage
+	</div>
+}
 
 <h1>Edit</h1>
 

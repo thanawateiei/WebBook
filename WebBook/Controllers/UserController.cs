@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Cryptography;
 using System.Text;
@@ -167,7 +168,7 @@ namespace WebBook.Controllers
                 if (ModelState.IsValid)
                 {
                     var key = "E546C8DF278CD5931069B522E695D4F2";
-                    obj.CreatedAt = _db.Users.FirstOrDefault(ue => ue.UserId == obj.UserId).CreatedAt;
+                    obj.CreatedAt = _db.Users.AsNoTracking().FirstOrDefault(ue => ue.UserId == obj.UserId).CreatedAt;
                     obj.Password = EncryptString(obj.Password, key);
                     obj.UpdatedAt = DateTime.Now;
                     _db.Users.Update(obj);
