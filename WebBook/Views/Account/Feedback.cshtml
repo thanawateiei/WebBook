@@ -1,74 +1,76 @@
 ﻿@model WebBook.Models.Feedback
     @if (TempData["Message"] != null)
-    {
-        <div class="alert alert-info">
-            @TempData["Message"]
-        </div>
-    }
-    <div class="container">
-    <form asp-action="Feedback">
-        <div class="row jumbotron box8">
-            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-xl-6 offset-sm-1 offset-md-2 offset-lg-3 pt-5">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title text-center mt-2">ส่งข้อเสนอแนะ</h2>
-                        <hr>
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input type="hidden" asp-for="FeedbackId" class="form-control" />
-                        <input type="hidden" asp-for="UserId" class="form-control" />
-                        <div class="form-group">
-                            @*<a>คุณชอบเว็บไซต์นี้หรือไม่</a><br />*@
-                            <label asp-for="FeedbackLike" class="control-label"></label>
-                            <br />
-                            <div class="form-check form-check-inline">
-                                <input asp-for="FeedbackLike" class="form-check-input" type="radio" id="inlineRadio1" value="ชอบ">
-                                <label class="form-check-label" for="inlineRadio1">ชอบ</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="FeedbackLike" class="form-check-input" type="radio" id="inlineRadio2" value="ไม่ชอบ">
-                                <label class="form-check-label" for="inlineRadio2">ไม่ชอบ</label>
-                            </div>
-                            <span asp-validation-for="FeedbackLike" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            @*<a>คุณให้คะแนนเว็บไซต์นี้กี่คะแนน</a><br />*@
-                            <label asp-for="FeedbackScore" class="control-label"></label>
-                            <br />
-                            <div class="form-check form-check-inline">
-                                <input asp-for="FeedbackScore" class="form-check-input" type="radio" id="inlineRadio3" value="1">
-                                <label class="form-check-label" for="inlineRadio1">1</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="FeedbackScore" class="form-check-input" type="radio" id="inlineRadio4" value="2">
-                                <label class="form-check-label" for="inlineRadio2">2</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="FeedbackScore" class="form-check-input" type="radio" id="inlineRadio5" value="3">
-                                <label class="form-check-label" for="inlineRadio2">3</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="FeedbackScore" class="form-check-input" type="radio" id="inlineRadio6" value="4">
-                                <label class="form-check-label" for="inlineRadio2">4</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="FeedbackScore" class="form-check-input" type="radio" id="inlineRadio7" value="5">
-                                <label class="form-check-label" for="inlineRadio2">5</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="FeedbackDetail" class="control-label"></label>
-                            <textarea asp-for="FeedbackDetail" class="form-control"></textarea>
-                            <span asp-validation-for="FeedbackDetail" class="text-danger"></span>
-                        </div>
-                        <div class="form-group text-end">
-                            <input type="submit" value="ส่ง" class="btn btn-primary" />
-                        </div>
-                    </div>
-                    </div>
-                    
-                
-            </div>
-        </div>
-    </form>
-    </div>
-    
+{
+	<div class="alert alert-info">
+		@TempData["Message"]
+	</div>
+}
+<style>
+	.btn-noactive {
+		color: #5D9C59;
+
+		border: none;
+		background-color: none;
+		
+	}
+	.btn-active{
+			color: white;
+			border: none;
+			background-color: #5D9C59;
+		}
+
+</style>
+<div class="container">
+	<div class="row jumbotron box8">
+		<div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-xl-6 offset-sm-1 offset-md-2 offset-lg-3 pt-5">
+			<div class="card">
+				<div class="card-header">
+					<div class="d-flex justify-content-evenly">
+						<button class="FormFeedback  btn-active mt-2">ส่งข้อเสนอแนะ</button>
+						<button class="IssueReport   btn-noactive mt-2">แจ้งปัญหา</button>
+					</div>
+					<hr>
+					<div id="detail">
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	$( document ).ready(function() {
+		$('#detail').load("/Account/FormFeedback");
+		
+		$('.FormFeedback').click(function() {
+			console.log("FormFeedback  ");
+			$(".IssueReport").removeClass("btn-active");
+			$(".IssueReport").addClass("btn-noactive");
+			$(".FormFeedback").removeClass("btn-noactive");
+			$(".FormFeedback").addClass("btn-active");
+			$("#detail").find("#Issue").remove();
+			$('#detail').load("/Account/FormFeedback");
+			
+		});
+		$('.IssueReport').click(function() {
+			console.log("IssueReport  ");
+			$(".FormFeedback").removeClass("btn-active");
+			$(".FormFeedback").addClass("btn-noactive");
+			$(".IssueReport").removeClass("btn-noactive");
+			$(".IssueReport").addClass("btn-active");
+			$("#detail").find("#formfeedback").remove();
+			$('#detail').load("/Account/IssueReport");
+		});
+	
+	
+
+
+		
+	});// END document  ready
+
+</script>
+

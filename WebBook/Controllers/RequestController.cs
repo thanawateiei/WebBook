@@ -16,10 +16,22 @@ namespace WebBook.Controllers
         [Route("admin/request")]
         public IActionResult Index()
         {
+            var SetReturnDate = from r in _db.Histories
+                     where DateTime.Now.Date > r.ReturnDate && r.StatusId == 4
+                                select r;
+            foreach (var item in SetReturnDate)
+            {
+                item.StatusId = 7;
+                item.UpdatedAt = DateTime.Now;
+                _db.Histories.Update(item);
+
+            }
+            _db.SaveChanges();
             //DateTime dt = DateTime.ParseExact(yourObject.ToString(), "MM/dd/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
 
             //string s = dt.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
-            List<RequestViewModel> rqq = new List<RequestViewModel>();
+
+            List < RequestViewModel > rqq = new List<RequestViewModel>();
 
             var rq = (from r in _db.Histories
                       join ue in _db.Users on r.UserId equals ue.UserId into join_r_ue
@@ -71,18 +83,30 @@ namespace WebBook.Controllers
             ViewBag.Status = st;
             ViewBag.filterDate = null;
             ViewBag.pagenow = 1;
-            ViewBag.ListNumber = 2;
-            var list = 2;
-            if ((rqq.Count() % list) == 0)
+            ViewBag.ListNumber = 20;
+            var list = 20;
+          
+                if ((rqq.Count() % list) == 0)
+                {
+                    ViewBag.allListNum = rqq.Count() / list;
+                }
+                else
+                {
+                    ViewBag.allListNum = (rqq.Count() / list) + 1;
+                }
+
+
+
+            if ( rqq.Count() <= 20)
             {
-                ViewBag.allListNum = rqq.Count() / list;
+                rqq = rqq.GetRange(0, rqq.Count());
             }
             else
             {
-                ViewBag.allListNum = (rqq.Count() / list) + 1;
+                rqq = rqq.GetRange(0, list);
             }
-           
-            rqq = rqq.GetRange(0, list);
+
+            
             //ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName");
             return View(rqq);
         }

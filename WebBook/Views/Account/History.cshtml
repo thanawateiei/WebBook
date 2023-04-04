@@ -22,10 +22,10 @@
                         <th>#</th>
                         <th>อีเมล</th>
                         <th>ชื่อหนังสือ</th>
-                        <th>Call Number</th>
+                        <th>เลขหมู่หนังสือ</th>
                         <th>จุดรับหนังสือ</th>
                         <th>วันรับหนังสือ</th>
-                        <th>วันคืนหนังสือ</th>
+                        <th>กำหนดคืนหนังสือ</th>
                         <th>สถานะ</th>
                     </tr>
                     @{
@@ -42,7 +42,14 @@
                             <td>@item.Location</td>
                             <td>@item.ReceiveDate</td>
                             <td>@item.ReturnDate</td>
-                            <td>@item.Status</td>
+                            @if(@item.Status == "เกินกำหนดคืนหนังสือ"){
+                                <td class="text-danger">@item.Status</td>
+                            }
+                            else
+                            {
+                                <td >@item.Status</td>
+                            }
+
                         </tr>
                     }
                 </table>
