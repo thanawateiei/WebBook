@@ -51,7 +51,7 @@ namespace WebBook.Controllers
             his.PublicationYear = bookInfo.PublicationYear;
             his.Publisher = bookInfo.Publisher;
             his.CallNumber = bookInfo.CallNumber;
-            his.ReceiveDate = DateTime.Now.AddDays(1);
+            //his.ReceiveDate = null;
             his.BookLang = bookInfo.BookLang;
             ViewData["Location"] = new SelectList(_db.Locations, "LocationId", "LocationName");
             return View(his);
@@ -71,6 +71,9 @@ namespace WebBook.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    DateTime dt = new DateTime(DateTime.Now.Year, obj.ReceiveDate.Month, obj.ReceiveDate.Day);
+                    //obj.ReceiveDate = obj.ReceiveDate.ToLocalTime();
+                    obj.ReceiveDate = dt;
                     var userType = _db.UserTypes.Find(HttpContext.Session.GetInt32("UserType"));
                     var limit = from lm in _db.Histories
                                 where lm.UserId.Equals(HttpContext.Session.GetString("UserId")) && lm.StatusId != 6
@@ -261,52 +264,6 @@ namespace WebBook.Controllers
                     TempData["Message"] = ex.Message;
                     return View(obj);
             }
-                TempData["Message"] = "การบันทึกผิดพลาด";
-                return View(obj);
-        }
-        public IActionResult IssueReport()
-        {
-            if (HttpContext.Session.GetString("UserId") == null)
-            {
-                TempData["Message"] = "กรุณาเข้าสู่ระบบ";
-                return RedirectToAction("Login");
-            }
-            else
-            {
-                ViewBag.UserEmail = HttpContext.Session.GetString("UserEmail");
-            }
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult IssueReport(Issue obj)
-        {
-            if (HttpContext.Session.GetString("UserId") == null)
-            {
-                TempData["Message"] = "กรุณาเข้าสู่ระบบ";
-                return RedirectToAction("Login");
-            }
-                try
-                {
-                    if (ModelState.IsValid)
-                    {
-                        var idIssue = from i in _db.Issues
-                                      select i.IssueId;
-                        obj.IssueId = (idIssue.ToList().Count >= 1) ? idIssue.Max() + 1 : 1;
-                        obj.UserId = HttpContext.Session.GetString("UserId");
-                        obj.IssueStatus = "รอการแก้ไข";
-                        _db.Issues.Add(obj);
-                        _db.SaveChanges();
-                        TempData["Message"] = "แจ้งปัญหาสำเร็จ";
-                        ViewBag.UserEmail = HttpContext.Session.GetString("UserEmail");
-                        return View();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    TempData["Message"] = ex.Message;
-                    return View(obj);
-                }
                 TempData["Message"] = "การบันทึกผิดพลาด";
                 return View(obj);
         }

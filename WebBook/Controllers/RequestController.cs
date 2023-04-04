@@ -13,111 +13,110 @@ namespace WebBook.Controllers
         private readonly webContext _db;
         public RequestController(webContext db)
         { _db = db; }
-        [Route("admin/request")]
-        public IActionResult Index()
-        {
-            var SetReturnDate = from r in _db.Histories
-                     where DateTime.Now.Date > r.ReturnDate && r.StatusId == 4
-                                select r;
-            foreach (var item in SetReturnDate)
-            {
-                item.StatusId = 7;
-                item.UpdatedAt = DateTime.Now;
-                _db.Histories.Update(item);
+        //[Route("admin/request")]
+        //public IActionResult Index()
+        //{
+        //    var SetReturnDate = from r in _db.Histories
+        //             where DateTime.Now.Date > r.ReturnDate && r.StatusId == 4
+        //                        select r;
+        //    foreach (var item in SetReturnDate)
+        //    {
+        //        item.StatusId = 7;
+        //        item.UpdatedAt = DateTime.Now;
+        //        _db.Histories.Update(item);
 
-            }
-            _db.SaveChanges();
-            //DateTime dt = DateTime.ParseExact(yourObject.ToString(), "MM/dd/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
+        //    }
+        //    _db.SaveChanges();
+        //    //DateTime dt = DateTime.ParseExact(yourObject.ToString(), "MM/dd/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
 
-            //string s = dt.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+        //    //string s = dt.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
 
-            List < RequestViewModel > rqq = new List<RequestViewModel>();
+        //    List < RequestViewModel > rqq = new List<RequestViewModel>();
 
-            var rq = (from r in _db.Histories
-                      join ue in _db.Users on r.UserId equals ue.UserId into join_r_ue
-                      from r_ue in join_r_ue.DefaultIfEmpty()
-                      join s in _db.Statuses on r.StatusId equals s.StatusId into join_r_s
-                      from r_s in join_r_s.DefaultIfEmpty()
-                      join l in _db.Locations on r.LocationId equals l.LocationId into join_r_l
-                      from r_l in join_r_l.DefaultIfEmpty()
-                      select new RequestViewModel
-                      {
-                          RequestId = r.HistoryId,
-                          UserEmail = r_ue.Email,
-                          BookTitle = r.BookName,
-                          LocationName = r_l.LocationName,
-                          CallNumber = r.CallNumber,
-                          Status = r_s.StatusName,
-                          CreatedAt = r.CreatedAt,
-                          ReceiveDate = r.ReceiveDate,
-                          UpdatedAt = r.UpdatedAt,
-                          ReturnDate = r.ReturnDate,
+        //    var rq = (from r in _db.Histories
+        //              join ue in _db.Users on r.UserId equals ue.UserId into join_r_ue
+        //              from r_ue in join_r_ue.DefaultIfEmpty()
+        //              join s in _db.Statuses on r.StatusId equals s.StatusId into join_r_s
+        //              from r_s in join_r_s.DefaultIfEmpty()
+        //              join l in _db.Locations on r.LocationId equals l.LocationId into join_r_l
+        //              from r_l in join_r_l.DefaultIfEmpty()
+        //              select new RequestViewModel
+        //              {
+        //                  RequestId = r.HistoryId,
+        //                  UserEmail = r_ue.Email,
+        //                  BookTitle = r.BookName,
+        //                  LocationName = r_l.LocationName,
+        //                  CallNumber = r.CallNumber,
+        //                  Status = r_s.StatusName,
+        //                  CreatedAt = r.CreatedAt,
+        //                  ReceiveDate = r.ReceiveDate,
+        //                  UpdatedAt = r.UpdatedAt,
+        //                  ReturnDate = r.ReturnDate,
 
-                          S_ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy"),
-                          S_ReturnDate = Convert.ToDateTime(r.ReturnDate).ToString("dd/MM/yyyy"),
-                          S_CreatedAt = Convert.ToDateTime(r.CreatedAt).ToString("dd/MM/yyyy")
-                      }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
+        //                  S_ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy"),
+        //                  S_ReturnDate = Convert.ToDateTime(r.ReturnDate).ToString("dd/MM/yyyy"),
+        //                  S_CreatedAt = Convert.ToDateTime(r.CreatedAt).ToString("dd/MM/yyyy")
+        //              }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
 
             
-            List<CountStatusViewModel> CStatus = new List<CountStatusViewModel>();
-            for(var s = 1; s <= _db.Statuses.Count(); s++)
-            {
-                CountStatusViewModel CS = new CountStatusViewModel();
-                var sta = _db.Statuses.FirstOrDefault(ue => ue.StatusId == s);
-                CS.StatusId = sta.StatusId;
-                CS.StatusName = sta.StatusName;
-                CS.Count = _db.Histories.Where(x => x.StatusId.Equals(s)).Count();
-                CStatus.Add(CS);
-            }
+        //    List<CountStatusViewModel> CStatus = new List<CountStatusViewModel>();
+        //    for(var s = 1; s <= _db.Statuses.Count(); s++)
+        //    {
+        //        CountStatusViewModel CS = new CountStatusViewModel();
+        //        var sta = _db.Statuses.FirstOrDefault(ue => ue.StatusId == s);
+        //        CS.StatusId = sta.StatusId;
+        //        CS.StatusName = sta.StatusName;
+        //        CS.Count = _db.Histories.Where(x => x.StatusId.Equals(s)).Count();
+        //        CStatus.Add(CS);
+        //    }
            
 
-            rqq = rq.ToList();
+        //    rqq = rq.ToList();
 
-            var st = from b in _db.Statuses
-                     select b;
+        //    var st = from b in _db.Statuses
+        //             select b;
             
 
-            if (rqq == null) return NotFound();
-            ViewBag.allData = rqq.Count();
-            ViewBag.CountStatus = CStatus;
-            ViewBag.Status = st;
-            ViewBag.filterDate = null;
-            ViewBag.pagenow = 1;
-            ViewBag.ListNumber = 20;
-            var list = 20;
+        //    if (rqq == null) return NotFound();
+        //    ViewBag.allData = rqq.Count();
+        //    ViewBag.CountStatus = CStatus;
+        //    ViewBag.Status = st;
+        //    ViewBag.filterDate = null;
+        //    ViewBag.pagenow = 1;
+        //    ViewBag.ListNumber = 20;
+        //    var list = 20;
           
-                if ((rqq.Count() % list) == 0)
-                {
-                    ViewBag.allListNum = rqq.Count() / list;
-                }
-                else
-                {
-                    ViewBag.allListNum = (rqq.Count() / list) + 1;
-                }
+        //        if ((rqq.Count() % list) == 0)
+        //        {
+        //            ViewBag.allListNum = rqq.Count() / list;
+        //        }
+        //        else
+        //        {
+        //            ViewBag.allListNum = (rqq.Count() / list) + 1;
+        //        }
 
 
 
-            if ( rqq.Count() <= 20)
-            {
-                rqq = rqq.GetRange(0, rqq.Count());
-            }
-            else
-            {
-                rqq = rqq.GetRange(0, list);
-            }
+        //    if ( rqq.Count() <= 20)
+        //    {
+        //        rqq = rqq.GetRange(0, rqq.Count());
+        //    }
+        //    else
+        //    {
+        //        rqq = rqq.GetRange(0, list);
+        //    }
 
             
-            //ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName");
-            return View(rqq);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //    //ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName");
+        //    return View(rqq);
+        //}
+        [HttpGet]
         [Route("admin/request")]
         public IActionResult Index(string stext, string filterDate, string filterStatus, DateTime dateStart, DateTime dateEnd , string T_btn , int ListNumber, int pageNow)
          {
            
             List<RequestViewModel> rqq = new List<RequestViewModel>();
-
+            CultureInfo us = new CultureInfo("en-US");
             var rq = (from r in _db.Histories
                       join ue in _db.Users on r.UserId equals ue.UserId into join_r_ue
                       from r_ue in join_r_ue.DefaultIfEmpty()
@@ -138,9 +137,9 @@ namespace WebBook.Controllers
                           UpdatedAt = r.UpdatedAt,
                           ReturnDate = r.ReturnDate,
 
-                          S_ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy"),
-                          S_ReturnDate = Convert.ToDateTime(r.ReturnDate).ToString("dd/MM/yyyy"),
-                          S_CreatedAt = Convert.ToDateTime(r.CreatedAt).ToString("dd/MM/yyyy")
+                          S_ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy",us),
+                          S_ReturnDate = Convert.ToDateTime(r.ReturnDate).ToString("dd/MM/yyyy",us),
+                          S_CreatedAt = Convert.ToDateTime(r.CreatedAt).ToString("dd/MM/yyyy",us)
                       }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
 
             rqq = rq.ToList();
@@ -562,7 +561,7 @@ namespace WebBook.Controllers
             ViewBag.CountStatus = CStatus;
             if (dateStart != DateTime.MinValue.Date)
             {
-                ViewBag.dateStart = dateStart.ToString("yyyy-MM-dd");
+                ViewBag.dateStart = dateStart.ToString("yyyy-MM-dd",us);
             }
             else
             {
@@ -570,7 +569,7 @@ namespace WebBook.Controllers
             }
             if (dateEnd != DateTime.MinValue.Date)
             {
-                ViewBag.dateEnd = dateEnd.ToString("yyyy-MM-dd");
+                ViewBag.dateEnd = dateEnd.ToString("yyyy-MM-dd",us);
             }
             else
             {
@@ -588,7 +587,7 @@ namespace WebBook.Controllers
 
             if (ListNumber == 0)
             {
-                ListNumber = 2;
+                ListNumber = 20;
             }
             var pageNumber = pageNow;
             var allList = 0;  

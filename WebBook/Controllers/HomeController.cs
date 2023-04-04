@@ -155,6 +155,25 @@ namespace WebBook.Controllers
         }
         public IActionResult BookDetail(string id)
         {
+            var pop = _db.PopularBooks.AsNoTracking().FirstOrDefault(ue => ue.BookId == id && ue.PopularDate == DateTime.Now.Date);
+            if (pop == null)
+            {
+                Guid myuuid = Guid.NewGuid();
+                string myuuidAsString = "POP-" + myuuid.ToString();
+                PopularBook PopularBook = new PopularBook();
+                PopularBook.PopularId = myuuidAsString;
+                PopularBook.BookId = id;
+                PopularBook.PopularDate = DateTime.Now.Date;
+                PopularBook.PopularCount = 1;
+                _db.PopularBooks.Add(PopularBook);
+                _db.SaveChanges();
+            }
+            else
+            {
+                pop.PopularCount++;
+                _db.PopularBooks.Update(pop);
+                _db.SaveChanges();
+            }
             var obj = _db.Books.Find(id);
             BookViewModel book = new BookViewModel();
             List<BookTypeViewModel> booktype = new List<BookTypeViewModel>();
