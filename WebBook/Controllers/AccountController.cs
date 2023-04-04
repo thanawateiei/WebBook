@@ -36,14 +36,14 @@ namespace WebBook.Controllers
             }
             if (id == null)
             {
-                TempData["Message"] = "ต้องระบุค่า ID";
-                return RedirectToAction("Index");
+                ViewBag.ErrorMessage = "ต้องระบุค่า ID";
+                return View();
             }
             var bookInfo = _db.Books.Find(id);
             if (bookInfo == null)
             {
-                TempData["Message"] = "ไม่พบข้อมูลที่ระบุ";
-                return RedirectToAction("Index");
+                ViewBag.ErrorMessage = "ไม่พบข้อมูลที่ระบุ";
+                return View();
             }
             History his = new History();
             his.BookName = bookInfo.BookName;
@@ -126,8 +126,8 @@ namespace WebBook.Controllers
             var obj = _db.Users.Find(HttpContext.Session.GetString("UserId"));
             if (obj == null)
             {
-                TempData["Message"] = "ไม่พบข้อมูลที่ระบุ";
-                return RedirectToAction("Profile", "Account");
+                ViewBag.ErrorMessage = "ไม่พบข้อมูลที่ระบุ";
+                return View();
             }
             ViewBag.UserId = obj.UserId;
             ViewBag.UserEmail = _db.Users.FirstOrDefault(ue => ue.UserId == obj.UserId).Email;
@@ -135,7 +135,7 @@ namespace WebBook.Controllers
             ViewBag.UserType = _db.UserTypes.FirstOrDefault(ut => ut.UserTypeId == obj.UserType).UserTypeName;
             return View(obj);
         }
-        [Route("Profile/{id}")]
+        [Route("ProfileEdit/{id}")]
         public IActionResult ProfileEdit(string id)
         {
             if (HttpContext.Session.GetString("UserId") == null)
@@ -145,23 +145,24 @@ namespace WebBook.Controllers
             }
             if (id == null)
             {
-                TempData["Message"] = "ต้องระบุค่า ID";
-                return RedirectToAction("Index");
+                ViewBag.ErrorMessage = "ต้องระบุค่า ID";
+                return View();
             }
             var userinfo = _db.Users.Find(id);
-            if (User == null)
+            if (userinfo == null)
             {
-                TempData["Message"] = "ไม่พบข้อมูลที่ระบุ";
-                return RedirectToAction("Index");
+                ViewBag.ErrorMessage = "ไม่พบข้อมูลที่ระบุ";
+                return View();
             }
-            var key = "E546C8DF278CD5931069B522E695D4F2";
+                var key = "E546C8DF278CD5931069B522E695D4F2";
             TempData["Pass"] = DecryptString(userinfo.Password, key);
             ViewBag.Agency = _db.Agencies.FirstOrDefault(ag => ag.AgencyId == userinfo.AgencyId).AgencyName;
             ViewBag.UserType = _db.UserTypes.FirstOrDefault(ut => ut.UserTypeId == userinfo.UserType).UserTypeName;
             return View(userinfo);
+
         }
-        [Route("Profile")]
-        [Route("Profile/{id}")]
+        [Route("ProfileEdit")]
+        [Route("ProfileEdit/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ProfileEdit(User obj)
@@ -185,10 +186,10 @@ namespace WebBook.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
+                ViewBag.ErrorMessage = ex.Message;
                 return View(obj);
             }
-            TempData["Message"] = "การแก้ไขผิดพลาด";
+            ViewBag.ErrorMessage = "การแก้ไขผิดพลาด";
             return View(obj);
 
         }
@@ -218,8 +219,8 @@ namespace WebBook.Controllers
                           CallNumber = h.CallNumber,
                           Location = h_ln.LocationName,
                           //ReceiveDate = r.ReceiveDate,
-                          ReceiveDate = Convert.ToDateTime(h.ReceiveDate).ToString("dd/MM/yyyy",us),
-                          ReturnDate = Convert.ToDateTime(h.ReturnDate).ToString("dd/MM/yyyy",us),
+                          ReceiveDate = Convert.ToDateTime(h.ReceiveDate).ToString("dd/MM/yyyy", us),
+                          ReturnDate = Convert.ToDateTime(h.ReturnDate).ToString("dd/MM/yyyy", us),
                           Status = h_s.StatusName
                       };
             if (htr == null) return NotFound();
@@ -245,27 +246,27 @@ namespace WebBook.Controllers
                 TempData["Message"] = "กรุณาเข้าสู่ระบบ";
                 return RedirectToAction("Login");
             }
-                try
+            try
+            {
+                if (ModelState.IsValid)
                 {
-                    if (ModelState.IsValid)
-                    {
-                        var idFeedback = from f in _db.Feedbacks
-                                         select f.FeedbackId;
-                        obj.FeedbackId = (idFeedback.ToList().Count >= 1) ? idFeedback.Max() + 1 : 1;
-                        obj.UserId = HttpContext.Session.GetString("UserId");
-                        _db.Feedbacks.Add(obj);
-                        _db.SaveChanges();
-                        TempData["Message"] = "สำเร็จ! ขอบคุณสำหรับคำแนะนำ";
-                        return View();
-                    }
+                    var idFeedback = from f in _db.Feedbacks
+                                     select f.FeedbackId;
+                    obj.FeedbackId = (idFeedback.ToList().Count >= 1) ? idFeedback.Max() + 1 : 1;
+                    obj.UserId = HttpContext.Session.GetString("UserId");
+                    _db.Feedbacks.Add(obj);
+                    _db.SaveChanges();
+                    TempData["Message"] = "สำเร็จ! ขอบคุณสำหรับคำแนะนำ";
+                    return View();
                 }
-                catch (Exception ex)
-                {
-                    TempData["Message"] = ex.Message;
-                    return View(obj);
             }
-                TempData["Message"] = "การบันทึกผิดพลาด";
+            catch (Exception ex)
+            {
+                TempData["Message"] = ex.Message;
                 return View(obj);
+            }
+            TempData["Message"] = "การบันทึกผิดพลาด";
+            return View(obj);
         }
         [Route("Login")]
         public IActionResult Login()

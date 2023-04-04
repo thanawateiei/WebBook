@@ -5,10 +5,10 @@
 @{
     ViewData["Title"] = "Profile";
 }
-@if (TempData["Message"] != null)
+@if (ViewBag.ErrorMessage != null)
 {
     <div class="alert alert-info">
-        @TempData["Message"]
+        @ViewBag.ErrorMessage
     </div>
 }
 <div class="container">

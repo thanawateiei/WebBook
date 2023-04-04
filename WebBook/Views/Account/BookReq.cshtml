@@ -12,6 +12,12 @@
         @TempData["Message"]
     </div>
 }
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-warning">
+        @ViewBag.ErrorMessage
+    </div>
+}
 
 <style>
     .btn-color {
