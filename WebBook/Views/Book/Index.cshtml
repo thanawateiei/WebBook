@@ -13,14 +13,12 @@
     //    
 }
 
-@*@if (ViewBag.ErrorMessage != null)
-	{
-	<script type="text/javascript">
-	window.onload = function () {
-	alert("@ViewBag.ErrorMessage");
-	};
-	</script>
-	}*@
+@if (TempData["Message"] != null)
+{
+	<div class="alert alert-info">
+		@TempData["Message"]
+	</div>
+}
 
 <h1>จัดการหนังสือ</h1>
 <section >

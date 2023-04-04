@@ -26,7 +26,8 @@ namespace WebBook.Models
         [DataType(DataType.Password)]
         [Display(Name = "รหัสผ่าน")]
         public string? Password { get; set; }
-        public int? Role { get; set; }
+		[Display(Name = "หน้าที่")]
+		public int? Role { get; set; }
         [Required(ErrorMessage = "กรุณาเลือกหน่วยงาน")]
         [Display(Name = "หน่วยงาน")]
         public int? AgencyId { get; set; }
@@ -35,7 +36,7 @@ namespace WebBook.Models
         [Display(Name = "รหัสประจำตัว")]
         public string? StudentId { get; set; }
         [Required(ErrorMessage = "กรุณากรอกเบอร์โทรศัพท์")]
-        [DataType(DataType.PhoneNumber)]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "กรุณากรอกเป็นตัวเลข")]
         [RegularExpression("^([0-9]{10})$", ErrorMessage = "กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง")]
         [Display(Name = "เบอร์โทรศัพท์")]
         public string? Telephone { get; set; }

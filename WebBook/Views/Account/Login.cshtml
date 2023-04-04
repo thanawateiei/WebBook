@@ -31,9 +31,9 @@
         <div class="col-md-8 offset-md-2">
             <div class="card my-5">
                 <form class="card-body cardbody-color p-lg-5" asp-controller="Account" asp-action="Login" method="POST">
-                    @if (TempData["Message"] != null)
+                    @if (ViewBag.Message != null)
                     {
-                        <div class="alert alert-warning">@TempData["Message"]</div>
+                        <div class="alert alert-warning">@ViewBag.Message</div>
                     }
                     <h2 class="text-center text-dark mt-5">เข้าสู่ระบบ</h2>
 
@@ -44,7 +44,7 @@
 
                     <div class="mb-3">
                         <input type="email" class="form-control" name="userEmail" id="userEmail"
-                               placeholder="อีเมล" autocomplete="off" required>
+                               placeholder="อีเมล ku.th หรือ live.ku.th" autocomplete="off" required>
                     </div>
                     <div class="mb-3">
                         <input type="password" class="form-control" name="userPass" id="userPass" placeholder="รหัสผ่าน"
