@@ -96,6 +96,27 @@ namespace WebBook.Controllers
                              BannerStatus = s.BannerStatus
                          }).OrderByDescending(c => c.SettingId).ThenBy(c => c.SettingId);
 
+
+            var setalert = from s in _db.Settings
+                            where s.DetailStatus == "on" && s.Detail != null
+                            select new Setting
+                            {
+                                SettingId = s.SettingId,
+                                Detail = s.Detail,
+                                DetailStatus = s.DetailStatus
+                            };
+            List<Setting> setting = new List<Setting>();
+            setting.AddRange(setalert);
+
+            if (setalert.Count() != 0)
+			{
+                ViewBag.setalert = setalert;
+			}
+			else
+			{
+                ViewBag.setalert = null;
+			}
+            
             ViewBag.setImg = setImg;
 
 
@@ -137,6 +158,8 @@ namespace WebBook.Controllers
             book.AddRange(bb);
             for (var i = 0; i < book.Count; i++)
             {
+                var p = _db.PopularBooks.Where(a => a.BookId == book[i].BookId).Sum(b => b.PopularCount);
+                book[i].popview = p;
                 try
                 {
                     var path = "wwwroot\\img\\imgbook\\" + book[i].BookCover;

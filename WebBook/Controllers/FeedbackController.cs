@@ -10,6 +10,8 @@ namespace WebBook.Controllers
         private readonly webContext _db;
         public FeedbackController(webContext db)
         { _db = db; }
+
+        [Route("Admin/Feedback")]
         public ActionResult Index()
         {
             var fbs = from fb in _db.Feedbacks
@@ -28,7 +30,7 @@ namespace WebBook.Controllers
             if (fbs == null) return NotFound();
             return View(fbs);
         }
-		public IActionResult Detail(int id)
+        public IActionResult Detail(int id)
 		{
 			if (id == null)
 			{
