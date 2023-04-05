@@ -11,6 +11,12 @@
         @TempData["Message"]
     </div>
 }
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Home" asp-controller="Index">หน้าแรก</a></li>
+        <li class="breadcrumb-item active" aria-current="page">ประวัติคำขอยืม</li>
+    </ol>
+</nav>
 <div class="container p-2">
     <div class="card p-1">
         <div class="card-body">
@@ -35,7 +41,7 @@
                     {
                         i++;
                         <tr>
-                            <th>@i</th>
+                            <td>@i</td>
                             <td>@item.UserEmail</td>
                             <td>@item.BookTitle</td>
                             <td>@item.CallNumber</td>

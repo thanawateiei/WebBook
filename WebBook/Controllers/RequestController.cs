@@ -151,8 +151,10 @@ namespace WebBook.Controllers
                     rqq[i].state = "new";
                 }
             }
-            DateTime ds = new DateTime(DateTime.Now.Year, dateStart.Month, dateStart.Day);
-            DateTime de = new DateTime(DateTime.Now.Year, dateEnd.Month, dateEnd.Day);
+			int Star = dateStart.Year;
+			int End = dateEnd.Year;
+			DateTime ds = new DateTime(Star, dateStart.Month, dateStart.Day);
+			DateTime de = new DateTime(End, dateEnd.Month, dateEnd.Day);
             // Filter
             if (stext != null)
             {
@@ -392,7 +394,9 @@ namespace WebBook.Controllers
             ViewData["Location"] = new SelectList(_db.Locations, "LocationId", "LocationName");
             ViewBag.UserEmail = _db.Users.FirstOrDefault(ue => ue.UserId == obj.UserId).Email;
             ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName", obj.StatusId);
-            return View(obj);
+            ViewBag.ReceiveDate = obj.ReceiveDate;
+			ViewBag.ReturnDate = obj.ReturnDate;
+			return View(obj);
         }
 
         [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
@@ -400,14 +404,19 @@ namespace WebBook.Controllers
         [Route("admin/request/edit/{id}")]
         public IActionResult Edit(History obj)
         {
-            try
+			CultureInfo us = new CultureInfo("en-US");
+			try
             {
                 if (ModelState.IsValid)
                 {
-                    DateTime dt = new DateTime(DateTime.Now.Year, obj.ReturnDate.Month, obj.ReturnDate.Day);
+					string rd = Convert.ToDateTime(obj.ReceiveDate).ToString("yyyy/MM/dd");
+					obj.ReceiveDate = DateTime.Parse(rd, us);
+					string rt = Convert.ToDateTime(obj.ReturnDate).ToString("yyyy/MM/dd");
+					obj.ReturnDate = DateTime.Parse(rt, us);
+					//DateTime dt = new DateTime(DateTime.Now.Year, obj.ReturnDate.Month, obj.ReturnDate.Day);
                     obj.CreatedAt = _db.Histories.AsNoTracking().FirstOrDefault(ue => ue.HistoryId == obj.HistoryId).CreatedAt;
                     obj.UpdatedAt = DateTime.Now;
-                    obj.ReturnDate = dt;
+                    //obj.ReturnDate = dt;
                     _db.Histories.Update(obj);
                     _db.SaveChanges();
                     return RedirectToAction("Index");

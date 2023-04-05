@@ -25,6 +25,12 @@
         color: #fff;
     }
 </style>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Home" asp-controller="Index">หน้าแรก</a></li>
+        <li class="breadcrumb-item active" aria-current="page">ส่งคำขอยืมหนังสือ</li>
+    </ol>
+</nav>
 <div class="container">
     @if (Model == null)
     {

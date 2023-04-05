@@ -10,6 +10,13 @@
         @ViewBag.ErrorMessage
     </div>
 }
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Home" asp-controller="Index">หน้าแรก</a></li>
+        <li class="breadcrumb-item"><a asp-action="Account" asp-controller="Profile">ข้อมูลส่วนตัว</a></li>
+        <li class="breadcrumb-item active" aria-current="page">แก้ไขข้อมูลส่วนตัว</li>
+    </ol>
+</nav>
 <div class="container">
     <div class="row">
         <div class="col-md-2 col-lg-2 border-right">

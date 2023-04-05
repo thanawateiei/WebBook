@@ -9,7 +9,10 @@ namespace WebBook.Models
     {
         public string? HistoryId { get; set; } = null!;
         public string? UserId { get; set; } = null!;
-        public DateTime ReceiveDate { get; set; }
+		[Required(ErrorMessage = "กรุณาเลือกวันรับหนังสือ")]
+		[DataType(DataType.Date)]
+		[Display(Name = "วันรับหนังสือ")]
+		public DateTime ReceiveDate { get; set; }
         [Required(ErrorMessage = "กรุณากรอกชื่อหนังสือ")]
         [Display(Name = "ชื่อหนังสือ")]
         public string? BookName { get; set; }
@@ -31,10 +34,9 @@ namespace WebBook.Models
         public int? LocationId { get; set; }
         public DateTime UpdatedAt { get; set; }
         public DateTime CreatedAt { get; set; }
-        [Required(ErrorMessage = "กรุณาเลือกวันรับหนังสือ")]
-        [DataType(DataType.Date)]
-        [Display(Name = "วันรับหนังสือ")]
-        public DateTime ReturnDate { get; set; }
+		[DataType(DataType.Date)]
+		[Display(Name = "กำหนดคืนหนังสือ")]
+		public DateTime ReturnDate { get; set; }
         [Required(ErrorMessage = "กรุณาเลือกภาษาของหนังสือ")]
         [Display(Name = "ภาษาของหนังสือ")]
         public string? BookLang { get; set; }

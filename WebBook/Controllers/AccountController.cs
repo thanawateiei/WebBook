@@ -53,6 +53,14 @@ namespace WebBook.Controllers
             his.CallNumber = bookInfo.CallNumber;
             //his.ReceiveDate = null;
             his.BookLang = bookInfo.BookLang;
+            if (his.BookLang == "TH")
+            {
+                his.BookLang = "หนังสือภาษาไทย";
+			}
+            else if (his.BookLang == "EN")
+			{
+				his.BookLang = "หนังสือภาษาอังกฤษ";
+			}
             ViewData["Location"] = new SelectList(_db.Locations, "LocationId", "LocationName");
             return View(his);
         }
@@ -62,7 +70,8 @@ namespace WebBook.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult BookReqCreate(History obj)
         {
-            if (HttpContext.Session.GetString("UserId") == null)
+			CultureInfo us = new CultureInfo("en-US");
+			if (HttpContext.Session.GetString("UserId") == null)
             {
                 TempData["Message"] = "กรุณาเข้าสู่ระบบ";
                 return RedirectToAction("Login");
@@ -71,10 +80,11 @@ namespace WebBook.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    DateTime dt = new DateTime(DateTime.Now.Year, obj.ReceiveDate.Month, obj.ReceiveDate.Day);
+                    string dt = Convert.ToDateTime(obj.ReceiveDate).ToString("yyyy/MM/dd");
+                    //DateTime dt = new DateTime(obj.ReceiveDate.Year, obj.ReceiveDate.Month, obj.ReceiveDate.Day);
                     //obj.ReceiveDate = obj.ReceiveDate.ToLocalTime();
-                    obj.ReceiveDate = dt;
-                    var userType = _db.UserTypes.Find(HttpContext.Session.GetInt32("UserType"));
+                    obj.ReceiveDate = DateTime.Parse(dt, us);
+					var userType = _db.UserTypes.Find(HttpContext.Session.GetInt32("UserType"));
                     var limit = from lm in _db.Histories
                                 where lm.UserId.Equals(HttpContext.Session.GetString("UserId")) && lm.StatusId != 6
                                 select lm;

@@ -44,10 +44,9 @@
 				<table class="table table-bordered">
 
 					<tr>
-						<th>Id</th>
+						<th>#</th>
 						<th>อีเมล</th>
-						<th>รหัส</th>
-						<th>ตำแหน่ง</th>
+						<th>หน้าที่</th>
 						<th>หน่วยงาน</th>
 						<th>รหัสนิสิต</th>
 						<th>ชื่อ</th>
@@ -56,18 +55,16 @@
 						<th>ประเภทผู้ใช้บริการ</th>
 						<th></th>
 						<th></th>
-
-
-
 					</tr>
-
+					@{
+						var i = 0;
+					}
 					@foreach (var item in Model)
 					{
-
+						i++;
 						<tr>
-							<td>@item.user_id</td>
+							<td>@i</td>
 							<td>@item.email</td>
-							<td>@item.password</td>
 							<td>@item.roleName</td>
 							<td>@item.agencyName</td>
 							<td>@item.student_id</td>
