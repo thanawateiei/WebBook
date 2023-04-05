@@ -241,6 +241,7 @@ namespace WebBook.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Feedback(Feedback obj)
         {
+            
             if (HttpContext.Session.GetString("UserId") == null)
             {
                 TempData["Message"] = "กรุณาเข้าสู่ระบบ";
@@ -248,6 +249,7 @@ namespace WebBook.Controllers
             }
             try
             {
+                
                 if (ModelState.IsValid)
                 {
                     var idFeedback = from f in _db.Feedbacks
@@ -256,7 +258,7 @@ namespace WebBook.Controllers
                     obj.UserId = HttpContext.Session.GetString("UserId");
                     _db.Feedbacks.Add(obj);
                     _db.SaveChanges();
-                    TempData["Message"] = "สำเร็จ! ขอบคุณสำหรับคำแนะนำ";
+                    TempData["Message"] = "สำเร็จ!";
                     return View();
                 }
             }
@@ -268,6 +270,18 @@ namespace WebBook.Controllers
             TempData["Message"] = "การบันทึกผิดพลาด";
             return View(obj);
         }
+        public IActionResult FormFeedback()
+        {
+            return PartialView();
+        }
+        public IActionResult IssueReport()
+        {
+            return PartialView();
+        }
+
+
+
+
         [Route("Login")]
         public IActionResult Login()
         {

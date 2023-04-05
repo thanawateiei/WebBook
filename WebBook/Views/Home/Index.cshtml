@@ -27,27 +27,12 @@
 }
 <header>
 	@*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-		  integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">*@
+		integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">*@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 </header>
 
 <style>
-	.food1 {
-		width: auto;
-		height: auto;
-	}
 
-
-
-	.imgbook {
-		width: auto;
-		height: auto;
-	}
-
-	.cardS {
-		width: auto;
-		height: auto;
-	}
 
 
 	.card-Book .multiple-card-slider .carousel-inner {
@@ -79,7 +64,44 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-@@media (min-width: 768px) {
+
+	@@media (min-width: 768px) {
+
+		.card-Book .multiple-card-slider .carousel-item {
+			margin-right: 0;
+			flex: 0 0 calc(100% / 5);
+			display: block;
+			backface-visibility: visible;
+		}
+
+		.img-Show {
+			width: auto;
+			height: 170px;
+			background-color: #1C6758;
+		}
+
+			.img-Show img {
+				width: auto;
+				height: 170px;
+			}
+
+		.card-Book .multiple-card-slider .carousel-inner {
+			display: flex;
+		}
+	}
+
+	@@media (min-width: 100px) {
+
+		.img-Show {
+			width: auto;
+			height: 170px;
+			background-color: #1C6758;
+		}
+
+			.img-Show img {
+				width: auto;
+				height: 170px;
+			}
 
 		.card-Book .multiple-card-slider .carousel-item {
 			margin-right: 0;
@@ -92,22 +114,7 @@
 			display: flex;
 		}
 	}
-@@media (min-width: 100px) {
 
-
-		.card-Book .multiple-card-slider .carousel-item {
-			margin-right: 0;
-			flex: 0 0 calc(100% / 5);
-			display: block;
-			backface-visibility: visible;
-		}
-
-		.card-Book .multiple-card-slider .carousel-inner {
-			display: flex;
-		}
-
-
-	}
 	.book-btn {
 		color: #fff;
 		background-color: #3D8361;
@@ -120,90 +127,68 @@
 			border-color: #1C6758; /*set the color you want here*/
 		}
 
+	.cardS {
+		width: auto;
+		height: auto;
+	}
+
+	.Cbook {
+		width: 223px;
+		height: 390px;
+	}
+
 	.imageBook {
 		width: auto;
 		height: auto;
-		max-width: 203px;
-		max-height: 300px;
+		max-width: 183px;
+		max-height: 280px;
 	}
-	.Simg{
+
+	.Simg {
 		width: auto;
-		height: 300px;
+		height: auto;
+		height: 270px;
 	}
+
 	.img-Show {
 		width: auto;
 		height: 400px;
 		background-color: #1C6758;
 	}
-	.img-Show img {
-		width: auto;
-		height: 400px;
+
+		.img-Show img {
+			width: auto;
+			height: 400px;
+		}
+
+	.TextBookName {
+		font-size: 18px;
+		text-align: center;
 	}
-	
 
-
-	
-
+	.numberview {
+		font-size: 13px;
+	}
 
 </style>
-@*@if (HttpContextAccessor.HttpContext.Session.GetString("UserId") == null)
-	{
-	<div class="text-center">
-	<div class="row">
-	<div class="col-lg-4 col-md-6 col-sm-12 offset-lg-4 offset-lg-3 ">
-	<img class="mt-5" src="./img/login.png" width="250" />
-	</div>
-	</div>
-	</div>
-	<form asp-controller="Home" asp-action="Login" method="POST">
-	<div class="text-center">
-	<div class="row m-3">
-	<div class="col-lg-4 col-md-6 col-sm-12 offset-lg-4 offset-lg-3 ">
-	<div class="input-group">
-	<span class="input-group-text">
-	<i class="bi bi-person-fill"></i>
-	</span>
-	<input type="text" name="userEmail" id="userEmail" class="form-control"
-	placeholder="Email" required autocomplete="off" />
-	</div>
-	<div class="input-group mt-2">
-	<span class="input-group-text">
-	<i class="bi bi-key-fill"></i>
-	</span>
-	<input type="password" name="userPass" id="userPass" class="form-control"
-	placeholder="password" required autocomplete="off" />
-	</div>
-	</div>
-	</div>
-	<div class="row m-3">
-	<div class="col-lg-2 col-md-3 col-sm-6 offset-lg-4 offset-lg-3 ">
-	<button type="button" class="btn btn-link"> Sign up </button>
-	</div>
-	<div class="col-lg-2 col-md-3 col-sm-6 d-grid ">
-	<button type="submit" class="btn btn-primary"> Login </button>
-	</div>
-	</div>
-	</div>
-	</form>
-	}
-	else
-	{
-	<dev class="alert alert-success">สวัสดีคุณ @HttpContextAccessor.HttpContext.Session.GetString("UserEmail")</dev>
-	<dev class="alert alert-success">สวัสดีคุณ @HttpContextAccessor.HttpContext.Session.GetInt32("UserRole")</dev>
-	}*@
 
 <section>
 	<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
 		<div class="carousel-indicators">
-			@{ var i = 0;}
+			@{
+				var i = 0;
+			}
 			@foreach (var item1 in ViewBag.setImg)
 			{
 				var Slide = "Slide " + (i + 1);
-				if (i == 0){
+				if (i == 0)
+				{
 					<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i" class="active" aria-current="true" aria-label="@Slide"></button>
 					i++;
-				
-				}else{
+
+				}
+				else
+				{
 					<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i" aria-label="@Slide"></button>
 					i++;
 				}
@@ -211,23 +196,27 @@
 		</div>
 
 		<div class="carousel-inner img-Show  ">
-			@{ var count = 1;}
+			@{
+				var count = 1;
+			}
 			@foreach (var item in ViewBag.setImg)
 			{
-					var img = "/img/setting/" + @item.BannerImg;
-					if (count == 1)
-					{
-						<div class="carousel-item active ">
-							<img src="@img"  class="  d-block m-auto  " alt="...">
-						</div>
-						count=+10;
-					}else{
-						<div class="carousel-item  ">
-							<img src="@img"  class="  d-block m-auto  " alt="...">
-						</div>
-					}
+				var img = "/img/setting/" + @item.BannerImg;
+				if (count == 1)
+				{
+					<div class="carousel-item active ">
+						<img src="@img" class="  d-block m-auto  " alt="...">
+					</div>
+					count = +10;
+				}
+				else
+				{
+					<div class="carousel-item  ">
+						<img src="@img" class="  d-block m-auto  " alt="...">
+					</div>
+				}
 			}
-			
+
 		</div>
 
 		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -248,9 +237,9 @@
 			<!--  หนังสือใหม่ -->
 
 			<h2>หนังสือใหม่</h2>
-			<a asp-action="Search"  asp-route-id="1">ดูทั้งหมด</a>
+			<a asp-action="Search" asp-route-id="1">ดูทั้งหมด</a>
 			@*<button id="allNewBook">ดูทั้งหมด</button>*@
-			
+
 
 		</div>
 		<div class="card-Book">
@@ -263,47 +252,64 @@
 							if (Bnew == 1)
 							{
 								var img = "img/imgbook/" + item.BookCover;
-								<div class="carousel-item active">
-									@*<div class="card">
-										<div class="card-body">*@
+								<div class="carousel-item Cbook active">
+									<div class="card">
+										<div class="card-body">
 											<div class="Simg">
-											<img src="@img" class="card-img-top imageBook " alt="...">
+												<img src="@img" class="card-img-top imageBook " alt="...">
 											</div>
-											<h5 class="card-title">@item.BookName</h5>
+											<h5 class="card-title TextBookName">@item.BookName</h5>
 
-											@*<div class="d-flex justify-content-center p-0 btn-group">
 
-												<div class="btn-group w-100 " role="group" aria-label="Basic example">*@
-													<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
-													<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
-												@*</div>
-											</div>*@
-									@*	</div>
-									</div>*@
+											<div class=" w-100 d-flex justify-content-between  " role="group" aria-label="Basic example">
+												<div>
+													<h5 class="numberview">
+														<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+															<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"></path>
+															<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"></path>
+														</svg>
+														@item.popview
+													</h5>
+												</div>
+												<div>
+												<a asp-action="BookDetail" class="btn mx-1 book-btn" asp-route-id="@item.BookId">ดู</a>
+												<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 								Bnew = 5;
 							}
 							else
 							{
 								var img = "img/imgbook/" + item.BookCover;
-								<div class="carousel-item">
-									@*<div class="card">
-										<div class="card-body">*@
+								<div class="carousel-item Cbook">
+									<div class="card">
+										<div class="card-body">
 											<div class="Simg">
-											<img src="@img" class="card-img-top imageBook " alt="...">
-											</div>								
-											<h5 class="card-title">@item.BookName</h5>
+												<img src="@img" class="card-img-top imageBook " alt="...">
+											</div>
+											<h5 class="card-title TextBookName">@item.BookName</h5>
 
-											@*<div class="d-flex justify-content-center p-0 btn-group">
 
-												<div class="btn-group w-100 " role="group" aria-label="Basic example">*@
-													<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
-													<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
-
-												@*</div>
-											</div>*@
-										@*</div>
-									</div>*@
+											<div class=" w-100 d-flex  justify-content-between " role="group" aria-label="Basic example">
+												<div>
+													<h5 class="numberview">
+														<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+															<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"></path>
+															<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"></path>
+														</svg>
+														@item.popview
+													</h5>
+												</div>
+												<div>
+												<a asp-action="BookDetail" class="btn mx-1 book-btn" asp-route-id="@item.BookId">ดู</a>
+												<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							}
 
@@ -333,7 +339,7 @@
 			<!--  หนังสือแนะนำ -->
 
 			<h2>หนังสือแนะนำ</h2>
-			<a asp-action="Search"  asp-route-id="2">ดูทั้งหมด</a>
+			<a asp-action="Search" asp-route-id="2">ดูทั้งหมด</a>
 
 		</div>
 		<div class="card-Book">
@@ -350,18 +356,25 @@
 									<div class="card">
 										<div class="card-body">
 											<div class="Simg">
-											<img src="@img" class="card-img-top imageBook " alt="...">
-											</div>											
-											<h5 class="card-title">@item.BookName</h5>
+												<img src="@img" class="card-img-top imageBook " alt="...">
+											</div>
+											<h5 class="card-title TextBookName">@item.BookName</h5>
 
-											@*<div class="d-flex justify-content-center p-0 btn-group">
-
-												<div class="btn-group w-100 " role="group" aria-label="Basic example">*@
-													<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
-													<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
-
-												@*</div>
-											</div>*@
+											<div class=" w-100 d-flex  justify-content-between " role="group" aria-label="Basic example">
+												<div>
+													<h5 class="numberview">
+														<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+															<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"></path>
+															<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"></path>
+														</svg>
+														@item.popview
+													</h5>
+												</div>
+												<div>
+												<a asp-action="BookDetail" class="btn mx-1 book-btn" asp-route-id="@item.BookId">ดู</a>
+												<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -374,17 +387,26 @@
 									<div class="card">
 										<div class="card-body">
 											<div class="Simg">
-											<img src="@img" class="card-img-top imageBook " alt="...">
+												<img src="@img" class="card-img-top imageBook " alt="...">
 											</div>
-											<h5 class="card-title">@item.BookName</h5>
+											<h5 class="card-title  TextBookName">@item.BookName</h5>
 
-											@*<div class="d-flex justify-content-center p-0 btn-group">
 
-												<div class="btn-group w-100 " role="group" aria-label="Basic example">*@
-													<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
-													<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
-											@*</div>
-											</div>*@
+											<div class=" w-100 d-flex  justify-content-between " role="group" aria-label="Basic example">
+												<div>
+													<h5 class="numberview">
+														<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+															<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"></path>
+															<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"></path>
+														</svg>
+														@item.popview
+													</h5>
+												</div>
+												<div>
+												<a asp-action="BookDetail" class="btn mx-1 book-btn" asp-route-id="@item.BookId">ดู</a>
+												<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -423,7 +445,7 @@
 <!-- Initialize Swiper -->
 <script type="text/javascript">
 	$( document ).ready(function() {
- 	
+
 
 
 

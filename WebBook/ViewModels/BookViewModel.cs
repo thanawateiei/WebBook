@@ -37,6 +37,8 @@ namespace WebBook.ViewModels
         public int BookType9 { get; set; }
         public int BookType10 { get; set; }
 
+        public int? popview { get; set; }
+
 
     }
     public class CBTViewModel

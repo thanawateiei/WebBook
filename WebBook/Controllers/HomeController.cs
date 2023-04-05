@@ -47,6 +47,8 @@ namespace WebBook.Controllers
                                  (b.BookType9.Equals(1)) || (b.BookType10.Equals(1)))).ToList();
             for (var i = 0; i < BNew.Count; i++)
             {
+                var p = _db.PopularBooks.Where(a => a.BookId == BNew[i].BookId).Sum(b => b.PopularCount);
+                BNew[i].popview = p;
                 try
                 {
                     var path = "wwwroot\\img\\imgbook\\" + BNew[i].BookCover;
@@ -57,7 +59,7 @@ namespace WebBook.Controllers
                     BNew[i].BookCover = "img-notFound.jpg";
                 }
             }
-
+             
             //book Recommend 
             List<BookViewModel> BRecommend = new List<BookViewModel>();
             BRecommend.AddRange(book);
@@ -66,6 +68,8 @@ namespace WebBook.Controllers
                                 (b.BookType9.Equals(2)) || (b.BookType10.Equals(2)))).ToList();
             for (var i = 0; i < BRecommend.Count; i++)
             {
+                var p = _db.PopularBooks.Where(a => a.BookId == BRecommend[i].BookId).Sum(b => b.PopularCount);
+                BRecommend[i].popview = p;
                 try
                 {
                     var path = "wwwroot\\img\\imgbook\\" + BRecommend[i].BookCover;
@@ -76,6 +80,10 @@ namespace WebBook.Controllers
                     BRecommend[i].BookCover = "img-notFound.jpg";
                 }
             }
+           
+            
+            
+            
             ViewBag.BookNew = BNew;
             ViewBag.BookRecommend = BRecommend;
 
@@ -89,6 +97,8 @@ namespace WebBook.Controllers
                          }).OrderByDescending(c => c.SettingId).ThenBy(c => c.SettingId);
 
             ViewBag.setImg = setImg;
+
+
 
             return View();
         }

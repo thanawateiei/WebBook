@@ -1,47 +1,174 @@
 ﻿@model IEnumerable<WebBook.ViewModels.BookViewModel>
 @{
-	var book =  ViewBag.Book;
+	var book = ViewBag.Book;
 	var img = "/img/imgbook/" + book.BookCover;
-	var booktype =  ViewBag.booktype;
+	var booktype = ViewBag.booktype;
 }
 <style>
+
+	/**{
+			font-family: 'Anuphan', sans-serif;
+		   font-family: 'Arimo', sans-serif;
+			font-family: 'Bebas Neue', cursive;
+			font-family: 'Kanit', sans-serif;
+			font-family: 'Mali', cursive;
+			font-family: 'Mitr', sans-serif;
+			font-family: 'Montserrat', sans-serif;
+		}*/
+	.card-Book .multiple-card-slider .carousel-inner {
+		padding: 1em;
+	}
+
+	.card-Book .multiple-card-slider .card {
+		margin: 0 0.5em;
+		box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+		border: none;
+	}
+
+	.card-Book .multiple-card-slider .carousel-control-prev,
+	.card-Book .multiple-card-slider .carousel-control-next {
+		background-color: #e1e1e1;
+		width: 3em;
+		height: 3em;
+		border-radius: 50%;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+@@media (min-width: 768px) {
+
+		.card-Book .multiple-card-slider .carousel-item {
+			margin-right: 0;
+			flex: 0 0 calc(100% / 5);
+			display: block;
+			backface-visibility: visible;
+		}
+
+		.card-Book .multiple-card-slider .carousel-inner {
+			display: flex;
+		}
+	}
+@@media (min-width: 100px) {
+
+		.card-Book .multiple-card-slider .carousel-item {
+			margin-right: 0;
+			flex: 0 0 calc(100% / 5);
+			display: block;
+			backface-visibility: visible;
+		}
+
+		.card-Book .multiple-card-slider .carousel-inner {
+			display: flex;
+		}
+
+
+}
+
 	.book-btn {
 		color: #fff;
 		background-color: #3D8361;
-		border-color: #3D8361; /*set the color you want here*/
+		border-color: #000; /*set the color you want here*/
 	}
 
-		.book-btn:hover {
+	.book-btn:hover {
 			color: #fff;
 			background-color: #1C6758;
-			border-color: #1C6758; /*set the color you want here*/
-		}
+			border-color: #000; /*set the color you want here*/
+	}
+	.bookType-btn {
+		color: #000;
+		background-color: #C7E9B0;
+		border-color: #C7E9B0; /*set the color you want here*/
+	}
+
+	.bookType-btn:hover {
+			color: #fff;
+			background-color: #A4BC92;
+			border-color: #A4BC92; /*set the color you want here*/
+	}
+	.bookname{
+		color:#00425A ;
+	}
 </style>
 <div class="container">
-<div class="row ">
-<div class="col-12 ">@book.BookName</div>	
-<div class="col-4 ">
-	<img src="@img" class="" height="400px" alt="...">
-</div>
-<div class="col-5 ">
-	<div class="row ">
-		<div class="col-12">
-			<p>โดย : @book.AuthorName</p>
-			<p>สำนักพิมพ์ : @book.Publisher</p>
-		</div><hr />
-		<div class="col-12">
-			@foreach (var item in booktype)
-			{
-				<a asp-action="Search" class="btn book-btn" asp-route-id="@item.BookTypeId">@item.BookTypeName</a>
-			}
-		</div> <hr />
-		<div class="col-12 ">
-			<p>เรื่องย่อ</p>
-			@book.BookDetail
-		</div> 
+	<div class="row d-flex justify-content-center">
+		<h1 class="col-12 text-center bookname my-4 mt-3">@book.BookName</h1>
+
+		<div class="col-4 ">
+			<img src="@img" class="mx-auto d-flex justify-content-center" height="400px" alt="...">
+		</div>
+		<div class="col-5 ">
+			<div class="row ">
+				<div class="col-12">
+					<div class="d-flex justify-content-between">
+					<p>โดย : @book.AuthorName  </p>
+					<a asp-controller="Account" asp-action="BookReq" class="btn book-btn " asp-route-id="@book.BookId">ยืมหนังสือ</a>
+					</div>
+					<p>สำนักพิมพ์ : @book.Publisher</p>
+					<p>ปีที่พิมพ์ : @book.PublicationYear</p>
+					<p>เลขหมู่หนังสือ : @book.CallNumber</p>
+				</div><hr />
+				<div class="col-12 mb-3">
+					<label>ประเภทหนังสือ : </label>
+					@foreach (var item in booktype)
+					{
+						<a asp-action="Search" class="btn bookType-btn my-1" asp-route-id="@item.BookTypeId">@item.BookTypeName</a>
+					}
+				</div> <hr />
+				<div class="col-12 ">
+					<p>เรื่องย่อ</p>
+					@book.BookDetail
+				</div>
+
+			</div>
+		</div>
+
+
 
 	</div>
 </div>
 
-</div>
-</div>
+
+<script type="text/javascript">
+	$( document ).ready(function() {
+ 	
+
+
+
+
+		$('.multiple-card-slider .carousel').each(function(){
+			//alert("Asdasd");
+			var currentCarouselId = '#' + $(this).attr('id');
+			const multipleItemCarousel = document.querySelector(currentCarouselId);
+
+			if(window.matchMedia("(min-width:100px)").matches){
+				const carousel = new bootstrap.Carousel(multipleItemCarousel, {
+					interval: false,
+					wrap: false
+				})
+				var carouselWidth = $(currentCarouselId + ' .carousel-inner')[0].scrollWidth;
+				var cardWidth = $(currentCarouselId + ' .carousel-item').width();
+				var scrollPosition = 0;
+				$(currentCarouselId + ' .carousel-control-next').on('click', function(){
+					if(scrollPosition < (carouselWidth - (cardWidth * 4))){
+						console.log('next');
+						scrollPosition = scrollPosition + cardWidth;
+						$(currentCarouselId + ' .carousel-inner').animate({scrollLeft: scrollPosition},600);
+					}
+				});
+				$(currentCarouselId + ' .carousel-control-prev').on('click', function(){
+					if(scrollPosition > 0){
+						console.log('prev');
+						scrollPosition = scrollPosition - cardWidth;
+						$(currentCarouselId + ' .carousel-inner').animate({scrollLeft: scrollPosition},600);
+					}
+				});
+			}else{
+				$(multipleItemCarousel).addClass('slide');
+			}
+		});
+
+	});// END document  ready
+
+
+</script>

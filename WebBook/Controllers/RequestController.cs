@@ -151,7 +151,8 @@ namespace WebBook.Controllers
                     rqq[i].state = "new";
                 }
             }
-
+            DateTime ds = new DateTime(DateTime.Now.Year, dateStart.Month, dateStart.Day);
+            DateTime de = new DateTime(DateTime.Now.Year, dateEnd.Month, dateEnd.Day);
             // Filter
             if (stext != null)
             {
@@ -164,248 +165,43 @@ namespace WebBook.Controllers
                 {// (r.CreatedAt.Date >= dateStart.Date && r.CreatedAt.Date <= dateEnd.Date)
                     if (dateStart != DateTime.MinValue && dateEnd == DateTime.MinValue)
                     {
-                        var dateS = dateStart;
-                        string setY = DateTime.Now.Year.ToString();
-                        int SY = (Int32.Parse(setY) + 543);
-                        try
-                        {
-                            //TH
-                            dateS = Convert.ToDateTime(dateStart.Day + "/" + dateStart.Month + "/" + SY);
-                            var RQ = rqq.Where(r => (r.CreatedAt.Date >= dateS)).ToList();
-                            if (RQ.Count() == 0)
-                            {
-                                try
-                                {
-                                    //US 
-                                    dateS = Convert.ToDateTime(dateStart.Day + "/" + dateStart.Month + "/" + setY);
-                                    rqq = rqq.Where(r => (r.CreatedAt.Date >= dateS)).ToList();
-                                }
-                                catch (Exception ex)
-                                {
-                                }
-                            }
-                            else
-                            {
-                                rqq = RQ;
 
-                            }
+                        rqq = rqq.Where(r => (r.CreatedAt.Date >= ds)).ToList();
 
-                        }
-                        catch (Exception ex)
-                        {
-                            //Uk
-                            dateS = Convert.ToDateTime(dateStart.Month + "/" + dateStart.Day + "/" + setY);
-                            rqq = rqq.Where(r => (r.CreatedAt.Date >= dateS)).ToList();
-
-                        }
                         //rqq.OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
                     }
                     else if (dateStart == DateTime.MinValue && dateEnd != DateTime.MinValue)
                     {
 
-                        var dateE = dateEnd;
-                        string setY = DateTime.Now.Year.ToString();
-                        int SY = (Int32.Parse(setY) + 543);
-                        try
-                        {
-                            //TH
-                            dateE = Convert.ToDateTime(dateEnd.Day + "/" + dateEnd.Month + "/" + SY);
-                            var RQ = rqq.Where(r => (r.CreatedAt.Date <= dateE)).ToList();
-                            if (RQ.Count() == 0)
-                            {
-                                try
-                                {
-                                    //US 
-                                    dateE = Convert.ToDateTime(dateEnd.Day + "/" + dateEnd.Month + "/" + setY);
-                                    rqq = rqq.Where(r => (r.CreatedAt.Date <= dateE)).ToList();
-                                }
-                                catch (Exception ex)
-                                {
-                                }
-                            }
-                            else
-                            {
-                                rqq = RQ;
+                        rqq = rqq.Where(r => (r.CreatedAt.Date <= de)).ToList();
 
-                            }
-
-                        }
-                        catch (Exception ex)
-                        {
-                            //Uk
-                            dateE = Convert.ToDateTime(dateEnd.Month + "/" + dateEnd.Day + "/" + setY);
-                            rqq = rqq.Where(r => (r.CreatedAt.Date <= dateE)).ToList();
-
-                        }
                     }
                     else if (dateStart != DateTime.MinValue && dateEnd != DateTime.MinValue)
                     {
-                        var dateS = dateStart;
-                        var dateE = dateEnd;
-                        string setY = DateTime.Now.Year.ToString();
-                        int SY = (Int32.Parse(setY) + 543);
-                        try
-                        {
-                            //TH
-                            dateS = Convert.ToDateTime(dateStart.Day + "/" + dateStart.Month + "/" + SY);
-                            dateE = Convert.ToDateTime(dateEnd.Day + "/" + dateEnd.Month + "/" + SY);
-                            var RQ = rqq.Where(r => (r.CreatedAt.Date >= dateS) && (r.CreatedAt.Date <= dateE)).ToList();
-                            if (RQ.Count() == 0)
-                            {
-                                try
-                                {
-                                    //US 
-                                    dateS = Convert.ToDateTime(dateStart.Day + "/" + dateStart.Month + "/" + setY);
-                                    dateE = Convert.ToDateTime(dateEnd.Day + "/" + dateEnd.Month + "/" + setY);
-                                    rqq = rqq.Where(r => (r.CreatedAt.Date >= dateS) && (r.CreatedAt.Date <= dateE)).ToList();
-                                }
-                                catch (Exception ex)
-                                {
-                                }
-							}
-							else
-							{
-                                rqq = RQ;
 
-                            }
-
-                        }
-                        catch (Exception ex)
-                        {
-                            //Uk
-                            dateS = Convert.ToDateTime(dateStart.Month + "/" + dateStart.Day + "/" + setY);
-                            dateE = Convert.ToDateTime(dateEnd.Month + "/" + dateEnd.Day + "/" + setY);
-                            rqq = rqq.Where(r => (r.CreatedAt.Date >= dateS) && (r.CreatedAt.Date <= dateE)).ToList();
-
-                        }
-
-
-
+                        rqq = rqq.Where(r => (r.CreatedAt.Date >= ds) && (r.CreatedAt.Date <= de)).ToList();
                     }
-                  
+
                 }
                 else if (filterDate == "ReceiveDate")
                 {
                     if (dateStart != DateTime.MinValue && dateEnd == DateTime.MinValue)
                     {
-                        var dateS = dateStart;
-                        var dateE = dateEnd;
-                        string setY = DateTime.Now.Year.ToString();
-                        int SY = (Int32.Parse(setY) + 543);
-                        try
-                        {
-                            //TH
-                            dateS = Convert.ToDateTime(dateStart.Day + "/" + dateStart.Month + "/" + SY);
-                            var RQ = rqq.Where(r => (r.ReceiveDate.Date >= dateS)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
-                            if (RQ.Count() == 0)
-                            {
-                                try
-                                {
-                                    //US 
-                                    dateS = Convert.ToDateTime(dateStart.Day + "/" + dateStart.Month + "/" + setY);
-                                    rqq = rqq.Where(r => (r.ReceiveDate.Date >= dateS)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
-                                }
-                                catch (Exception ex)
-                                {
-                                }
-                            }
-                            else
-                            {
-                                rqq = RQ;
 
-                            }
+                        rqq = rqq.Where(r => (r.ReceiveDate.Date >= ds)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
 
-                        }
-                        catch (Exception ex)
-                        {
-                            //Uk
-                            dateS = Convert.ToDateTime(dateStart.Month + "/" + dateStart.Day + "/" + setY);
-                            rqq = rqq.Where(r => (r.ReceiveDate.Date >= dateS)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
-
-                        }
                         //rqq.OrderByDescending(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay);
                     }
                     else if (dateStart == DateTime.MinValue && dateEnd != DateTime.MinValue)
                     {
+                        rqq = rqq.Where(r => (r.ReceiveDate.Date <= de)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
 
-                        var dateE = dateEnd;
-                        string setY = DateTime.Now.Year.ToString();
-                        int SY = (Int32.Parse(setY) + 543);
-                        try
-                        {
-                            //TH
-                            dateE = Convert.ToDateTime(dateEnd.Day + "/" + dateEnd.Month + "/" + SY);
-                            var RQ = rqq.Where(r => (r.ReceiveDate.Date <= dateE)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
-                            if (RQ.Count() == 0)
-                            {
-                                try
-                                {
-                                    //US 
-                                    dateE = Convert.ToDateTime(dateEnd.Day + "/" + dateEnd.Month + "/" + setY);
-                                    rqq = rqq.Where(r => (r.ReceiveDate.Date <= dateE)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
-                                }
-                                catch (Exception ex)
-                                {
-                                }
-                            }
-                            else
-                            {
-                                rqq = RQ;
-
-                            }
-
-                        }
-                        catch (Exception ex)
-                        {
-                            //Uk
-                            dateE = Convert.ToDateTime(dateEnd.Month + "/" + dateEnd.Day + "/" + setY);
-                            rqq = rqq.Where(r => (r.ReceiveDate.Date <= dateE)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
-
-                        }
                     }
                     else if (dateStart != DateTime.MinValue && dateEnd != DateTime.MinValue)
                     {
-                        var dateS = dateStart;
-                        var dateE = dateEnd;
-                        string setY = DateTime.Now.Year.ToString();
-                        int SY = (Int32.Parse(setY) + 543);
-                        try
-                        {
-                            //TH
-                            dateS = Convert.ToDateTime(dateStart.Day + "/" + dateStart.Month + "/" + SY);
-                            dateE = Convert.ToDateTime(dateEnd.Day + "/" + dateEnd.Month + "/" + SY);
-                            var RQ = rqq.Where(r => (r.ReceiveDate.Date >= dateS) && (r.ReceiveDate.Date <= dateE)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
-                            if (RQ.Count() == 0)
-                            {
-                                try
-                                {
-                                    //US 
-                                    dateS = Convert.ToDateTime(dateStart.Day + "/" + dateStart.Month + "/" + setY);
-                                    dateE = Convert.ToDateTime(dateEnd.Day + "/" + dateEnd.Month + "/" + setY);
-                                    rqq = rqq.Where(r => (r.ReceiveDate.Date >= dateS) && (r.ReceiveDate.Date <= dateE)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
-                                }
-                                catch (Exception ex)
-                                {
-                                }
-                            }
-                            else
-                            {
-                                rqq = RQ;
 
-                            }
+                        rqq = rqq.Where(r => (r.ReceiveDate.Date >= ds) && (r.ReceiveDate.Date <= de)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
 
-                        }
-                        catch (Exception ex)
-                        {
-                            //Uk
-                            dateS = Convert.ToDateTime(dateStart.Month + "/" + dateStart.Day + "/" + setY);
-                            dateE = Convert.ToDateTime(dateEnd.Month + "/" + dateEnd.Day + "/" + setY);
-                            rqq = rqq.Where(r => (r.ReceiveDate.Date >= dateS) && (r.ReceiveDate.Date <= dateE)).OrderBy(c => c.ReceiveDate.Date).ThenBy(c => c.ReceiveDate.TimeOfDay).ToList();
-
-                        }
-
-
-                        
                     }
                 }
                
@@ -416,121 +212,20 @@ namespace WebBook.Controllers
             {
                 if (dateStart != DateTime.MinValue && dateEnd == DateTime.MinValue)
                 {
-                    var dateS = dateStart;
-                    string setY = DateTime.Now.Year.ToString();
-                    int SY = (Int32.Parse(setY) + 543);
-                    try
-                    {
-                        //TH
-                        dateS = Convert.ToDateTime(dateStart.Day + "/" + dateStart.Month + "/" + SY);
-                        var RQ = rqq.Where(r => ((r.ReceiveDate.Date >= dateS) || (r.CreatedAt.Date >= dateS))).ToList();
-                        if (RQ.Count() == 0)
-                        {
-                            try
-                            {
-                                //US 
-                                dateS = Convert.ToDateTime(dateStart.Day + "/" + dateStart.Month + "/" + setY);
-                                rqq = rqq.Where(r => ((r.ReceiveDate.Date >= dateS) || (r.CreatedAt.Date >= dateS))).ToList();
-                            }
-                            catch (Exception ex)
-                            {
-                            }
-                        }
-                        else
-                        {
-                            rqq = RQ;
 
-                        }
+                    rqq = rqq.Where(r => ((r.ReceiveDate.Date >= ds) || (r.CreatedAt.Date >= ds))).ToList();
 
-                    }
-                    catch (Exception ex)
-                    {
-                        //Uk
-                        dateS = Convert.ToDateTime(dateStart.Month + "/" + dateStart.Day + "/" + setY);
-                        rqq = rqq.Where(r => ((r.ReceiveDate.Date >= dateS) || (r.CreatedAt.Date >= dateS))).ToList();
-
-                    }
-                    
                 }
                 else if (dateStart == DateTime.MinValue && dateEnd != DateTime.MinValue)
                 {
-                    var dateE = dateEnd;
-                    string setY = DateTime.Now.Year.ToString();
-                    int SY = (Int32.Parse(setY) + 543);
-                    try
-                    {
-                        //TH
-                        dateE = Convert.ToDateTime(dateEnd.Day + "/" + dateEnd.Month + "/" + SY);
-                        var RQ = rqq.Where(r => ((r.ReceiveDate.Date <= dateE) || (r.CreatedAt.Date <= dateE))).ToList();
 
-                        if (RQ.Count() == 0)
-                        {
-                            try
-                            {
-                                //US 
-                                dateE = Convert.ToDateTime(dateEnd.Day + "/" + dateEnd.Month + "/" + setY);
-                                rqq = rqq.Where(r => ((r.ReceiveDate.Date <= dateE) || (r.CreatedAt.Date <= dateE))).ToList();
-                            }
-                            catch (Exception ex)
-                            {
-                            }
-                        }
-                        else
-                        {
-                            rqq = RQ;
+                    rqq = rqq.Where(r => ((r.ReceiveDate.Date <= de) || (r.CreatedAt.Date <= de))).ToList();
 
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        //Uk
-                        dateE = Convert.ToDateTime(dateEnd.Month + "/" + dateEnd.Day + "/" + setY);
-                        rqq = rqq.Where(r => ((r.ReceiveDate.Date <= dateE) || (r.CreatedAt.Date <= dateE))).ToList();
-
-                    }
                 }
                 else
                 {
-                    var dateS = dateStart;
-                    var dateE = dateEnd;
-                    string setY = DateTime.Now.Year.ToString();
-                    int SY = (Int32.Parse(setY) + 543);
-                    try
-                    {
-                        //TH
-                        dateS = Convert.ToDateTime(dateStart.Day + "/" + dateStart.Month + "/" + SY);
-                        dateE = Convert.ToDateTime(dateEnd.Day + "/" + dateEnd.Month + "/" + SY);
-                        var RQ = rqq.Where(r => ((r.ReceiveDate.Date >= dateS) && (r.ReceiveDate.Date <= dateE)) || ((r.CreatedAt.Date >= dateS) && (r.CreatedAt.Date <= dateE))).ToList();
 
-                        if (RQ.Count() == 0)
-                        {
-                            try
-                            {
-                                //US 
-                                dateS = Convert.ToDateTime(dateStart.Day + "/" + dateStart.Month + "/" + setY);
-                                dateE = Convert.ToDateTime(dateEnd.Day + "/" + dateEnd.Month + "/" + setY);
-                                rqq = rqq.Where(r => ((r.ReceiveDate.Date >= dateS) && (r.ReceiveDate.Date <= dateE)) || ((r.CreatedAt.Date >= dateS) && (r.CreatedAt.Date <= dateE))).ToList();
-                            }
-                            catch (Exception ex)
-                            {
-                            }
-                        }
-                        else
-                        {
-                            rqq = RQ;
-
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        //Uk
-                        dateS = Convert.ToDateTime(dateStart.Month + "/" + dateStart.Day + "/" + setY);
-                        dateE = Convert.ToDateTime(dateEnd.Month + "/" + dateEnd.Day + "/" + setY);
-                        rqq = rqq.Where(r => ((r.ReceiveDate.Date >= dateS) && (r.ReceiveDate.Date <= dateE)) || ((r.CreatedAt.Date >= dateS) && (r.CreatedAt.Date <= dateE))).ToList();
-
-                    }
+                    rqq = rqq.Where(r => ((r.ReceiveDate.Date >= ds) && (r.ReceiveDate.Date <= de)) || ((r.CreatedAt.Date >= ds) && (r.CreatedAt.Date <= de))).ToList();
                 }
             }
 
@@ -709,10 +404,10 @@ namespace WebBook.Controllers
             {
                 if (ModelState.IsValid)
                 {
-
+                    DateTime dt = new DateTime(DateTime.Now.Year, obj.ReturnDate.Month, obj.ReturnDate.Day);
                     obj.CreatedAt = _db.Histories.AsNoTracking().FirstOrDefault(ue => ue.HistoryId == obj.HistoryId).CreatedAt;
                     obj.UpdatedAt = DateTime.Now;
-                    obj.ReturnDate = DateTime.Now; 
+                    obj.ReturnDate = dt;
                     _db.Histories.Update(obj);
                     _db.SaveChanges();
                     return RedirectToAction("Index");

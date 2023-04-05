@@ -46,5 +46,6 @@ namespace WebBook.Controllers
             obj.UserId = UserEmail;
 			return PartialView(obj);
 		}
+
 	}
 }
