@@ -21,8 +21,14 @@
 
 <style>
     .btn-color {
-        background-color: #0e1c36;
-        color: #fff;
+        background-color: #fff;
+        color: black;
+        border: 2px solid #4CAF50;
+    }
+
+    .btn:hover {
+        background-color: #4CAF50; /* Green */
+        color: white;
     }
 </style>
 <nav aria-label="breadcrumb">
@@ -43,8 +49,8 @@
                             <hr>
                             <p class="card-text">1.ทำการค้นหาหนังสือที่ต้องการจากเว็บไซต์ <a href="http://intanin.lib.ku.ac.th/" target="_blank">http://intanin.lib.ku.ac.th/</a></p>
                             <p class="card-text">2.หนังสือที่ยืมได้จะต้องมี </p>
-                            <p class="card-text text-center fw-bold">สภานที่ (Location) เป็น ศรีราชา (Si Racha)</p>
-                            <p class="card-text text-center fw-bold">สภานภาพ (Status) เป็น ดูที่ชั้น (Check Shelf)</p>
+                            <p class="card-text text-center fw-bold">สถานที่ (Location) เป็น ศรีราชา (Si Racha)</p>
+                            <p class="card-text text-center fw-bold">สถานภาพ (Status) เป็น ดูที่ชั้น (Check Shelf)</p>
                             <p class="card-text">3.นำรายละเอียดของหนังสือที่ต้องการยืมกรอกลงในฟอร์ม ได้แก่</p>
                             <p class="card-text">ชื่อหนังสือ / ชื่อผู้แต่ง / ปีที่พิมพ์ / สำนักพิมพ์ / เลขหมู่หนังสือ</p>
                             <hr>
@@ -95,10 +101,10 @@
                                 <span asp-validation-for="BookLang" class="text-danger"></span>
                             </div>
                             <div class="form-group mt-2">
-                        <label asp-for="ReceiveDate" class="control-label"></label>
-                                <input type="date" asp-for="ReceiveDate" class="form-control"/>
+                                <label asp-for="ReceiveDate" class="control-label"></label>
+                                <input type="date" min="@theDate" asp-for="ReceiveDate" class="form-control" />
                                 <span asp-validation-for="ReceiveDate" class="text-danger"></span>
-                    </div>
+                            </div>
                             <div class="form-group mt-2">
                                 <label asp-for="LocationId" class="control-label"></label>
                                 <select asp-for="LocationId" class="form-select" asp-items="ViewBag.Location"></select>
@@ -114,7 +120,7 @@
                                 <button type="submit" class="btn btn-color w-30">ส่งคำขอ</button>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -131,8 +137,8 @@
                             <hr>
                             <p class="card-text">1.ทำการค้นหาหนังสือที่ต้องการจากเว็บไซต์ <a href="http://intanin.lib.ku.ac.th/" target="_blank">http://intanin.lib.ku.ac.th/</a></p>
                             <p class="card-text">2.หนังสือที่ยืมได้จะต้องมี </p>
-                            <p class="card-text text-center fw-bold">สภานที่ (Location) เป็น ศรีราชา (Si Racha)</p>
-                            <p class="card-text text-center fw-bold">สภานภาพ (Status) เป็น ดูที่ชั้น (Check Shelf)</p>
+                            <p class="card-text text-center fw-bold">สถานที่ (Location) เป็น ศรีราชา (Si Racha)</p>
+                            <p class="card-text text-center fw-bold">สถานภาพ (Status) เป็น ดูที่ชั้น (Check Shelf)</p>
                             <p class="card-text">3.นำรายละเอียดของหนังสือที่ต้องการยืมกรอกลงในฟอร์ม ได้แก่</p>
                             <p class="card-text">ชื่อหนังสือ / ชื่อผู้แต่ง / ปีที่พิมพ์ / สำนักพิมพ์ / เลขหมู่หนังสือ</p>
                             <hr>
@@ -150,7 +156,7 @@
                             <hr>
                             <div class="form-group mt-2">
                                 <label asp-for="BookName" class="control-label"></label>
-                                <input asp-for="BookName" class="form-control" readonly/>
+                                <input asp-for="BookName" class="form-control" readonly />
                                 <span asp-validation-for="BookName" class="text-danger"></span>
                             </div>
                             <div class="form-group mt-2">
@@ -180,7 +186,7 @@
                             </div>
                             <div class="form-group mt-2">
                                 <label asp-for="ReceiveDate" class="control-label"></label>
-                                <input type="date" asp-for="ReceiveDate" class="form-control" value="@theDate"/>
+                                <input type="date" min="@theDate" asp-for="ReceiveDate" class="form-control" value="@theDate" />
                                 <span asp-validation-for="ReceiveDate" class="text-danger"></span>
                             </div>
                             <div class="form-group mt-2">

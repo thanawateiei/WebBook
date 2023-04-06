@@ -33,8 +33,9 @@ namespace WebBook.Controllers
                           BookCover = b.BookCover,
                           BookDetail = b.BookDetail,
                           BookLang = b.BookLang,
-                          CreatedAt = b.CreatedAt//ต้องมีเพาะเอาไปเรียงข้อมูล
-                      }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
+                          CreatedAt = b.CreatedAt,//ต้องมีเพาะเอาไปเรียงข้อมูล
+                          UpdatedAt = b.UpdatedAt
+                      }).OrderByDescending(c => c.UpdatedAt).ThenBy(c => c.CreatedAt.TimeOfDay);
 
             List<BookViewModel> book = new List<BookViewModel>();
             book.AddRange(bb);
@@ -88,8 +89,9 @@ namespace WebBook.Controllers
                           BookType8 = b.BookType8,
                           BookType9 = b.BookType9,
                           BookType10 = b.BookType10,
-                          CreatedAt = b.CreatedAt//ต้องมีเพาะเอาไปเรียงข้อมูล
-                      }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
+                          CreatedAt = b.CreatedAt,//ต้องมีเพาะเอาไปเรียงข้อมูล
+						  UpdatedAt = b.UpdatedAt
+					  }).OrderByDescending(c => c.UpdatedAt.Date).ThenBy(c => c.UpdatedAt.TimeOfDay);
 
             var book = new List<BookViewModel>();
             book.AddRange(bb);

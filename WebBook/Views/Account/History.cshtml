@@ -48,12 +48,17 @@
                             <td>@item.Location</td>
                             <td>@item.ReceiveDate</td>
                             <td>@item.ReturnDate</td>
-                            @if(@item.Status == "เกินกำหนดคืนหนังสือ"){
+                            @if (@item.Status == "เกินกำหนดคืนหนังสือ")
+                            {
                                 <td class="text-danger">@item.Status</td>
+                            }
+                            else if (@item.Status == "ส่งคืนหนังสือเรียบร้อย")
+                            {
+                                <td class="text-success">@item.Status</td>
                             }
                             else
                             {
-                                <td >@item.Status</td>
+                                <td>@item.Status</td>
                             }
 
                         </tr>
