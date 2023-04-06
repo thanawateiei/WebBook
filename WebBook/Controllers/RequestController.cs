@@ -114,7 +114,18 @@ namespace WebBook.Controllers
         [Route("admin/request")]
         public IActionResult Index(string stext, string filterDate, string filterStatus, DateTime dateStart, DateTime dateEnd , string T_btn , int ListNumber, int pageNow)
          {
-           
+            var SetReturnDate = from r in _db.Histories
+                                where DateTime.Now.Date > r.ReturnDate && r.StatusId == 4
+                                select r;
+            foreach (var item in SetReturnDate)
+            {
+                item.StatusId = 7;
+                item.UpdatedAt = DateTime.Now;
+                _db.Histories.Update(item);
+
+            }
+            _db.SaveChanges();
+
             List<RequestViewModel> rqq = new List<RequestViewModel>();
             CultureInfo us = new CultureInfo("en-US");
             var rq = (from r in _db.Histories
@@ -140,7 +151,7 @@ namespace WebBook.Controllers
                           S_ReceiveDate = Convert.ToDateTime(r.ReceiveDate).ToString("dd/MM/yyyy",us),
                           S_ReturnDate = Convert.ToDateTime(r.ReturnDate).ToString("dd/MM/yyyy",us),
                           S_CreatedAt = Convert.ToDateTime(r.CreatedAt).ToString("dd/MM/yyyy",us)
-                      }).OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
+                      }).OrderByDescending(c => c.UpdatedAt).ThenBy(c => c.UpdatedAt.TimeOfDay);
 
             rqq = rq.ToList();
             var i = 0;
@@ -163,25 +174,25 @@ namespace WebBook.Controllers
 
             if (filterDate != null)
             {
-                if (filterDate == "CreatedAt")
+                if (filterDate == "ReturnDate")
                 {// (r.CreatedAt.Date >= dateStart.Date && r.CreatedAt.Date <= dateEnd.Date)
                     if (dateStart != DateTime.MinValue && dateEnd == DateTime.MinValue)
                     {
 
-                        rqq = rqq.Where(r => (r.CreatedAt.Date >= ds)).ToList();
+                        rqq = rqq.Where(r => (r.ReturnDate.Date >= ds)).ToList();
 
                         //rqq.OrderByDescending(c => c.CreatedAt.Date).ThenBy(c => c.CreatedAt.TimeOfDay);
                     }
                     else if (dateStart == DateTime.MinValue && dateEnd != DateTime.MinValue)
                     {
 
-                        rqq = rqq.Where(r => (r.CreatedAt.Date <= de)).ToList();
+                        rqq = rqq.Where(r => (r.ReturnDate.Date <= de)).ToList();
 
                     }
                     else if (dateStart != DateTime.MinValue && dateEnd != DateTime.MinValue)
                     {
 
-                        rqq = rqq.Where(r => (r.CreatedAt.Date >= ds) && (r.CreatedAt.Date <= de)).ToList();
+                        rqq = rqq.Where(r => (r.ReturnDate.Date >= ds) && (r.ReturnDate.Date <= de)).ToList();
                     }
 
                 }

@@ -107,19 +107,19 @@
 							@if (@filterDate == "ReceiveDate")
 							{
 								<option value="ReceiveDate">วันรับหนังสือ</option>
-								<option value=" ">วันรับ/วันขอยืม </option>
-								<option value="CreatedAt">วันขอยืมหนังสือ</option>
+								<option value=" ">วันรับ/กำหนดคืน</option>
+								<option value="ReturnDate">กำหนดคืนหนังสือ</option>
 							}
-							else if (@filterDate == "CreatedAt")
+							else if (@filterDate == "ReturnDate")
 							{
-								<option value="CreatedAt">วันขอยืมหนังสือ</option>
-								<option value=" ">วันรับ/วันขอยืม </option>
+								<option value="ReturnDate">กำหนดคืนหนังสือ</option>
+								<option value=" ">วันรับ/กำหนดคืน </option>
 								<option value="ReceiveDate">วันรับหนังสือ</option>
 							}
 							else
 							{
-								<option value=" ">วันรับ/วันขอยืม</option>
-								<option value="CreatedAt">วันขอยืมหนังสือ</option>
+								<option value=" ">วันรับ/กำหนดคืน</option>
+								<option value="ReturnDate">กำหนดคืนหนังสือ</option>
 								<option value="ReceiveDate">วันรับหนังสือ</option>
 							}
 
@@ -255,7 +255,18 @@
 								@*<td>@item.UpdatedAt</td>*@
 								<td>@item.S_ReceiveDate</td>
 								<td>@item.S_ReturnDate</td>
-								<td>@item.Status</td>
+								@if (@item.Status == "เกินกำหนดคืนหนังสือ")
+								{
+									<td class="text-danger">@item.Status</td>
+								}
+								else if (@item.Status == "ส่งคืนหนังสือเรียบร้อย")
+								{
+									<td class="text-success">@item.Status</td>
+								}
+								else
+								{
+									<td>@item.Status</td>
+								}
 								@*@if(item.StatusID == 1){
 									<td class="text-warning">@item.Status</td>
 									}else if (item.StatusID == 2)
