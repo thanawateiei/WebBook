@@ -63,6 +63,11 @@ namespace WebBook.Controllers
                 dataUserType.Add(new DataPoint(item.UserTypeName, dataUser.Where(x => x.UserType.Equals(item.UserTypeId)).Count()));
             }
 
+
+            var user = from h in _db.Users
+                       where h.Role == 3
+                       select h;
+            ViewBag.AllUser = user.Count();
             ViewBag.dataUserAgency = JsonConvert.SerializeObject(dataUserAgency);
             ViewBag.dataUserType = JsonConvert.SerializeObject(dataUserType);
             ViewBag.datastatus = datastatus;

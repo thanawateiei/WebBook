@@ -154,6 +154,58 @@ namespace WebBook.Controllers
 			try
 			{
 				// ทำการเขียน Query หา Record ของ Product.pdId จาก id ที่ส่งมา
+				var books = from b in _db.Books
+						   where (b.BookType1.Equals(BookTypeId)) || (b.BookType2.Equals(BookTypeId)) || (b.BookType3.Equals(BookTypeId)) || (b.BookType4.Equals(BookTypeId)) ||
+								 (b.BookType5.Equals(BookTypeId)) || (b.BookType6.Equals(BookTypeId)) || (b.BookType7.Equals(BookTypeId)) || (b.BookType8.Equals(BookTypeId)) ||
+								 (b.BookType9.Equals(BookTypeId)) || (b.BookType10.Equals(BookTypeId))
+						   select b;
+				List<Book> book = books.ToList();
+				for (int i = 0; i < book.Count(); i++)
+				{
+					if (book[i].BookType1 == BookTypeId)
+					{
+						book[i].BookType1 = 0;
+					}
+					if (book[i].BookType2 == BookTypeId)
+					{
+						book[i].BookType2 = 0;
+					}
+					if (book[i].BookType3 == BookTypeId)
+					{
+						book[i].BookType3 = 0;
+					}
+					if (book[i].BookType4 == BookTypeId)
+					{
+						book[i].BookType4 = 0;
+					}
+					if (book[i].BookType5 == BookTypeId)
+					{
+						book[i].BookType5 = 0;
+					}
+					if (book[i].BookType6 == BookTypeId)
+					{
+						book[i].BookType6 = 0;
+					}
+					if (book[i].BookType7 == BookTypeId)
+					{
+						book[i].BookType7 = 0;
+					}
+					if (book[i].BookType8 == BookTypeId)
+					{
+						book[i].BookType8 = 0;
+					}
+					if (book[i].BookType9 == BookTypeId)
+					{
+						book[i].BookType9 = 0;
+					}
+					if (book[i].BookType10 == BookTypeId)
+					{
+						book[i].BookType10 = 0;
+					}
+					_db.Books.Update(book[i]);
+					
+				}_db.SaveChanges(); 
+
 				var obj = _db.BookTypes.Find(BookTypeId);
 				if (obj == null)
 				{

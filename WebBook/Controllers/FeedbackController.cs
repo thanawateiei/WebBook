@@ -23,7 +23,8 @@ namespace WebBook.Controllers
                           UserId = fb_ue.Email,
                           FeedbackLike = fb.FeedbackLike,
                           FeedbackScore = fb.FeedbackScore,
-                          FeedbackDetail= fb.FeedbackDetail
+                          FeedbackDetail= fb.FeedbackDetail,
+                          FeedbackHeading = fb.FeedbackHeading
                       };
 
 
@@ -32,7 +33,7 @@ namespace WebBook.Controllers
         }
         public IActionResult Detail(int id)
 		{
-			if (id == null)
+			if (id == 0)
 			{
 				return RedirectToAction("Index");
 

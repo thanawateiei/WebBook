@@ -9,51 +9,70 @@
 @*<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/jquery.canvasjs.min.js"></script>
 *@
+<style>
+	.text-all-request{
+		font-size: 60px ;
+	}
+	.text-H{
+		font-size: 18px ;
+	}
+
+</style>
 <div class="row p-2">
-	<div class="col-3">
+	<div class="col-sm-6 col-md-4  col-lg-2">
 		<div class="card shadow w-100 h-100 mb-1">
-				<div class="card-header py-2 ">
+				<div class="card-header py-2 text-H">
 					คำขอยืมทั้งหมด 
 				</div>
-				<div class="card-body ">
-					<label>@ViewBag.HisCount</label>
+				<div class="card-body text-center">
+					<label class="text-all-request ">@ViewBag.HisCount</label>
 				</div>
 			</div>
 		</div>
-		<div class="col-6">
-			<div class="row ">
-				<div class="card shadow w-100 h-100 mb-1">
-				<div class="card-header py-2 ">
-					สถานะ
+			<div class="col-sm-6 col-md-4  col-lg-2">
+		<div class="card shadow w-100 h-100 mb-1">
+				<div class="card-header py-2 text-H">
+					ผู้ใช้งานทั้งหมด 
 				</div>
-	@foreach (var item in ViewBag.datastatus)
-	{
-		
-			
-				<div class="card-body">
-					<label>@item.Label  :  @item.Y</label>
+				<div class="card-body text-center">
+					<label class="text-all-request ">@ViewBag.AllUser</label>
 				</div>
-			
-			
-		
-	}</div>
-	</div>
-	</div>
+			</div>
+		</div>
+	@*	<div class="col-6">
+		<div class="row ">
+		<div class="card shadow w-100 h-100 mb-1">
+		<div class="card-header py-2 ">
+		สถานะ
+		</div>
+			@foreach (var item in ViewBag.datastatus)
+			{
+
+
+		<div class="card-body">
+		<label>@item.Label  :  @item.Y</label>
+		</div>
+
+
+
+			}</div>
+			</div>
+			</div>*@
 
 </div>
 <div class="row p-2">
-	<div class="col-6">
+	<div class="col-12 col-lg-6">
 			<div class="card shadow w-100 mb-1">
 				<div class="card-header py-2 ">
 					<h3>แสดงจำนวน user ตามคณะ (Agency)</h3>
 				</div>
 				<div class="card-body">
-					<div id="chartAgency" style="height: 470px; width: auto;"></div>
+					<div id="chartAgency" style="height: 420px; width: auto;"></div>
 				</div>
 			</div>
 		</div>
-	
-	<div class="col-6">
+
+	<div class="col-12 col-lg-6">
 
 		<div class="container-fluid  px-0">
 			<div class="card shadow w-100 mb-1">
@@ -61,7 +80,7 @@
 					<h3>แสดงจำนวน user ตามคณะ (Agency)</h3>
 				</div>
 				<div class="card-body">
-					<div id="chartUserType" style="height: 470px; width: auto;"></div>
+					<div id="chartUserType" style="height: 420px; width: auto;"></div>
 				</div>
 			</div>
 		</div>
@@ -76,7 +95,7 @@
 		theme: "light2", // "light1", "light2", "dark1", "dark2"
 		exportEnabled: true,
 		animationEnabled: true,
-			
+
 			height:390,
 			data: [{
 				type: "pie",
@@ -90,7 +109,7 @@
 		theme: "light2", // "light1", "light2", "dark1", "dark2"
 		exportEnabled: true,
 		animationEnabled: true,
-		
+
 			height:390,
 			data: [{
 				type: "pie",
