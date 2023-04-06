@@ -15,54 +15,7 @@
 			font-family: 'Mitr', sans-serif;
 			font-family: 'Montserrat', sans-serif;
 		}*/
-	.card-Book .multiple-card-slider .carousel-inner {
-		padding: 1em;
-	}
 
-	.card-Book .multiple-card-slider .card {
-		margin: 0 0.5em;
-		box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
-		border: none;
-	}
-
-	.card-Book .multiple-card-slider .carousel-control-prev,
-	.card-Book .multiple-card-slider .carousel-control-next {
-		background-color: #e1e1e1;
-		width: 3em;
-		height: 3em;
-		border-radius: 50%;
-		top: 50%;
-		transform: translateY(-50%);
-	}
-
-@@media (min-width: 768px) {
-
-		.card-Book .multiple-card-slider .carousel-item {
-			margin-right: 0;
-			flex: 0 0 calc(100% / 5);
-			display: block;
-			backface-visibility: visible;
-		}
-
-		.card-Book .multiple-card-slider .carousel-inner {
-			display: flex;
-		}
-	}
-@@media (min-width: 100px) {
-
-		.card-Book .multiple-card-slider .carousel-item {
-			margin-right: 0;
-			flex: 0 0 calc(100% / 5);
-			display: block;
-			backface-visibility: visible;
-		}
-
-		.card-Book .multiple-card-slider .carousel-inner {
-			display: flex;
-		}
-
-
-}
 
 	.book-btn {
 		color: #fff;
@@ -112,7 +65,7 @@
 					<label>ประเภทหนังสือ : </label>
 					@foreach (var item in booktype)
 					{
-						<a asp-action="Search" class="btn bookType-btn my-1" asp-route-id="@item.BookTypeId">@item.BookTypeName</a>
+						<a asp-action="SearchID" class="btn bookType-btn my-1"  asp-route-id="@item.BookTypeId">@item.BookTypeName</a>
 					}
 				</div> <hr />
 				<div class="col-12 ">
@@ -129,46 +82,4 @@
 </div>
 
 
-<script type="text/javascript">
-	$( document ).ready(function() {
- 	
 
-
-
-
-		$('.multiple-card-slider .carousel').each(function(){
-			//alert("Asdasd");
-			var currentCarouselId = '#' + $(this).attr('id');
-			const multipleItemCarousel = document.querySelector(currentCarouselId);
-
-			if(window.matchMedia("(min-width:100px)").matches){
-				const carousel = new bootstrap.Carousel(multipleItemCarousel, {
-					interval: false,
-					wrap: false
-				})
-				var carouselWidth = $(currentCarouselId + ' .carousel-inner')[0].scrollWidth;
-				var cardWidth = $(currentCarouselId + ' .carousel-item').width();
-				var scrollPosition = 0;
-				$(currentCarouselId + ' .carousel-control-next').on('click', function(){
-					if(scrollPosition < (carouselWidth - (cardWidth * 4))){
-						console.log('next');
-						scrollPosition = scrollPosition + cardWidth;
-						$(currentCarouselId + ' .carousel-inner').animate({scrollLeft: scrollPosition},600);
-					}
-				});
-				$(currentCarouselId + ' .carousel-control-prev').on('click', function(){
-					if(scrollPosition > 0){
-						console.log('prev');
-						scrollPosition = scrollPosition - cardWidth;
-						$(currentCarouselId + ' .carousel-inner').animate({scrollLeft: scrollPosition},600);
-					}
-				});
-			}else{
-				$(multipleItemCarousel).addClass('slide');
-			}
-		});
-
-	});// END document  ready
-
-
-</script>

@@ -1,0 +1,122 @@
+﻿@using Microsoft.AspNetCore.Session;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+
+@{
+	ViewData["Title"] = "Book Delivery";
+}
+@if (ViewBag.ErrorMessage != null)
+{
+	<script type="text/javascript">
+		window.onload = function () {
+			alert("@ViewBag.ErrorMessage");
+		};
+	</script>
+}
+
+
+@if (TempData["ErrorMessage"] != null)
+{
+	<div class="alert alert-warning">@TempData["ErrorMessage"]</div>
+}
+<style>
+	.book-btn {
+		color: #fff;
+		background-color: #3D8361;
+		border-color: #3D8361; /*set the color you want here*/
+	}
+
+		.book-btn:hover {
+			color: #fff;
+			background-color: #1C6758;
+			border-color: #1C6758; /*set the color you want here*/
+		}
+
+	.Simg, .imageBook {
+		width: 133px;
+		height: 200px;
+	}
+	
+	@@media (min-width: 576px) {
+		.TextBookName {
+			font-size: 10px;
+			text-align: center;
+		}
+	.Simg, .imageBook {
+		width: auto;
+		height: 200px;
+	}
+	}
+
+	.TextBookName {
+		font-size: 18px;
+		text-align: center;
+	}
+
+	.numberview {
+		font-size: 13px;
+	}
+</style>
+<div class="container">
+	<h1>@ViewBag.searchRS</h1>
+	@*<h2>@TempData["Search"] </h2>*@
+	<div class="p-2">
+		@*     <div class="row">
+			@foreach (var item in Model)
+			{
+
+			var img = "/img/imgbook/" + item.BookCover;
+			<div class="col-2">
+			<div class="carousel-item active">
+			<div class="Simg">
+			<img src="@img" class="card-img-top imageBook " alt="...">
+			</div>
+			<h5 class="card-title">@item.BookName</h5>
+			<a asp-action="BookDetail" class="btn book-btn" asp-route-id="@item.BookId">ดู</a>
+			<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
+
+			</div></div>
+			}
+			</div>*@
+		<div class="row">
+			@foreach (var item in Model)
+			{
+				var img = "/img/imgbook/" + item.BookCover;
+
+				<div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-2 my-2 ">
+					<div class="card p-2">
+						<div class="Simg text-center">
+							<img src="@img" class=" mx-auto imageBook ">
+						</div>
+						<div class="card-body p-1">
+							<h5 class="card-title text-center TextBookName ">@item.BookName</h5>
+							<h5 class="numberview text-center">
+								<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+									<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"></path>
+									<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"></path>
+								</svg>
+								@item.popview
+							</h5>
+
+							<div class="row">
+								<div class="col-12 text-center">
+									<a asp-action="BookDetail" class="btn mx-1 book-btn" asp-route-id="@item.BookId">ดู</a>
+									<a asp-controller="Account" asp-action="BookReq" class="btn book-btn" asp-route-id="@item.BookId">ยืมหนังสือ</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+			}
+		</div>
+	</div>
+</div>
+
+
+<script>
+
+</script>
+
+

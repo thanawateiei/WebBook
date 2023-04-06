@@ -32,15 +32,19 @@
 		}
 
 	.Simg, .imageBook {
-		width: auto;
+		width: 133px;
 		height: 200px;
 	}
-
+	
 	@@media (min-width: 576px) {
 		.TextBookName {
 			font-size: 10px;
 			text-align: center;
 		}
+	.Simg, .imageBook {
+		width: auto;
+		height: 200px;
+	}
 	}
 
 	.TextBookName {
@@ -53,7 +57,8 @@
 	}
 </style>
 <div class="container">
-	<h2>@TempData["Search"] </h2>
+	<h1>@ViewBag.searchRS</h1>
+	@*<h2>@TempData["Search"] </h2>*@
 	<div class="p-2">
 		@*     <div class="row">
 			@foreach (var item in Model)
@@ -77,7 +82,7 @@
 			{
 				var img = "/img/imgbook/" + item.BookCover;
 
-				<div class="col-sm-6 col-md-4 col-lg-3 mb-2 my-2 ">
+				<div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-2 my-2 ">
 					<div class="card p-2">
 						<div class="Simg text-center">
 							<img src="@img" class=" mx-auto imageBook ">

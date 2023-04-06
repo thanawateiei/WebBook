@@ -128,8 +128,7 @@ namespace WebBook.Controllers
         {
             return View();
         }
-
-        public IActionResult Search(string stext, int id)
+        public IActionResult SearchStext(string stext)
         {
             var bb = (from b in _db.Books
                        select new ViewModels.BookViewModel
@@ -173,21 +172,95 @@ namespace WebBook.Controllers
                 }
             }
             var search = "";
+            var searchRS = "";
             if (stext != null)
             {
                 book = book.Where(b => (b.BookName.Contains(stext)) || (b.AuthorName.Contains(stext)) || (b.Publisher.Contains(stext))).ToList();
                 search = stext;
+                searchRS = "ค้นหา '" + stext + "'";
+                if(book.Count() == 0)
+                {
+                    searchRS = "ค้นหา ไม่พบ'" + stext + "'";
+                }
             }
+            
+            //if (id != 0)
+            //{
+            //    book = book.Where(b => ((b.BookType1.Equals(id)) || (b.BookType2.Equals(id)) || (b.BookType3.Equals(id)) || (b.BookType4.Equals(id)) ||
+            //                     (b.BookType5.Equals(id)) || (b.BookType6.Equals(id)) || (b.BookType7.Equals(id)) || (b.BookType8.Equals(id)) ||
+            //                     (b.BookType9.Equals(id)) || (b.BookType10.Equals(id)))).ToList();
+            //    //search = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == id).BookTypeName;
+            //    searchRS = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == id).BookTypeName;
+              
+            //}
+            ViewBag.searchRS = searchRS;
+            //ViewBag.search = search;
+            return View(book);
+        }
+        public IActionResult SearchID(int id)
+        {
+            var bb = (from b in _db.Books
+                      select new ViewModels.BookViewModel
+                      {
+                          BookId = b.BookId,
+                          BookName = b.BookName,
+                          AuthorName = b.AuthorName,
+                          PublicationYear = b.PublicationYear,
+                          Publisher = b.Publisher,
+                          BookCover = b.BookCover,
+                          BookDetail = b.BookDetail,
+                          BookLang = b.BookLang,
+                          BookType1 = b.BookType1,
+                          BookType2 = b.BookType2,
+                          BookType3 = b.BookType3,
+                          BookType4 = b.BookType4,
+                          BookType5 = b.BookType5,
+                          BookType6 = b.BookType6,
+                          BookType7 = b.BookType7,
+                          BookType8 = b.BookType8,
+                          BookType9 = b.BookType9,
+                          BookType10 = b.BookType10,
+                          CreatedAt = b.CreatedAt,//ต้องมีเพาะเอาไปเรียงข้อมูล
+                          UpdatedAt = b.UpdatedAt
+                      }).OrderByDescending(c => c.UpdatedAt).ThenBy(c => c.UpdatedAt.TimeOfDay);
+
+            var book = new List<BookViewModel>();
+            book.AddRange(bb);
+            for (var i = 0; i < book.Count; i++)
+            {
+                var p = _db.PopularBooks.Where(a => a.BookId == book[i].BookId).Sum(b => b.PopularCount);
+                book[i].popview = p;
+                try
+                {
+                    var path = "wwwroot\\img\\imgbook\\" + book[i].BookCover;
+                    IEnumerable<string> items = Directory.EnumerateFileSystemEntries(path);
+                }
+                catch (Exception ex)
+                {
+                    book[i].BookCover = "img-notFound.jpg";
+                }
+            }
+            var searchRS = "";
+            //if (stext != null)
+            //{
+            //    book = book.Where(b => (b.BookName.Contains(stext)) || (b.AuthorName.Contains(stext)) || (b.Publisher.Contains(stext))).ToList();
+            //    search = stext;
+            //    searchRS = "ค้นหา '" + stext + "'";
+            //}
             if (id != 0)
             {
                 book = book.Where(b => ((b.BookType1.Equals(id)) || (b.BookType2.Equals(id)) || (b.BookType3.Equals(id)) || (b.BookType4.Equals(id)) ||
                                  (b.BookType5.Equals(id)) || (b.BookType6.Equals(id)) || (b.BookType7.Equals(id)) || (b.BookType8.Equals(id)) ||
                                  (b.BookType9.Equals(id)) || (b.BookType10.Equals(id)))).ToList();
-                search = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == id).BookTypeName;
+                //search = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == id).BookTypeName;
+                searchRS = _db.BookTypes.FirstOrDefault(ue => ue.BookTypeId == id).BookTypeName;
+
             }
-            ViewBag.search = search;
+            ViewBag.searchRS = "ประเภทหนังสือ / "+searchRS;
+            //ViewBag.search = search;
             return View(book);
         }
+
         public IActionResult BookDetail(string id)
         {
             var pop = _db.PopularBooks.AsNoTracking().FirstOrDefault(ue => ue.BookId == id && ue.PopularDate == DateTime.Now.Date);
