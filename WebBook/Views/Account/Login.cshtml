@@ -41,17 +41,27 @@
                     {
                         <div class="alert alert-warning">@TempData["Message"]</div>
                     }
+                    @if (ViewBag.Message != null)
+                    {
+                        <div class="alert alert-warning">@ViewBag.Message</div>
+                    }
                     <h2 class="text-center text-dark mt-5">เข้าสู่ระบบ</h2>
 
                     <div class="text-center">
                         <img src="https://www.kindpng.com/picc/m/235-2351000_login-icon-png-transparent-png.png" class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
                              width="200px" alt="profile">
                     </div>
-
+                    @if (ViewBag.UEmail != null)
+                    {
+                        <div class="mb-3">
+                        <input type="email" class="form-control" name="userEmail" id="userEmail"
+                               placeholder="อีเมล ku.th หรือ live.ku.th" value="@ViewBag.UEmail" autocomplete="off" required>
+                    </div>
+                    }else{
                     <div class="mb-3">
                         <input type="email" class="form-control" name="userEmail" id="userEmail"
                                placeholder="อีเมล ku.th หรือ live.ku.th" autocomplete="off" required>
-                    </div>
+                    </div>}
                     <div class="mb-3">
                         <input type="password" class="form-control" name="userPass" id="userPass" placeholder="รหัสผ่าน"
                                placeholder="รหัสผ่าน" autocomplete="off" required>

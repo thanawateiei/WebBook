@@ -48,7 +48,19 @@
 			</div>
 			<div class="form-group">
 				<label asp-for="BookLang" class="control-label"></label>
-				<input asp-for="BookLang" class="form-control" />
+				<select class="form-control"  name="BookLang" id="BookLang">
+				@if (ViewBag.BookLang == "EN")
+					{
+						
+						<option value="EN">หนังสือภาษาอังกฤษ</option>
+						<option value="TH">หนังสือภาษาไทย</option>
+					}
+				else 
+					{
+						<option value="TH">หนังสือภาษาไทย</option>
+						<option value="EN">หนังสือภาษาอังกฤษ</option>
+					}
+					</select>
 				<span asp-validation-for="BookLang" class="text-danger"></span>
 			</div>
 

@@ -56,11 +56,12 @@ namespace WebBook.Controllers
             if (his.BookLang == "TH")
             {
                 his.BookLang = "หนังสือภาษาไทย";
-			}
+            }
             else if (his.BookLang == "EN")
-			{
-				his.BookLang = "หนังสือภาษาอังกฤษ";
-			}
+            {
+                his.BookLang = "หนังสือภาษาอังกฤษ";
+            }
+            ViewBag.BookLang = his.BookLang;
             ViewData["Location"] = new SelectList(_db.Locations, "LocationId", "LocationName");
             return View(his);
         }
@@ -80,6 +81,14 @@ namespace WebBook.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (obj.BookLang == "หนังสือภาษาไทย")
+                    {
+                        obj.BookLang = "TH";
+                    }
+                    else if (obj.BookLang == "หนังสือภาษาอังกฤษ")
+                    {
+                        obj.BookLang = "EN";
+                    }
                     string dt = Convert.ToDateTime(obj.ReceiveDate).ToString("yyyy/MM/dd");
                     //DateTime dt = new DateTime(obj.ReceiveDate.Year, obj.ReceiveDate.Month, obj.ReceiveDate.Day);
                     //obj.ReceiveDate = obj.ReceiveDate.ToLocalTime();
@@ -311,6 +320,7 @@ namespace WebBook.Controllers
             {
                 //ถ้าใช้ RedirectToAction ไม่สามารถใช้ ViewBag ได้ ต้องใช้ TempData
                 ViewBag.Message = "ไม่พบผู้ใช้";
+              
                 //ViewBag.ErrorMessage = "ระบุผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
                 return View();
                 //return View();
@@ -322,6 +332,7 @@ namespace WebBook.Controllers
             //ถ้าข้อมูลเท่ากับ 0 ให้บอกว่าหาข้อมูลไม่พบ
             if (!isValidPassword)
             {
+                ViewBag.UEmail = userEmail;
                 ViewBag.Message = "รหัสผ่านไม่ถูกต้อง";
                 return View();
             }

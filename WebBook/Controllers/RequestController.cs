@@ -398,7 +398,7 @@ namespace WebBook.Controllers
                 ViewBag.ErrorMassage = "ไม่พบข้อมูลที่ระบุ";
                 return RedirectToAction("Index");
             }
-
+         
             //อ่านข้อมูลจากตารางลง SelectList แล้วใส่ข้อมูลลงตัว ViewData
             //และกำนหนดว่า Select ที่เลือก เป็น id ของ obj นั้นๆ
 
@@ -407,7 +407,8 @@ namespace WebBook.Controllers
             ViewData["Status"] = new SelectList(_db.Statuses, "StatusId", "StatusName", obj.StatusId);
             ViewBag.ReceiveDate = obj.ReceiveDate;
 			ViewBag.ReturnDate = obj.ReturnDate;
-			return View(obj);
+            ViewBag.BookLang = obj.BookLang;
+            return View(obj);
         }
 
         [HttpPost] //ระบุว่าเป็นการทำงานแบบ Post
@@ -420,7 +421,8 @@ namespace WebBook.Controllers
             {
                 if (ModelState.IsValid)
                 {
-					string rd = Convert.ToDateTime(obj.ReceiveDate).ToString("yyyy/MM/dd");
+                  
+                    string rd = Convert.ToDateTime(obj.ReceiveDate).ToString("yyyy/MM/dd");
 					obj.ReceiveDate = DateTime.Parse(rd, us);
 					string rt = Convert.ToDateTime(obj.ReturnDate).ToString("yyyy/MM/dd");
 					obj.ReturnDate = DateTime.Parse(rt, us);
