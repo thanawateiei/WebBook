@@ -7,7 +7,6 @@
 }
 
 <h1>Delete</h1>
-
 <h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Setting</h4>
@@ -20,7 +19,7 @@
            @{var img = "/img/setting/" +ViewBag.img;}
             @if(ViewBag.img != null)
             {
-                <img src="@img" >
+                <img style="max-height: 400px;" src="@img" >
             }
         </dd>
         <dt class = "col-sm-2">

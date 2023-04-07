@@ -328,6 +328,7 @@ namespace WebBook.Controllers
             //ถ้าหาข้อมูลพบ ให้เก็บค่าเข้า Session 
             string UserId;
             string UserEmail;
+            string UserName;
             int UserRole;
             int UserType;
             foreach (var item in user)
@@ -335,12 +336,14 @@ namespace WebBook.Controllers
                 //อ่านค่าจาก Object เข้าตัวแปร
                 UserId = item.UserId;
                 UserEmail = item.Email;
+                UserName = item.Firstname + " " + item.Lastname;
                 UserRole = (int)item.Role;
                 UserType = (int)item.UserType;
 
                 //เอาค่าจากตัวแปรเข้า Session
                 HttpContext.Session.SetString("UserId", UserId);
                 HttpContext.Session.SetString("UserEmail", UserEmail);
+                HttpContext.Session.SetString("UserName", UserName);
                 HttpContext.Session.SetInt32("UserRole", UserRole);
                 HttpContext.Session.SetInt32("UserType", UserType);
                 //Update  Column ของตารางที่ระบุ
