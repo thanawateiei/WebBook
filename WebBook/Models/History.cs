@@ -28,6 +28,7 @@ namespace WebBook.Models
         [Required(ErrorMessage = "กรุณากรอกเลขหมู่หนังสือ")]
         [Display(Name = "เลขหมู่หนังสือ")]
         public string? CallNumber { get; set; }
+        [Display(Name = "สถานะ")]
         public int? StatusId { get; set; }
         [Required(ErrorMessage = "กรุณาเลือกจุดรับหนังสือ")]
         [Display(Name = "จุดรับหนังสือ")]

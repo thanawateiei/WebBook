@@ -15,63 +15,102 @@
 	</script>
 }
 
-<h1 class="text-success">ข้อเสนอแนะ</h1>
+<h1 class="text-success">แจ้งปัญหา/ข้อเสนอแนะ</h1>
 <div class="container-fluid  px-0">
-	<div class="card shadow w-100 mb-1">
-		<div class="card-body">
-			<div class="table-responsive">
-				<table class="table table-bordered">
-					<tr>
-						<th>#</th>
-						<th>ผู้ใช้</th>
-						<th>ความรู้สึก</th>
-						<th>คะแนน</th>
-
-						<th>หัวข้อปัญหา</th>
-						<th>รายละเอียดปัญหา</th>
-						<th></th>
-					</tr>
-					@{
-						var i = 0;
-					}
-					@foreach (var item in Model)
-					{
-						i++;
-						<tr>
-							<th>@item.FeedbackId</th>
-							<td>@item.UserId</td>
-							<td>@item.FeedbackLike</td>
-							<td>@item.FeedbackScore</td>
-							<td>@item.FeedbackHeading</td>
-							<td>@item.FeedbackDetail</td>
-							<td class="text-center">
-								<a data-toggle="modal" data-target="#DetailModal" class="FeedbackDetail">
-									<input type="text" id="idFeedback" hidden value="@item.FeedbackId" />
-									<i class="bi bi bi-eye-fill"></i>
-								</a>
-							</td>
-						</tr>
-					}
-				</table>
+	<div class="row">
+		<div class="col-6">
+			<div class="card shadow w-100 mb-1">
+				<div class="card-body">
+					<h2>แจ้งปัญหา</h2>
+					<div class="table-responsive">
+						<table class="table table-bordered">
+							<tr>
+								<th>#</th>
+								<th>ผู้ใช้</th>
+								<th>หัวข้อปัญหา</th>
+								<th>รายละเอียดปัญหา</th>
+								<th></th>
+							</tr>
+							@{
+								var i1 = 0;
+							}
+							@foreach (var item in ViewBag.fbsissue)
+							{
+								i1++;
+								<tr>
+									<th>@item.FeedbackId</th>
+									<td>@item.UserId</td>
+									<td>@item.FeedbackHeading</td>
+									<td>@item.FeedbackDetail</td>
+									<td class="text-center">
+										<a data-toggle="modal" data-target="#DetailModal" class="FeedbackDetail">
+											<input type="text" id="idFeedback" hidden value="@item.FeedbackId" />
+											<i class="bi bi bi-eye-fill"></i>
+										</a>
+									</td>
+								</tr>
+							}
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-6">
+			<div class="card shadow w-100 mb-1">
+				<div class="card-body">
+					<h2>ข้อเสนอแนะ</h2>
+					<div class="table-responsive">
+						<table class="table table-bordered">
+							<tr>
+								<th>#</th>
+								<th>ผู้ใช้</th>
+								<th>ความรู้สึก</th>
+								<th>คะแนน</th>
+								<th>รายละเอียด</th>
+								<th></th>
+							</tr>
+							@{
+								var i2 = 0;
+							}
+							@foreach (var item in ViewBag.fbsfeedback)
+							{
+								i2++;
+								<tr>
+									<th>@item.FeedbackId</th>
+									<td>@item.UserId</td>
+									<td>@item.FeedbackLike</td>
+									<td>@item.FeedbackScore</td>
+									<td>@item.FeedbackDetail</td>
+									<td class="text-center">
+										<a data-toggle="modal" data-target="#DetailModal" class="FeedbackDetail">
+											<input type="text" id="idFeedback" hidden value="@item.FeedbackId" />
+											<i class="bi bi bi-eye-fill"></i>
+										</a>
+									</td>
+								</tr>
+							}
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
+
 </div>
 <div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 	 aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1>รายละเอียดหนังสือ</h1>
+				<h1>รายละเอียด</h1>
 
 				<button class="close" type="button" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
-				
+
 			</div>
 			<div class="modal-body">
 				<div id="detailFeedback">
-
 				</div>
 			</div>
 			<div class="modal-footer">

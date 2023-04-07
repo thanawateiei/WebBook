@@ -14,9 +14,11 @@ namespace WebBook.Controllers
         [Route("Admin/Feedback")]
         public ActionResult Index()
         {
-            var fbs = from fb in _db.Feedbacks
+            var fbsissue = from fb in _db.Feedbacks
                       join ue in _db.Users on fb.UserId equals ue.UserId into join_fb_ue
                       from fb_ue in join_fb_ue.DefaultIfEmpty()
+                      orderby fb.FeedbackId descending
+                      where fb.FeedbackLike == "แจ้งปัญหา"
                       select new Feedback
                       {
                           FeedbackId = fb.FeedbackId,
@@ -26,10 +28,23 @@ namespace WebBook.Controllers
                           FeedbackDetail= fb.FeedbackDetail,
                           FeedbackHeading = fb.FeedbackHeading
                       };
-
-
-            if (fbs == null) return NotFound();
-            return View(fbs);
+            var fbsfeedback = from fb in _db.Feedbacks
+                      join ue in _db.Users on fb.UserId equals ue.UserId into join_fb_ue
+                      from fb_ue in join_fb_ue.DefaultIfEmpty()
+                      orderby fb.FeedbackId descending
+                      where fb.FeedbackLike != "แจ้งปัญหา"
+                      select new Feedback
+                      {
+                          FeedbackId = fb.FeedbackId,
+                          UserId = fb_ue.Email,
+                          FeedbackLike = fb.FeedbackLike,
+                          FeedbackScore = fb.FeedbackScore,
+                          FeedbackDetail = fb.FeedbackDetail,
+                          FeedbackHeading = fb.FeedbackHeading
+                      };
+            ViewBag.fbsissue = fbsissue;
+            ViewBag.fbsfeedback = fbsfeedback;
+            return View();
         }
         public IActionResult Detail(int id)
 		{

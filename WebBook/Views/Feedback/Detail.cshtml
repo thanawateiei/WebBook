@@ -1,5 +1,7 @@
 ﻿@model WebBook.Models.Feedback
-
+@{
+    var data = Model;
+}
 <div id="detailModalFeedback">
     <div>
         <h4>Feedback</h4>
@@ -11,9 +13,16 @@
             <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.UserId)
             </dd>
-            <dt class="col-sm-3">
-                ชอบ/ไม่ชอบ
-            </dt>
+            
+                @if(data.FeedbackLike =="แจ้งปัญหา"){
+                <dt class="col-sm-3">ประเภท</dt>
+            }
+            else
+            {
+                <dt class="col-sm-3">ความรู้สึก</dt>
+            }
+
+            
             <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.FeedbackLike)
             </dd>

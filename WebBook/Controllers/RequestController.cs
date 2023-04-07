@@ -226,19 +226,19 @@ namespace WebBook.Controllers
                 if (dateStart != DateTime.MinValue && dateEnd == DateTime.MinValue)
                 {
 
-                    rqq = rqq.Where(r => ((r.ReceiveDate.Date >= ds) || (r.CreatedAt.Date >= ds))).ToList();
+                    rqq = rqq.Where(r => ((r.ReceiveDate.Date >= ds) || (r.ReturnDate.Date >= ds))).ToList();
 
                 }
                 else if (dateStart == DateTime.MinValue && dateEnd != DateTime.MinValue)
                 {
 
-                    rqq = rqq.Where(r => ((r.ReceiveDate.Date <= de) || (r.CreatedAt.Date <= de))).ToList();
+                    rqq = rqq.Where(r => ((r.ReceiveDate.Date <= de) || (r.ReturnDate.Date <= de))).ToList();
 
                 }
                 else
                 {
 
-                    rqq = rqq.Where(r => ((r.ReceiveDate.Date >= ds) && (r.ReceiveDate.Date <= de)) || ((r.CreatedAt.Date >= ds) && (r.CreatedAt.Date <= de))).ToList();
+                    rqq = rqq.Where(r => ((r.ReceiveDate.Date >= ds) && (r.ReceiveDate.Date <= de)) || ((r.ReturnDate.Date >= ds) && (r.ReturnDate.Date <= de))).ToList();
                 }
             }
 
